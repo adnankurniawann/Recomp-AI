@@ -13,6 +13,7 @@ Versi 1.2, 19 November 2026. Menggantikan PRD v1.1, v1.0, v0.2, dan PRD 5 Novemb
 | 21.1, 21.2 | Satu branch tetap `main`. Branch fitur dari `main`, rilis ditandai dengan tag | ADR 0009 |
 | 22 | Aturan agent AI pindah ke `AGENTS.md`, `CLAUDE.md` hanya mengimpornya | - |
 | 0 | Dokumen repo selain PRD ditulis dalam bahasa Inggris | - |
+| 20.5, 20.6 | Video semifinal: Malik dan Dhanes. Proposal: Axeleon dan Adnan | - |
 | 6.1, 6.6, 11.3 | Nama komponen disesuaikan: `AppShell`, `Sidebar`, `CandidateRow`, `ScoreBadge` | ADR 0008 |
 
 ---
@@ -2454,20 +2455,22 @@ Kalau ternyata lolos Top 10 dan ada masalah besar dari uji coba, salah satu tuga
 | Uji coba: ketua membuat tim, menilai rekomendasi, mengundang | Semua | Data `recommendation_feedback` dan `invites` |
 | Hitung metrik (bagian 17) | Adnan | Tabel angka asli dengan jumlah peserta |
 | Video 2 menit, 1080p, bahasa Inggris (perkenalan tim, masalah, solusi, demo alur inti, yang sudah dan belum selesai) | Malik (naskah), Dhanes (rekam dan edit) | File video |
-| Proposal maks. 10 halaman isi, bahasa Inggris | Dibagi per bagian (20.6) | PDF |
+| Proposal maks. 10 halaman isi, bahasa Inggris | Axeleon dan Adnan, dibagi per bagian (20.6) | PDF |
 | Deklarasi orisinalitas bertanda tangan | Malik | Lampiran proposal |
 
 ### 20.6 Pembagian bagian proposal
 
 | Bagian proposal (handbook) | Penulis |
 | --- | --- |
-| Project and Team Identity | Malik |
-| Problem and User Analysis | Malik |
-| Proposed Solution | Dhanesworo |
-| Technical Design | Malik dan Dhanesworo (arsitektur, data), Adnan (AI dan matching), Axeleon (UI dan sistem desain) |
-| Development Plan | Malik dan Adnan |
+| Project and Team Identity | Axeleon |
+| Problem and User Analysis | Axeleon |
+| Proposed Solution | Axeleon |
+| Technical Design | Axeleon (arsitektur, UI, data), Adnan (AI dan matching) |
+| Development Plan | Adnan |
 | Validation and Impact | Adnan |
-| References and Declaration, AI disclosure | Adnan dan Malik |
+| References and Declaration, AI disclosure | Adnan |
+
+Video dipegang Malik dan Dhanes, proposal dipegang Axeleon dan Adnan. Malik dan Dhanes memberi bahan untuk bagian arsitektur dan data di Technical Design.
 
 ---
 

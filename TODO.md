@@ -168,8 +168,8 @@ waits and everyone helps fix P0.
 - [ ] Recruit trial students (target 30) through student associations: @malikarsya
 - [ ] Run the trial: leaders create teams, rate recommendations, invite: everyone
 - [ ] Count the metrics with the real number of participants (PRD §17): @adnankurniawann
-- [ ] 2-minute video in English: script @malikarsya, recording and editing @dhanesmd3
-- [ ] Proposal, at most 10 pages, sections split as in PRD §20.6: everyone
+- [ ] 2-minute video in English: @malikarsya (script) and @dhanesmd3 (recording and editing)
+- [ ] Proposal, at most 10 pages: @angseleong and @adnankurniawann, sections split as in PRD §20.6
 - [ ] Signed originality declaration: @malikarsya
 - [ ] Submit before 23.59 WIB on Nov 30: @malikarsya
 
