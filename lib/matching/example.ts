@@ -23,7 +23,11 @@ export const uiuxRole: RoleRequirement = {
   hoursPerWeek: 8,
 };
 
-export const team: TeamContext = { competitionCategory: "hackathon", goal: "win", workTime: "night" };
+export const team: TeamContext = {
+  competitionCategory: "hackathon",
+  goal: "win",
+  workTime: "night",
+};
 
 export const dinda: CandidateInput = {
   profileId: "dinda",
