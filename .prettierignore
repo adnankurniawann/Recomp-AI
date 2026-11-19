@@ -1,0 +1,4 @@
+pnpm-lock.yaml
+lib/supabase/types.ts
+docs/
+*.md
