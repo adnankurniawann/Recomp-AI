@@ -16,7 +16,9 @@ Everything before the semifinal submission, day by day, one list per person. Eve
 | [M3](#m3-semifinal-nov-2530) | Nov 25–30 | Trial with real students, video, proposal |
 | [M4](#m4-final-day-dec-16) | Dec 16 | The three Final Day tasks |
 
-Load per person: Malik 13, Dhanes 13, Adnan 13, Alek 12 backlog issues (PRD §21.7). Leads review
+Load per person, weighted by size (S = 1, M = 2, L = 3 points, PRD §21.7): Malik 27, Dhanes 27,
+Alek 28, Adnan 29 (three of Adnan's are shared with Alek). On top of that: Malik's leader work, the video (Malik, Dhanes) and the proposal
+(Alek, Adnan). Leads review
 their area: backend `@malikarsya` / `@dhanesmd3`, frontend `@angseleong`, AI and data
 `@adnankurniawann`.
 
@@ -35,6 +37,7 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #3 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
 
 **@dhanesmd3**
+- [ ] #5 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
 - [ ] Zod schemas in `lib/validation` for profile, team and invite inputs (PRD §13.1)
 - [ ] `ActionResult<T>` type and error codes
 - [ ] `lib/format/phone.ts` with tests (`08…` and `+62 …` become `+62…`)
@@ -64,7 +67,6 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #15 Landing page (PRD §10.1)
 - [ ] #16 `/lomba` with `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filters (F-CMP-01)
 - [ ] #17 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
-- [ ] #5 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
 
 **@adnankurniawann**
 - [ ] #27 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
@@ -81,9 +83,9 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #13 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
 - [ ] #11 Skill, history, portfolio and contact actions, portfolio image upload (F-PRF-02..05)
 - [ ] #12 `profile_contacts` RLS and its integration tests (F-PRF-05)
-- [ ] #30 `ProfileSheet` without the match panel (F-RNK-03)
 
 **@angseleong**
+- [ ] #30 `ProfileSheet` without the match panel (F-RNK-03)
 - [ ] #29 `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` on fixtures (F-RNK-01..02)
 - [ ] #23 Guidebook summary tab UI on the competition page (F-CMP-02)
 
@@ -95,6 +97,8 @@ Contracts first, so everyone can work in parallel from H1.
 ## H3 Sun Nov 22
 
 **@malikarsya**
+- [ ] Vercel: `main` to production, a preview URL for every PR
+- [ ] #34 Contacts on the team dashboard (F-INV-04)
 - [ ] #26 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04)
 - [ ] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
 
@@ -102,16 +106,15 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #31 Invite dialog and `sendInvite` (F-INV-01)
 - [ ] #33 Atomic `accept_invite` and the concurrency test, `decline_invite`, `cancel_invite` (F-INV-03)
 - [ ] #32 `/undangan` (F-INV-02)
-- [ ] #34 Contacts on the team dashboard (F-INV-04)
 
 **@angseleong**
+- [ ] #46 Notifications, the bell and the pending-invite count (F-NTF-01)
 - [ ] #29 Ranking tab on the real API: load more, sort, empty state (F-RNK-01)
 - [ ] #23 Wire the guidebook summary tab
-- [ ] Pending-invite count in the sidebar
 
 **@adnankurniawann**
 - [ ] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01)
-- [ ] #30 Match panel in `ProfileSheet`, with Dhanes (F-RNK-03)
+- [ ] #30 Match panel in `ProfileSheet`, with Alek (F-RNK-03)
 - [ ] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05)
 
 **Everyone, evening:** internal demo of the core flow. If it doesn't run end to end, H4's P1 work
@@ -121,14 +124,12 @@ waits and everyone helps fix P0.
 
 **@malikarsya**
 - [ ] #43 `/mentor` with `MentorCard` and role filter (F-MNT-01)
-- [ ] #44 `/mentor/[id]` (F-MNT-02)
 - [ ] #45 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04)
-- [ ] Vercel: `main` to production, a preview URL for every PR
 
 **@dhanesmd3**
+- [ ] #44 `/mentor/[id]` (F-MNT-02)
 - [ ] #39 `submit_mcq` and progress (F-LRN-03)
 - [ ] #41 `redeem_promo`, `simulate_course_purchase` (F-LRN-05)
-- [ ] #46 Notifications and the bell (F-NTF-01)
 - [ ] `seed-content.ts` for the course
 
 **@angseleong**
@@ -145,11 +146,11 @@ waits and everyone helps fix P0.
 ## H5 Tue Nov 24
 
 **@malikarsya**
-- [ ] #48 Playwright core flow (PRD §16.3)
 - [ ] Local backup with `DEMO_MODE=true`, screen recording of the core flow
 - [ ] **Tag `v0.1.0` on `main` at 21.00**
 
 **@dhanesmd3**
+- [ ] #48 Playwright core flow (PRD §16.3)
 - [ ] All database integration tests in PRD §16.2
 - [ ] Bug fixes in profiles and invites
 

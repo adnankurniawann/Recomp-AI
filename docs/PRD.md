@@ -14,6 +14,7 @@ Versi 1.2, 19 November 2026. Menggantikan PRD v1.1, v1.0, v0.2, dan PRD 5 Novemb
 | 22 | Aturan agent AI pindah ke `AGENTS.md`, `CLAUDE.md` hanya mengimpornya | - |
 | 0 | Dokumen repo selain PRD ditulis dalam bahasa Inggris | - |
 | 20.5, 20.6 | Video semifinal: Malik dan Dhanes. Proposal: Axeleon dan Adnan | - |
+| 20.2, 20.3, 21.7 | Beban diratakan per ukuran (sekitar 27 poin per orang), kolom Ukuran di backlog | ADR 0009 |
 | 6.1, 6.6, 11.3 | Nama komponen disesuaikan: `AppShell`, `Sidebar`, `CandidateRow`, `ScoreBadge` | ADR 0008 |
 
 ---
@@ -2407,14 +2408,14 @@ Handbook menyebut tanggal bisa berubah. Pantau @gdgocitb.
 
 | Anggota | GitHub | Lead dan reviewer untuk | Fitur yang dikerjakan utuh (UI sampai database) |
 | --- | --- | --- | --- |
-| Malik (ketua tim) | `@malikarsya` | Backend: Supabase, migrasi, auth, deploy | Setup repo dan CI, auth dan middleware, `seed.sql`, Tertarik, admin lomba, tim (wizard, editor role, dashboard, `create_team`), mentor (grid, detail, booking, checkout), Playwright, rilis |
-| Dhanesworo | `@dhanesmd3` | Backend: RLS, fungsi SQL, keamanan data | Profil (onboarding, edit, publik, sheet), kontak dan RLS-nya, undangan (`accept_invite`, `/undangan`), notifikasi, `submit_mcq`, akses kursus dan promo |
-| Axeleon (Alek) | `@angseleong` | Frontend: sistem desain, komponen, aksesibilitas | Token dan komponen dasar, `AppShell` dan sidebar, landing, daftar dan detail lomba, UI ranking, katalog dan pemutar materi, pass responsif, README |
+| Malik (ketua tim) | `@malikarsya` | Backend: Supabase, migrasi, auth, deploy | Setup repo dan CI, Supabase dan migrasi, auth dan middleware, `seed.sql`, Tertarik, admin lomba, tim (wizard, editor role, dashboard dan kontak anggota, `create_team`), grid mentor dan booking, deploy, rilis |
+| Dhanesworo | `@dhanesmd3` | Backend: RLS, fungsi SQL, keamanan data | `Avatar`, `Stepper`, `EmptyState`, `ProgressBar`, profil (onboarding, edit, publik), kontak dan RLS-nya, undangan (`accept_invite`, `/undangan`), `submit_mcq`, akses kursus dan promo, detail mentor, Playwright |
+| Axeleon (Alek) | `@angseleong` | Frontend: sistem desain, komponen, aksesibilitas | Token dan komponen dasar, `AppShell` dan sidebar, landing, daftar dan detail lomba, UI ranking dan `ProfileSheet`, notifikasi, katalog dan pemutar materi, pass responsif, README |
 | Adnan | `@adnankurniawann` | AI dan data: matching, agent, seed, metrik | Fungsi skor dan tesnya, seed profil, agent guidebook, SQL dan API ranking, umpan balik rekomendasi, agent perekrut, feedback studi kasus, metrik admin, evaluasi akurasi |
 
 **Cara membagi kerja**
 
-- Peran menentukan siapa yang memimpin dan me-review sebuah area, bukan siapa yang mengerjakan semua isinya. Pekerjaan dibagi per fitur utuh supaya beban rata (sekitar 11 sampai 13 issue per orang) dan tidak ada yang menunggu satu orang.
+- Peran menentukan siapa yang memimpin dan me-review sebuah area, bukan siapa yang mengerjakan semua isinya. Pekerjaan dibagi per fitur utuh supaya beban rata: sekitar 27 poin per orang, dengan ukuran S = 1, M = 2, L = 3 (kolom Ukuran di 21.7). Kerja non-kode dibagi juga: Malik ketua, video Malik dan Dhanes, proposal Alek dan Adnan dan tidak ada yang menunggu satu orang.
 - Setiap PR di area orang lain di-review oleh lead area itu. PR di area sendiri di-review oleh siapa saja.
 - **Kontrak dulu di H0**: Malik mendorong migrasi `0001_init.sql` dan tipe hasil generate, Adnan mendorong `lib/matching/types.ts` dan data fixture, Dhanes mendorong schema Zod di `lib/validation`, Alek mendorong token dan komponen dasar. Setelah itu semua orang bisa bekerja paralel. UI dibangun di atas data seed atau fixture sampai server action-nya siap.
 - Setiap anggota tetap harus bisa menjelaskan bagian anggota lain, karena juri bisa bertanya ke siapa saja.
@@ -2423,12 +2424,12 @@ Handbook menyebut tanggal bisa berubah. Pantau @gdgocitb.
 
 | Hari | Malik | Dhanesworo | Axeleon (Alek) | Adnan |
 | --- | --- | --- | --- | --- |
-| **H0 Kam 19 malam** | Repo Next.js, pnpm, ESLint, Prettier, Vitest, CI. Proteksi branch `main`. Supabase lokal dan cloud, migrasi `0001_init.sql`, generate tipe. Buat semua issue dan milestone | Schema Zod di `lib/validation` (profil, tim, undangan), tipe `ActionResult`, `lib/format/phone.ts` dan tesnya | Token desain v2 di `globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `Avatar`, `SectionLabel`, kerangka `AppShell` dan `PublicNavbar` | `lib/matching/types.ts`, kerangka `score.ts` dan tes kasus Dinda, daftar skill dan template role untuk seed, fixture profil di `lib/fixtures` untuk UI |
-| **H1 Jum 20** | Auth Google dan email, trigger profil, middleware onboarding, `seed.sql` (skill, template, lomba), bucket Storage, RLS lomba, `toggleInterest` | Wizard onboarding 4 langkah (UI dan server actions), `/profil`, RLS profil dan tabel turunannya | Landing, `/lomba` dengan `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filter. `/lomba/[slug]` tanpa tab ringkasan. `Stepper`, `EmptyState`, `ProgressBar` | `scoreCandidate`, `reasons.ts`, tujuh unit test lolos. `seed-profiles.ts` 50 profil. `lib/pdf/extract.ts` |
-| **H2 Sab 21** | `create_team`, `/tim/baru` 3 langkah, editor role, `saveRoles`, `recompute_team_status` | `/u/[username]`, `HistoryTimeline`, `PortfolioGrid`, `ProfileSheet` tanpa panel kecocokan, unggah portofolio, tabel kontak, RLS kontak dan tes integrasinya | `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` di atas fixture. Tab "Ringkasan guidebook" di detail lomba (UI) | Agent guidebook end-to-end: Gemini, schema Zod, retry, pemetaan skill, cache, form cadangan. Data untuk tab ringkasan |
-| **H3 Min 22** | Dashboard tim dengan data asli, `assignMemberRole`, admin lomba, unggah guidebook, tombol "Jalankan ekstraksi" | `sendInvite` dan dialog undang, `accept_invite` atomik dan tes konkurensi, `decline_invite`, `cancel_invite`, `/undangan`, kontak di dashboard tim | Sambungkan tab ranking ke API (muat lagi, urut, state kosong), sambungkan tab ringkasan, badge undangan di sidebar | `ranking_candidates` SQL dan `GET /api/ranking`, panel kecocokan di `ProfileSheet` (bareng Dhanes), `recommendation_feedback`. **Malam: demo internal alur inti, semua** |
-| **H4 Sen 23** | `/mentor`, `MentorCard`, `/mentor/[id]`, checkout, `create_booking`, `simulate_booking_payment`, seed mentor. Deploy Vercel (`main` produksi, PR dapat preview URL) | `submit_mcq`, `redeem_promo`, `simulate_course_purchase`, `seed-content.ts`, notifikasi dan lonceng | `/belajar`, `/belajar/[kursus]`, `LessonShell`, pemutar materi, `QuestionMCQ`, progres dan poin | Agent perekrut (API dan kartu draf), feedback studi kasus (API), `QuestionCase`. **Semua: tulis isi kursus, 2 materi per orang** |
-| **H5 Sel 24** | Playwright alur inti, cadangan lokal `DEMO_MODE`, **21.00: tag `v0.1.0` di `main`** | Semua tes integrasi RLS (bagian 16.2), perbaikan bug profil dan undangan | Responsif semua halaman di 360 px, state loading, kosong, dan error, Lighthouse Accessibility ≥ 90, README | `eval-guidebook` di 5 sampai 10 guidebook, halaman metrik admin, AI Disclosure, perbaikan bug ranking |
+| **H0 Kam 19 malam** | Repo Next.js, pnpm, ESLint, Prettier, Vitest, CI. Proteksi branch `main`. Supabase lokal dan cloud, migrasi `0001_init.sql`, generate tipe. Issue dan milestone (sudah dibuat) | Schema Zod di `lib/validation` (profil, tim, undangan), tipe `ActionResult`, `lib/format/phone.ts` dan tesnya, `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` | Token desain v2 di `globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `SectionLabel`, kerangka `AppShell` dan `PublicNavbar` | `lib/matching/types.ts`, kerangka `score.ts` dan tes kasus Dinda, daftar skill dan template role untuk seed, fixture profil di `lib/fixtures` untuk UI |
+| **H1 Jum 20** | Auth Google dan email, trigger profil, middleware onboarding, `seed.sql` (skill, template, lomba), bucket Storage, RLS lomba, `toggleInterest` | Wizard onboarding 4 langkah (UI dan server actions), `/profil`, RLS profil dan tabel turunannya | Landing, `/lomba` dengan `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filter. `/lomba/[slug]` tanpa tab ringkasan | `scoreCandidate`, `reasons.ts`, tujuh unit test lolos. `seed-profiles.ts` 50 profil. `lib/pdf/extract.ts` |
+| **H2 Sab 21** | `create_team`, `/tim/baru` 3 langkah, editor role, `saveRoles`, `recompute_team_status` | `/u/[username]`, `HistoryTimeline`, `PortfolioGrid`, unggah portofolio, tabel kontak, RLS kontak dan tes integrasinya | `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` di atas fixture. `ProfileSheet` tanpa panel kecocokan. Tab "Ringkasan guidebook" di detail lomba (UI) | Agent guidebook end-to-end: Gemini, schema Zod, retry, pemetaan skill, cache, form cadangan. Data untuk tab ringkasan |
+| **H3 Min 22** | Dashboard tim dengan data asli dan kontak anggota, `assignMemberRole`, admin lomba, unggah guidebook, tombol "Jalankan ekstraksi". Deploy Vercel (`main` produksi, PR dapat preview URL) | `sendInvite` dan dialog undang, `accept_invite` atomik dan tes konkurensi, `decline_invite`, `cancel_invite`, `/undangan` | Sambungkan tab ranking ke API (muat lagi, urut, state kosong), sambungkan tab ringkasan, notifikasi (tabel, lonceng, badge undangan) | `ranking_candidates` SQL dan `GET /api/ranking`, panel kecocokan di `ProfileSheet` (bareng Alek), `recommendation_feedback`. **Malam: demo internal alur inti, semua** |
+| **H4 Sen 23** | `/mentor`, `MentorCard`, checkout, `create_booking`, `simulate_booking_payment`, seed mentor | `submit_mcq`, `redeem_promo`, `simulate_course_purchase`, `seed-content.ts`, `/mentor/[id]` | `/belajar`, `/belajar/[kursus]`, `LessonShell`, pemutar materi, `QuestionMCQ`, progres dan poin | Agent perekrut (API dan kartu draf), feedback studi kasus (API), `QuestionCase`. **Semua: tulis isi kursus, 2 materi per orang** |
+| **H5 Sel 24** | Cadangan lokal `DEMO_MODE` dan rekaman layar alur inti. **21.00: tag `v0.1.0` di `main`** | Playwright alur inti, semua tes integrasi RLS (bagian 16.2), perbaikan bug profil dan undangan | Responsif semua halaman di 360 px, state loading, kosong, dan error, Lighthouse Accessibility ≥ 90, README | `eval-guidebook` di 5 sampai 10 guidebook, halaman metrik admin, AI Disclosure, perbaikan bug ranking |
 
 **Aturan harian**
 
@@ -2560,63 +2561,63 @@ F-XXX-00
 
 Semua baris sudah dibuat sebagai GitHub issue (kolom Issue). Nomor issue = nomor backlog + 1, karena #1 dipakai PR pertama.
 
-| # | Issue | ID | Judul issue | Assignee | Milestone | Prioritas |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | #2 | F-FND-01 | Setup Next.js, pnpm, lint, Vitest, CI, proteksi `main` | Malik | M0 | P0 |
-| 2 | #3 | F-FND-01 | Setup Supabase lokal dan cloud, migrasi awal, generate tipe | Malik | M0 | P0 |
-| 3 | #4 | F-FND-03 | Token desain v2 dan komponen dasar (Button, IconButton, Card, Chip, StatusBadge, SimulatedBadge, SectionLabel) | Alek | M0 | P0 |
-| 4 | #5 | F-FND-03 | Komponen Avatar, Stepper, EmptyState, ProgressBar, SegmentedTabs, SearchInput | Alek | M0 | P0 |
-| 5 | #6 | F-FND-03 | PublicNavbar, Footer, AppShell, Sidebar | Alek | M0 | P0 |
-| 6 | #7 | F-FND-02 | Auth Google dan email, trigger profil, middleware | Malik | M0 | P0 |
-| 7 | #8 | F-FND-04 | seed.sql: skill, template role, lomba | Malik | M0 | P0 |
-| 8 | #9 | F-FND-04 | Skrip seed profil simulasi dan fixture UI | Adnan | M1 | P0 |
-| 9 | #10 | F-PRF-01 | Wizard onboarding 4 langkah | Dhanes | M1 | P0 |
-| 10 | #11 | F-PRF-02..05 | Server actions skill, riwayat, portofolio, kontak | Dhanes | M1 | P0 |
-| 11 | #12 | F-PRF-05 | RLS kontak dan tes integrasi | Dhanes | M1 | P0 |
-| 12 | #13 | F-PRF-06 | Profil publik /u/[username] | Dhanes | M1 | P0 |
-| 13 | #14 | F-PRF-07 | Halaman edit profil | Dhanes | M1 | P0 |
-| 14 | #15 | - | Landing page | Alek | M1 | P0 |
-| 15 | #16 | F-CMP-01 | Daftar lomba dan filter | Alek | M1 | P0 |
-| 16 | #17 | F-CMP-02 | Detail lomba | Alek | M1 | P0 |
-| 17 | #18 | F-CMP-03 | Tombol Tertarik | Malik | M1 | P0 |
-| 18 | #19 | F-CMP-04 | Admin lomba dan unggah guidebook | Malik | M1 | P0 |
-| 19 | #20 | F-GBA-01 | Ekstraksi teks PDF per halaman | Adnan | M1 | P0 |
-| 20 | #21 | F-GBA-01 | Agent guidebook, schema Zod, retry | Adnan | M1 | P0 |
-| 21 | #22 | F-GBA-02..04 | Pemetaan skill, cache, form cadangan | Adnan | M1 | P0 |
-| 22 | #23 | F-CMP-02 | Tab ringkasan guidebook | Adnan (data) + Alek (UI) | M1 | P0 |
-| 23 | #24 | F-TEM-01 | Wizard buat tim dan fungsi create_team | Malik | M1 | P0 |
-| 24 | #25 | F-TEM-02 | Editor role | Malik | M1 | P0 |
-| 25 | #26 | F-TEM-03..04 | Dashboard tim dan hitung gap | Malik | M1 | P0 |
-| 26 | #27 | - | Fungsi matching dan unit test | Adnan | M0 | P0 |
-| 27 | #28 | F-RNK-01 | ranking_candidates SQL dan GET /api/ranking | Adnan | M1 | P0 |
-| 28 | #29 | F-RNK-01..02 | CandidateRow, CandidateCard, ScoreBadge, FactorBars, tab ranking | Alek | M1 | P0 |
-| 29 | #30 | F-RNK-03 | ProfileSheet dengan panel kecocokan | Dhanes (+ Adnan untuk panel) | M1 | P0 |
-| 30 | #31 | F-INV-01 | Dialog undang dan sendInvite | Dhanes | M1 | P0 |
-| 31 | #32 | F-INV-02 | Halaman /undangan | Dhanes | M1 | P0 |
-| 32 | #33 | F-INV-03 | accept_invite atomik dan tes konkurensi | Dhanes | M1 | P0 |
-| 33 | #34 | F-INV-04 | Tampilan kontak di dashboard tim | Dhanes | M1 | P0 |
-| 34 | #35 | F-RNK-05 | Umpan balik Cocok dan Kurang cocok | Adnan | M2 | P1 |
-| 35 | #36 | F-RCR-01..03 | Agent perekrut | Adnan | M2 | P1 |
-| 36 | #37 | F-LRN-01..02 | Katalog dan halaman kursus | Alek | M2 | P1 |
-| 37 | #38 | F-LRN-03 | Pemutar materi ala Skilvul | Alek | M2 | P1 |
-| 38 | #39 | F-LRN-03 | submit_mcq dan progres | Dhanes | M2 | P1 |
-| 39 | #40 | F-LRN-04 | Feedback studi kasus dan QuestionCase | Adnan | M2 | P1 |
-| 40 | #41 | F-LRN-05 | Akses, promo, pembelian simulasi | Dhanes | M2 | P1 |
-| 41 | #42 | F-LRN-06 | Isi kursus Persiapan Hackathon | Semua | M2 | P1 |
-| 42 | #43 | F-MNT-01 | Grid mentor dan filter role | Malik | M2 | P1 |
-| 43 | #44 | F-MNT-02 | Detail mentor | Malik | M2 | P1 |
-| 44 | #45 | F-MNT-03..04 | Booking dan pembayaran simulasi | Malik | M2 | P1 |
-| 45 | #46 | F-NTF-01 | Notifikasi dan badge | Dhanes | M2 | P1 |
-| 46 | #47 | F-ADM-01 | Halaman admin dan metrik | Adnan | M2 | P1 |
-| 47 | #48 | - | Playwright alur inti | Malik | M2 | P0 |
-| 48 | #49 | - | Responsif dan state kosong, loading, error | Alek (semua untuk halamannya sendiri) | M2 | P0 |
-| 49 | #50 | - | README dan AI Disclosure | Alek + Adnan | M2 | P0 |
-| 50 | #51 | - | Evaluasi akurasi guidebook | Adnan | M3 | P0 |
-| 51 | #52 | F-INV-05 | Melamar ke tim | Dibagi saat Final Day | M4 | `final-day` |
-| 52 | #53 | - | Rekomendasi lomba berikutnya untuk tim lengkap | Dibagi saat Final Day | M4 | `final-day` |
-| 53 | #54 | F-MNT-06 | Rating dan ulasan mentor | Dibagi saat Final Day | M4 | `final-day` |
+| # | Issue | ID | Judul issue | Assignee | Milestone | Prioritas | Ukuran |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | #2 | F-FND-01 | Setup Next.js, pnpm, lint, Vitest, CI, proteksi `main` | Malik | M0 | P0 | M |
+| 2 | #3 | F-FND-01 | Setup Supabase lokal dan cloud, migrasi awal, generate tipe | Malik | M0 | P0 | L |
+| 3 | #4 | F-FND-03 | Token desain v2 dan komponen dasar (Button, IconButton, Card, Chip, StatusBadge, SimulatedBadge, SectionLabel) | Alek | M0 | P0 | M |
+| 4 | #5 | F-FND-03 | Komponen Avatar, Stepper, EmptyState, ProgressBar, SegmentedTabs, SearchInput | Dhanes | M0 | P0 | M |
+| 5 | #6 | F-FND-03 | PublicNavbar, Footer, AppShell, Sidebar | Alek | M0 | P0 | M |
+| 6 | #7 | F-FND-02 | Auth Google dan email, trigger profil, middleware | Malik | M0 | P0 | M |
+| 7 | #8 | F-FND-04 | seed.sql: skill, template role, lomba | Malik | M0 | P0 | M |
+| 8 | #9 | F-FND-04 | Skrip seed profil simulasi dan fixture UI | Adnan | M1 | P0 | M |
+| 9 | #10 | F-PRF-01 | Wizard onboarding 4 langkah | Dhanes | M1 | P0 | L |
+| 10 | #11 | F-PRF-02..05 | Server actions skill, riwayat, portofolio, kontak | Dhanes | M1 | P0 | M |
+| 11 | #12 | F-PRF-05 | RLS kontak dan tes integrasi | Dhanes | M1 | P0 | M |
+| 12 | #13 | F-PRF-06 | Profil publik /u/[username] | Dhanes | M1 | P0 | M |
+| 13 | #14 | F-PRF-07 | Halaman edit profil | Dhanes | M1 | P0 | S |
+| 14 | #15 | - | Landing page | Alek | M1 | P0 | L |
+| 15 | #16 | F-CMP-01 | Daftar lomba dan filter | Alek | M1 | P0 | M |
+| 16 | #17 | F-CMP-02 | Detail lomba | Alek | M1 | P0 | M |
+| 17 | #18 | F-CMP-03 | Tombol Tertarik | Malik | M1 | P0 | S |
+| 18 | #19 | F-CMP-04 | Admin lomba dan unggah guidebook | Malik | M1 | P0 | M |
+| 19 | #20 | F-GBA-01 | Ekstraksi teks PDF per halaman | Adnan | M1 | P0 | S |
+| 20 | #21 | F-GBA-01 | Agent guidebook, schema Zod, retry | Adnan | M1 | P0 | L |
+| 21 | #22 | F-GBA-02..04 | Pemetaan skill, cache, form cadangan | Adnan | M1 | P0 | M |
+| 22 | #23 | F-CMP-02 | Tab ringkasan guidebook | Adnan (data) + Alek (UI) | M1 | P0 | S |
+| 23 | #24 | F-TEM-01 | Wizard buat tim dan fungsi create_team | Malik | M1 | P0 | L |
+| 24 | #25 | F-TEM-02 | Editor role | Malik | M1 | P0 | L |
+| 25 | #26 | F-TEM-03..04 | Dashboard tim dan hitung gap | Malik | M1 | P0 | L |
+| 26 | #27 | - | Fungsi matching dan unit test | Adnan | M0 | P0 | L |
+| 27 | #28 | F-RNK-01 | ranking_candidates SQL dan GET /api/ranking | Adnan | M1 | P0 | L |
+| 28 | #29 | F-RNK-01..02 | CandidateRow, CandidateCard, ScoreBadge, FactorBars, tab ranking | Alek | M1 | P0 | L |
+| 29 | #30 | F-RNK-03 | ProfileSheet dengan panel kecocokan | Alek (+ Adnan untuk panel) | M1 | P0 | M |
+| 30 | #31 | F-INV-01 | Dialog undang dan sendInvite | Dhanes | M1 | P0 | M |
+| 31 | #32 | F-INV-02 | Halaman /undangan | Dhanes | M1 | P0 | M |
+| 32 | #33 | F-INV-03 | accept_invite atomik dan tes konkurensi | Dhanes | M1 | P0 | L |
+| 33 | #34 | F-INV-04 | Tampilan kontak di dashboard tim | Malik | M1 | P0 | S |
+| 34 | #35 | F-RNK-05 | Umpan balik Cocok dan Kurang cocok | Adnan | M2 | P1 | S |
+| 35 | #36 | F-RCR-01..03 | Agent perekrut | Adnan | M2 | P1 | L |
+| 36 | #37 | F-LRN-01..02 | Katalog dan halaman kursus | Alek | M2 | P1 | M |
+| 37 | #38 | F-LRN-03 | Pemutar materi ala Skilvul | Alek | M2 | P1 | L |
+| 38 | #39 | F-LRN-03 | submit_mcq dan progres | Dhanes | M2 | P1 | M |
+| 39 | #40 | F-LRN-04 | Feedback studi kasus dan QuestionCase | Adnan | M2 | P1 | L |
+| 40 | #41 | F-LRN-05 | Akses, promo, pembelian simulasi | Dhanes | M2 | P1 | M |
+| 41 | #42 | F-LRN-06 | Isi kursus Persiapan Hackathon | Semua | M2 | P1 | M |
+| 42 | #43 | F-MNT-01 | Grid mentor dan filter role | Malik | M2 | P1 | M |
+| 43 | #44 | F-MNT-02 | Detail mentor | Dhanes | M2 | P1 | M |
+| 44 | #45 | F-MNT-03..04 | Booking dan pembayaran simulasi | Malik | M2 | P1 | L |
+| 45 | #46 | F-NTF-01 | Notifikasi dan badge | Alek | M2 | P1 | M |
+| 46 | #47 | F-ADM-01 | Halaman admin dan metrik | Adnan | M2 | P1 | M |
+| 47 | #48 | - | Playwright alur inti | Dhanes | M2 | P0 | M |
+| 48 | #49 | - | Responsif dan state kosong, loading, error | Alek (semua untuk halamannya sendiri) | M2 | P0 | L |
+| 49 | #50 | - | README dan AI Disclosure | Alek + Adnan | M2 | P0 | S |
+| 50 | #51 | - | Evaluasi akurasi guidebook | Adnan | M3 | P0 | M |
+| 51 | #52 | F-INV-05 | Melamar ke tim | Dibagi saat Final Day | M4 | `final-day` | - |
+| 52 | #53 | - | Rekomendasi lomba berikutnya untuk tim lengkap | Dibagi saat Final Day | M4 | `final-day` | - |
+| 53 | #54 | F-MNT-06 | Rating dan ulasan mentor | Dibagi saat Final Day | M4 | `final-day` | - |
 
-Jumlah issue per orang: Malik 13, Dhanes 13, Adnan 13, Alek 12 (Adnan dan Alek termasuk dua issue yang dikerjakan bersama). Issue Alek sedikit lebih sedikit karena ukurannya lebih besar (landing, pemutar materi, pass responsif semua halaman).
+Beban per orang (S = 1, M = 2, L = 3, issue bersama dihitung penuh untuk keduanya): Malik 27, Dhanes 27, Alek 28, Adnan 29 poin (Adnan berbagi tiga issue dengan Alek, jadi angka aslinya lebih rendah). Malik juga ketua tim, jadi bebannya di luar kode lebih besar; video dipegang Malik dan Dhanes, proposal Alek dan Adnan.
 
 ---
 
