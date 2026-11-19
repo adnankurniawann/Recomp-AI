@@ -64,7 +64,7 @@ pnpm seed:profiles && pnpm seed:content
 pnpm dev                          # http://localhost:3000
 ```
 
-These commands work once the app is scaffolded (issue #1, H0).
+These commands work once the app is scaffolded (issue #2, H0).
 
 ## Environment variables
 

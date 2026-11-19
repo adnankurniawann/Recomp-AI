@@ -2555,61 +2555,63 @@ F-XXX-00
 
 ### 21.7 Backlog issue
 
-| # | ID | Judul issue | Assignee | Milestone | Prioritas |
-| --- | --- | --- | --- | --- | --- |
-| 1 | F-FND-01 | Setup Next.js, pnpm, lint, Vitest, CI, proteksi `main` | Malik | M0 | P0 |
-| 2 | F-FND-01 | Setup Supabase lokal dan cloud, migrasi awal, generate tipe | Malik | M0 | P0 |
-| 3 | F-FND-03 | Token desain v2 dan komponen dasar (Button, IconButton, Card, Chip, StatusBadge, SimulatedBadge, SectionLabel) | Alek | M0 | P0 |
-| 4 | F-FND-03 | Komponen Avatar, Stepper, EmptyState, ProgressBar, SegmentedTabs, SearchInput | Alek | M0 | P0 |
-| 5 | F-FND-03 | PublicNavbar, Footer, AppShell, Sidebar | Alek | M0 | P0 |
-| 6 | F-FND-02 | Auth Google dan email, trigger profil, middleware | Malik | M0 | P0 |
-| 7 | F-FND-04 | seed.sql: skill, template role, lomba | Malik | M0 | P0 |
-| 8 | F-FND-04 | Skrip seed profil simulasi dan fixture UI | Adnan | M1 | P0 |
-| 9 | F-PRF-01 | Wizard onboarding 4 langkah | Dhanes | M1 | P0 |
-| 10 | F-PRF-02..05 | Server actions skill, riwayat, portofolio, kontak | Dhanes | M1 | P0 |
-| 11 | F-PRF-05 | RLS kontak dan tes integrasi | Dhanes | M1 | P0 |
-| 12 | F-PRF-06 | Profil publik /u/[username] | Dhanes | M1 | P0 |
-| 13 | F-PRF-07 | Halaman edit profil | Dhanes | M1 | P0 |
-| 14 | - | Landing page | Alek | M1 | P0 |
-| 15 | F-CMP-01 | Daftar lomba dan filter | Alek | M1 | P0 |
-| 16 | F-CMP-02 | Detail lomba | Alek | M1 | P0 |
-| 17 | F-CMP-03 | Tombol Tertarik | Malik | M1 | P0 |
-| 18 | F-CMP-04 | Admin lomba dan unggah guidebook | Malik | M1 | P0 |
-| 19 | F-GBA-01 | Ekstraksi teks PDF per halaman | Adnan | M1 | P0 |
-| 20 | F-GBA-01 | Agent guidebook, schema Zod, retry | Adnan | M1 | P0 |
-| 21 | F-GBA-02..04 | Pemetaan skill, cache, form cadangan | Adnan | M1 | P0 |
-| 22 | F-CMP-02 | Tab ringkasan guidebook | Adnan (data) + Alek (UI) | M1 | P0 |
-| 23 | F-TEM-01 | Wizard buat tim dan fungsi create_team | Malik | M1 | P0 |
-| 24 | F-TEM-02 | Editor role | Malik | M1 | P0 |
-| 25 | F-TEM-03..04 | Dashboard tim dan hitung gap | Malik | M1 | P0 |
-| 26 | - | Fungsi matching dan unit test | Adnan | M0 | P0 |
-| 27 | F-RNK-01 | ranking_candidates SQL dan GET /api/ranking | Adnan | M1 | P0 |
-| 28 | F-RNK-01..02 | CandidateRow, CandidateCard, ScoreBadge, FactorBars, tab ranking | Alek | M1 | P0 |
-| 29 | F-RNK-03 | ProfileSheet dengan panel kecocokan | Dhanes (+ Adnan untuk panel) | M1 | P0 |
-| 30 | F-INV-01 | Dialog undang dan sendInvite | Dhanes | M1 | P0 |
-| 31 | F-INV-02 | Halaman /undangan | Dhanes | M1 | P0 |
-| 32 | F-INV-03 | accept_invite atomik dan tes konkurensi | Dhanes | M1 | P0 |
-| 33 | F-INV-04 | Tampilan kontak di dashboard tim | Dhanes | M1 | P0 |
-| 34 | F-RNK-05 | Umpan balik Cocok dan Kurang cocok | Adnan | M2 | P1 |
-| 35 | F-RCR-01..03 | Agent perekrut | Adnan | M2 | P1 |
-| 36 | F-LRN-01..02 | Katalog dan halaman kursus | Alek | M2 | P1 |
-| 37 | F-LRN-03 | Pemutar materi ala Skilvul | Alek | M2 | P1 |
-| 38 | F-LRN-03 | submit_mcq dan progres | Dhanes | M2 | P1 |
-| 39 | F-LRN-04 | Feedback studi kasus dan QuestionCase | Adnan | M2 | P1 |
-| 40 | F-LRN-05 | Akses, promo, pembelian simulasi | Dhanes | M2 | P1 |
-| 41 | F-LRN-06 | Isi kursus Persiapan Hackathon | Semua | M2 | P1 |
-| 42 | F-MNT-01 | Grid mentor dan filter role | Malik | M2 | P1 |
-| 43 | F-MNT-02 | Detail mentor | Malik | M2 | P1 |
-| 44 | F-MNT-03..04 | Booking dan pembayaran simulasi | Malik | M2 | P1 |
-| 45 | F-NTF-01 | Notifikasi dan badge | Dhanes | M2 | P1 |
-| 46 | F-ADM-01 | Halaman admin dan metrik | Adnan | M2 | P1 |
-| 47 | - | Playwright alur inti | Malik | M2 | P0 |
-| 48 | - | Responsif dan state kosong, loading, error | Alek (semua untuk halamannya sendiri) | M2 | P0 |
-| 49 | - | README dan AI Disclosure | Alek + Adnan | M2 | P0 |
-| 50 | - | Evaluasi akurasi guidebook | Adnan | M3 | P0 |
-| 51 | F-INV-05 | Melamar ke tim | Dibagi saat Final Day | M4 | `final-day` |
-| 52 | - | Rekomendasi lomba berikutnya untuk tim lengkap | Dibagi saat Final Day | M4 | `final-day` |
-| 53 | F-MNT-06 | Rating dan ulasan mentor | Dibagi saat Final Day | M4 | `final-day` |
+Semua baris sudah dibuat sebagai GitHub issue (kolom Issue). Nomor issue = nomor backlog + 1, karena #1 dipakai PR pertama.
+
+| # | Issue | ID | Judul issue | Assignee | Milestone | Prioritas |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | #2 | F-FND-01 | Setup Next.js, pnpm, lint, Vitest, CI, proteksi `main` | Malik | M0 | P0 |
+| 2 | #3 | F-FND-01 | Setup Supabase lokal dan cloud, migrasi awal, generate tipe | Malik | M0 | P0 |
+| 3 | #4 | F-FND-03 | Token desain v2 dan komponen dasar (Button, IconButton, Card, Chip, StatusBadge, SimulatedBadge, SectionLabel) | Alek | M0 | P0 |
+| 4 | #5 | F-FND-03 | Komponen Avatar, Stepper, EmptyState, ProgressBar, SegmentedTabs, SearchInput | Alek | M0 | P0 |
+| 5 | #6 | F-FND-03 | PublicNavbar, Footer, AppShell, Sidebar | Alek | M0 | P0 |
+| 6 | #7 | F-FND-02 | Auth Google dan email, trigger profil, middleware | Malik | M0 | P0 |
+| 7 | #8 | F-FND-04 | seed.sql: skill, template role, lomba | Malik | M0 | P0 |
+| 8 | #9 | F-FND-04 | Skrip seed profil simulasi dan fixture UI | Adnan | M1 | P0 |
+| 9 | #10 | F-PRF-01 | Wizard onboarding 4 langkah | Dhanes | M1 | P0 |
+| 10 | #11 | F-PRF-02..05 | Server actions skill, riwayat, portofolio, kontak | Dhanes | M1 | P0 |
+| 11 | #12 | F-PRF-05 | RLS kontak dan tes integrasi | Dhanes | M1 | P0 |
+| 12 | #13 | F-PRF-06 | Profil publik /u/[username] | Dhanes | M1 | P0 |
+| 13 | #14 | F-PRF-07 | Halaman edit profil | Dhanes | M1 | P0 |
+| 14 | #15 | - | Landing page | Alek | M1 | P0 |
+| 15 | #16 | F-CMP-01 | Daftar lomba dan filter | Alek | M1 | P0 |
+| 16 | #17 | F-CMP-02 | Detail lomba | Alek | M1 | P0 |
+| 17 | #18 | F-CMP-03 | Tombol Tertarik | Malik | M1 | P0 |
+| 18 | #19 | F-CMP-04 | Admin lomba dan unggah guidebook | Malik | M1 | P0 |
+| 19 | #20 | F-GBA-01 | Ekstraksi teks PDF per halaman | Adnan | M1 | P0 |
+| 20 | #21 | F-GBA-01 | Agent guidebook, schema Zod, retry | Adnan | M1 | P0 |
+| 21 | #22 | F-GBA-02..04 | Pemetaan skill, cache, form cadangan | Adnan | M1 | P0 |
+| 22 | #23 | F-CMP-02 | Tab ringkasan guidebook | Adnan (data) + Alek (UI) | M1 | P0 |
+| 23 | #24 | F-TEM-01 | Wizard buat tim dan fungsi create_team | Malik | M1 | P0 |
+| 24 | #25 | F-TEM-02 | Editor role | Malik | M1 | P0 |
+| 25 | #26 | F-TEM-03..04 | Dashboard tim dan hitung gap | Malik | M1 | P0 |
+| 26 | #27 | - | Fungsi matching dan unit test | Adnan | M0 | P0 |
+| 27 | #28 | F-RNK-01 | ranking_candidates SQL dan GET /api/ranking | Adnan | M1 | P0 |
+| 28 | #29 | F-RNK-01..02 | CandidateRow, CandidateCard, ScoreBadge, FactorBars, tab ranking | Alek | M1 | P0 |
+| 29 | #30 | F-RNK-03 | ProfileSheet dengan panel kecocokan | Dhanes (+ Adnan untuk panel) | M1 | P0 |
+| 30 | #31 | F-INV-01 | Dialog undang dan sendInvite | Dhanes | M1 | P0 |
+| 31 | #32 | F-INV-02 | Halaman /undangan | Dhanes | M1 | P0 |
+| 32 | #33 | F-INV-03 | accept_invite atomik dan tes konkurensi | Dhanes | M1 | P0 |
+| 33 | #34 | F-INV-04 | Tampilan kontak di dashboard tim | Dhanes | M1 | P0 |
+| 34 | #35 | F-RNK-05 | Umpan balik Cocok dan Kurang cocok | Adnan | M2 | P1 |
+| 35 | #36 | F-RCR-01..03 | Agent perekrut | Adnan | M2 | P1 |
+| 36 | #37 | F-LRN-01..02 | Katalog dan halaman kursus | Alek | M2 | P1 |
+| 37 | #38 | F-LRN-03 | Pemutar materi ala Skilvul | Alek | M2 | P1 |
+| 38 | #39 | F-LRN-03 | submit_mcq dan progres | Dhanes | M2 | P1 |
+| 39 | #40 | F-LRN-04 | Feedback studi kasus dan QuestionCase | Adnan | M2 | P1 |
+| 40 | #41 | F-LRN-05 | Akses, promo, pembelian simulasi | Dhanes | M2 | P1 |
+| 41 | #42 | F-LRN-06 | Isi kursus Persiapan Hackathon | Semua | M2 | P1 |
+| 42 | #43 | F-MNT-01 | Grid mentor dan filter role | Malik | M2 | P1 |
+| 43 | #44 | F-MNT-02 | Detail mentor | Malik | M2 | P1 |
+| 44 | #45 | F-MNT-03..04 | Booking dan pembayaran simulasi | Malik | M2 | P1 |
+| 45 | #46 | F-NTF-01 | Notifikasi dan badge | Dhanes | M2 | P1 |
+| 46 | #47 | F-ADM-01 | Halaman admin dan metrik | Adnan | M2 | P1 |
+| 47 | #48 | - | Playwright alur inti | Malik | M2 | P0 |
+| 48 | #49 | - | Responsif dan state kosong, loading, error | Alek (semua untuk halamannya sendiri) | M2 | P0 |
+| 49 | #50 | - | README dan AI Disclosure | Alek + Adnan | M2 | P0 |
+| 50 | #51 | - | Evaluasi akurasi guidebook | Adnan | M3 | P0 |
+| 51 | #52 | F-INV-05 | Melamar ke tim | Dibagi saat Final Day | M4 | `final-day` |
+| 52 | #53 | - | Rekomendasi lomba berikutnya untuk tim lengkap | Dibagi saat Final Day | M4 | `final-day` |
+| 53 | #54 | F-MNT-06 | Rating dan ulasan mentor | Dibagi saat Final Day | M4 | `final-day` |
 
 Jumlah issue per orang: Malik 13, Dhanes 13, Adnan 13, Alek 12 (Adnan dan Alek termasuk dua issue yang dikerjakan bersama). Issue Alek sedikit lebih sedikit karena ukurannya lebih besar (landing, pemutar materi, pass responsif semua halaman).
 

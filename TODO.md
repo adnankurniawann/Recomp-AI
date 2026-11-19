@@ -2,7 +2,7 @@
 
 Everything before the semifinal submission, day by day, one list per person. Every item comes from
 [PRD §20.3](docs/PRD.md#203-rencana-per-hari-per-orang) and the backlog in
-[§21.7](docs/PRD.md#217-backlog-issue) (`#n` = backlog number, the GitHub issue once created).
+[§21.7](docs/PRD.md#217-backlog-issue) (`#n` = the GitHub issue; backlog row = issue number − 1).
 **Tick an item only when it works on `main`**, not when the code is written.
 
 | Day | Date | Goal you can try |
@@ -22,17 +22,17 @@ their area: backend `@malikarsya` / `@dhanesmd3`, frontend `@angseleong`, AI and
 
 ## Done
 
-- [x] Repo created, PRD v1.2, project docs and design system v2 (this PR)
+- [x] Repo created, PRD v1.2, project docs and design system v2
+- [x] GitHub labels, milestones M0–M4 and issues #2–#54 from PRD §21.3–21.7
 
 ## H0 Thu Nov 19, evening
 
 Contracts first, so everyone can work in parallel from H1.
 
 **@malikarsya**
-- [ ] #1 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
+- [ ] #2 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
 - [ ] Protect `main` (PR, 1 review, CI green). Needs admin: ask @adnankurniawann
-- [ ] #2 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
-- [ ] Create all GitHub labels, milestones and issues from PRD §21.3–21.7
+- [ ] #3 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
 
 **@dhanesmd3**
 - [ ] Zod schemas in `lib/validation` for profile, team and invite inputs (PRD §13.1)
@@ -40,79 +40,79 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] `lib/format/phone.ts` with tests (`08…` and `+62 …` become `+62…`)
 
 **@angseleong**
-- [ ] #3 v2 tokens in `app/globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `SectionLabel` (F-FND-03)
-- [ ] #5 `AppShell`, `Sidebar` and `PublicNavbar` skeletons (F-FND-03)
+- [ ] #4 v2 tokens in `app/globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `SectionLabel` (F-FND-03)
+- [ ] #6 `AppShell`, `Sidebar` and `PublicNavbar` skeletons (F-FND-03)
 
 **@adnankurniawann**
-- [ ] #26 `lib/matching/types.ts`, `score.ts` skeleton, the Dinda test case (PRD §7.6)
+- [ ] #27 `lib/matching/types.ts`, `score.ts` skeleton, the Dinda test case (PRD §7.6)
 - [ ] Skill list and role templates for `seed.sql` (PRD §7.1, §15)
 - [ ] UI fixtures in `lib/fixtures` (profiles, a team, a ranking result) for building screens early
 
 ## H1 Fri Nov 20
 
 **@malikarsya**
-- [ ] #6 Google and email sign-in, profile trigger, onboarding middleware (F-FND-02)
-- [ ] #7 `seed.sql`: skills, role templates, competitions; Storage buckets; RLS on competitions (F-FND-04)
-- [ ] #17 "Tertarik" button and `toggleInterest` (F-CMP-03)
+- [ ] #7 Google and email sign-in, profile trigger, onboarding middleware (F-FND-02)
+- [ ] #8 `seed.sql`: skills, role templates, competitions; Storage buckets; RLS on competitions (F-FND-04)
+- [ ] #18 "Tertarik" button and `toggleInterest` (F-CMP-03)
 
 **@dhanesmd3**
-- [ ] #9 Four-step onboarding wizard, UI and server actions (F-PRF-01)
-- [ ] #13 `/profil` edit page (F-PRF-07)
+- [ ] #10 Four-step onboarding wizard, UI and server actions (F-PRF-01)
+- [ ] #14 `/profil` edit page (F-PRF-07)
 - [ ] RLS on profiles and the tables under it
 
 **@angseleong**
-- [ ] #14 Landing page (PRD §10.1)
-- [ ] #15 `/lomba` with `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filters (F-CMP-01)
-- [ ] #16 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
-- [ ] #4 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
+- [ ] #15 Landing page (PRD §10.1)
+- [ ] #16 `/lomba` with `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filters (F-CMP-01)
+- [ ] #17 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
+- [ ] #5 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
 
 **@adnankurniawann**
-- [ ] #26 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
-- [ ] #8 `seed-profiles.ts`, 50 simulated profiles (F-FND-04)
-- [ ] #19 `lib/pdf/extract.ts`, text per page (F-GBA-01)
+- [ ] #27 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
+- [ ] #9 `seed-profiles.ts`, 50 simulated profiles (F-FND-04)
+- [ ] #20 `lib/pdf/extract.ts`, text per page (F-GBA-01)
 
 ## H2 Sat Nov 21
 
 **@malikarsya**
-- [ ] #23 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
-- [ ] #24 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
+- [ ] #24 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
+- [ ] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
 
 **@dhanesmd3**
-- [ ] #12 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
-- [ ] #10 Skill, history, portfolio and contact actions, portfolio image upload (F-PRF-02..05)
-- [ ] #11 `profile_contacts` RLS and its integration tests (F-PRF-05)
-- [ ] #29 `ProfileSheet` without the match panel (F-RNK-03)
+- [ ] #13 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
+- [ ] #11 Skill, history, portfolio and contact actions, portfolio image upload (F-PRF-02..05)
+- [ ] #12 `profile_contacts` RLS and its integration tests (F-PRF-05)
+- [ ] #30 `ProfileSheet` without the match panel (F-RNK-03)
 
 **@angseleong**
-- [ ] #28 `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` on fixtures (F-RNK-01..02)
-- [ ] #22 Guidebook summary tab UI on the competition page (F-CMP-02)
+- [ ] #29 `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` on fixtures (F-RNK-01..02)
+- [ ] #23 Guidebook summary tab UI on the competition page (F-CMP-02)
 
 **@adnankurniawann**
-- [ ] #20 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
-- [ ] #21 Skill mapping, cache per competition, manual fallback form (F-GBA-02..04)
-- [ ] #22 Data for the guidebook summary tab (F-CMP-02)
+- [ ] #21 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
+- [ ] #22 Skill mapping, cache per competition, manual fallback form (F-GBA-02..04)
+- [ ] #23 Data for the guidebook summary tab (F-CMP-02)
 
 ## H3 Sun Nov 22
 
 **@malikarsya**
-- [ ] #25 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04)
-- [ ] #18 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
+- [ ] #26 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04)
+- [ ] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
 
 **@dhanesmd3**
-- [ ] #30 Invite dialog and `sendInvite` (F-INV-01)
-- [ ] #32 Atomic `accept_invite` and the concurrency test, `decline_invite`, `cancel_invite` (F-INV-03)
-- [ ] #31 `/undangan` (F-INV-02)
-- [ ] #33 Contacts on the team dashboard (F-INV-04)
+- [ ] #31 Invite dialog and `sendInvite` (F-INV-01)
+- [ ] #33 Atomic `accept_invite` and the concurrency test, `decline_invite`, `cancel_invite` (F-INV-03)
+- [ ] #32 `/undangan` (F-INV-02)
+- [ ] #34 Contacts on the team dashboard (F-INV-04)
 
 **@angseleong**
-- [ ] #28 Ranking tab on the real API: load more, sort, empty state (F-RNK-01)
-- [ ] #22 Wire the guidebook summary tab
+- [ ] #29 Ranking tab on the real API: load more, sort, empty state (F-RNK-01)
+- [ ] #23 Wire the guidebook summary tab
 - [ ] Pending-invite count in the sidebar
 
 **@adnankurniawann**
-- [ ] #27 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01)
-- [ ] #29 Match panel in `ProfileSheet`, with Dhanes (F-RNK-03)
-- [ ] #34 "Cocok" and "Kurang cocok" feedback (F-RNK-05)
+- [ ] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01)
+- [ ] #30 Match panel in `ProfileSheet`, with Dhanes (F-RNK-03)
+- [ ] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05)
 
 **Everyone, evening:** internal demo of the core flow. If it doesn't run end to end, H4's P1 work
 waits and everyone helps fix P0.
@@ -120,32 +120,32 @@ waits and everyone helps fix P0.
 ## H4 Mon Nov 23
 
 **@malikarsya**
-- [ ] #42 `/mentor` with `MentorCard` and role filter (F-MNT-01)
-- [ ] #43 `/mentor/[id]` (F-MNT-02)
-- [ ] #44 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04)
+- [ ] #43 `/mentor` with `MentorCard` and role filter (F-MNT-01)
+- [ ] #44 `/mentor/[id]` (F-MNT-02)
+- [ ] #45 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04)
 - [ ] Vercel: `main` to production, a preview URL for every PR
 
 **@dhanesmd3**
-- [ ] #38 `submit_mcq` and progress (F-LRN-03)
-- [ ] #40 `redeem_promo`, `simulate_course_purchase` (F-LRN-05)
-- [ ] #45 Notifications and the bell (F-NTF-01)
+- [ ] #39 `submit_mcq` and progress (F-LRN-03)
+- [ ] #41 `redeem_promo`, `simulate_course_purchase` (F-LRN-05)
+- [ ] #46 Notifications and the bell (F-NTF-01)
 - [ ] `seed-content.ts` for the course
 
 **@angseleong**
-- [ ] #36 `/belajar` and `/belajar/[kursus]` (F-LRN-01..02)
-- [ ] #37 `LessonShell`, lesson player, `QuestionMCQ`, points and progress (F-LRN-03)
+- [ ] #37 `/belajar` and `/belajar/[kursus]` (F-LRN-01..02)
+- [ ] #38 `LessonShell`, lesson player, `QuestionMCQ`, points and progress (F-LRN-03)
 
 **@adnankurniawann**
-- [ ] #35 Recruiter agent: API and draft cards (F-RCR-01..03)
-- [ ] #39 Case-study feedback API and `QuestionCase` (F-LRN-04)
+- [ ] #36 Recruiter agent: API and draft cards (F-RCR-01..03)
+- [ ] #40 Case-study feedback API and `QuestionCase` (F-LRN-04)
 
 **Everyone:**
-- [ ] #41 Write two lessons each for "Persiapan Hackathon" (F-LRN-06)
+- [ ] #42 Write two lessons each for "Persiapan Hackathon" (F-LRN-06)
 
 ## H5 Tue Nov 24
 
 **@malikarsya**
-- [ ] #47 Playwright core flow (PRD §16.3)
+- [ ] #48 Playwright core flow (PRD §16.3)
 - [ ] Local backup with `DEMO_MODE=true`, screen recording of the core flow
 - [ ] **Tag `v0.1.0` on `main` at 21.00**
 
@@ -154,13 +154,13 @@ waits and everyone helps fix P0.
 - [ ] Bug fixes in profiles and invites
 
 **@angseleong**
-- [ ] #48 Every page at 360 px; loading, empty and error states; Lighthouse Accessibility ≥ 90
-- [ ] #49 README: setup, feature table, limitations
+- [ ] #49 Every page at 360 px; loading, empty and error states; Lighthouse Accessibility ≥ 90
+- [ ] #50 README: setup, feature table, limitations
 
 **@adnankurniawann**
-- [ ] #50 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1)
-- [ ] #46 Admin metrics page (F-ADM-01, PRD §17)
-- [ ] #49 AI disclosure in the README
+- [ ] #51 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1)
+- [ ] #47 Admin metrics page (F-ADM-01, PRD §17)
+- [ ] #50 AI disclosure in the README
 - [ ] Ranking bug fixes
 
 ## M3 Semifinal, Nov 25–30
@@ -177,9 +177,9 @@ waits and everyone helps fix P0.
 
 Don't start these before Final Day ([ADR 0007](docs/adr/0007-three-tasks-left-for-final-day.md)).
 
-- [ ] #51 Apply to a team (F-INV-05)
-- [ ] #52 Suggest the next competition for a complete team
-- [ ] #53 Mentor ratings and reviews (F-MNT-06)
+- [ ] #52 Apply to a team (F-INV-05)
+- [ ] #53 Suggest the next competition for a complete team
+- [ ] #54 Mentor ratings and reviews (F-MNT-06)
 
 ## Open decisions
 
