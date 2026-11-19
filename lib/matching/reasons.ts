@@ -21,7 +21,14 @@ export interface ReasonInput {
 
 const times = (n: number) => (n === 1 ? "sekali" : `${n} kali`);
 
-export function buildReasons({ role, cand, team, factors, cfg, skillNames }: ReasonInput): Reason[] {
+export function buildReasons({
+  role,
+  cand,
+  team,
+  factors,
+  cfg,
+  skillNames,
+}: ReasonInput): Reason[] {
   const name = (id: number) => skillNames.get(id) ?? `Skill #${id}`;
   const owned = new Map(cand.skills.map((s) => [s.skillId, s]));
   const matched = role.requiredSkills.filter((r) => owned.has(r.skillId));
@@ -44,7 +51,12 @@ export function buildReasons({ role, cand, team, factors, cfg, skillNames }: Rea
   for (const r of matched) {
     const s = owned.get(r.skillId)!;
     if (s.level >= 3 && s.hasEvidence) {
-      add("level", "skill_evidence", `${name(r.skillId)} level ${LEVEL_LABELS[s.level].label}, ada bukti portofolio`, "link");
+      add(
+        "level",
+        "skill_evidence",
+        `${name(r.skillId)} level ${LEVEL_LABELS[s.level].label}, ada bukti portofolio`,
+        "link",
+      );
     }
   }
 

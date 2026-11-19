@@ -23,7 +23,10 @@ describe("scoreCandidate (PRD §7.6)", () => {
   });
 
   it("3. scores evidence higher than no evidence", () => {
-    const noEvidence = { ...dinda, skills: dinda.skills.map((s) => ({ ...s, hasEvidence: false })) };
+    const noEvidence = {
+      ...dinda,
+      skills: dinda.skills.map((s) => ({ ...s, hasEvidence: false })),
+    };
     expect(score(dinda)!.score).toBeGreaterThan(score(noEvidence)!.score);
   });
 
@@ -33,7 +36,10 @@ describe("scoreCandidate (PRD §7.6)", () => {
       weights: { coverage: 0, level: 0, availability: 1, experience: 0, fit: 0 },
     };
     expect(scoreCandidate(uiuxRole, dinda, team, onlyAvailability, skillNames)!.score).toBe(75);
-    const onlyLevel = { ...cfg, weights: { ...onlyAvailability.weights, availability: 0, level: 1 } };
+    const onlyLevel = {
+      ...cfg,
+      weights: { ...onlyAvailability.weights, availability: 0, level: 1 },
+    };
     expect(scoreCandidate(uiuxRole, dinda, team, onlyLevel, skillNames)!.score).toBe(93); // 0.925
   });
 
@@ -53,11 +59,27 @@ describe("scoreCandidate (PRD §7.6)", () => {
   });
 
   it("6. breaks ties by required skills with evidence, then the newest profile", () => {
-    const role = { ...uiuxRole, requiredSkills: [{ skillId: FIGMA, minLevel: 2 as const }], optionalSkillIds: [], hoursPerWeek: 20 };
+    const role = {
+      ...uiuxRole,
+      requiredSkills: [{ skillId: FIGMA, minLevel: 2 as const }],
+      optionalSkillIds: [],
+      hoursPerWeek: 20,
+    };
     const base = { ...dinda, history: [], preferredRoles: [] };
     // Evidence gives +0.15 level (×0.2); 17/20 hours takes −0.15 availability (×0.2). Same score.
-    const withEvidence = { ...base, profileId: "evidence", hoursPerWeek: 17, skills: [{ skillId: FIGMA, level: 2 as const, hasEvidence: true }] };
-    const older = { ...base, profileId: "older", hoursPerWeek: 20, skills: [{ skillId: FIGMA, level: 2 as const, hasEvidence: false }], updatedAt: "2026-01-01T00:00:00Z" };
+    const withEvidence = {
+      ...base,
+      profileId: "evidence",
+      hoursPerWeek: 17,
+      skills: [{ skillId: FIGMA, level: 2 as const, hasEvidence: true }],
+    };
+    const older = {
+      ...base,
+      profileId: "older",
+      hoursPerWeek: 20,
+      skills: [{ skillId: FIGMA, level: 2 as const, hasEvidence: false }],
+      updatedAt: "2026-01-01T00:00:00Z",
+    };
     const newer = { ...older, profileId: "newer", updatedAt: "2026-06-01T00:00:00Z" };
     const ranked = rankCandidates(role, [older, newer, withEvidence], team, cfg, skillNames);
     expect(new Set(ranked.map((r) => r.score)).size).toBe(1);
@@ -71,6 +93,8 @@ describe("scoreCandidate (PRD §7.6)", () => {
 
   it("drops candidates without a required skill from the ranking", () => {
     const none = { ...dinda, profileId: "none", skills: [] };
-    expect(rankCandidates(uiuxRole, [none, dinda], team, cfg, skillNames).map((r) => r.profileId)).toEqual(["dinda"]);
+    expect(
+      rankCandidates(uiuxRole, [none, dinda], team, cfg, skillNames).map((r) => r.profileId),
+    ).toEqual(["dinda"]);
   });
 });

@@ -94,7 +94,9 @@ export function rankCandidates(
     .flatMap((cand) => {
       const result = scoreCandidate(role, cand, team, cfg, skillNames);
       if (!result) return [];
-      const evidence = cand.skills.filter((s) => s.hasEvidence && requiredIds.has(s.skillId)).length;
+      const evidence = cand.skills.filter(
+        (s) => s.hasEvidence && requiredIds.has(s.skillId),
+      ).length;
       return [{ result, evidence, updatedAt: Date.parse(cand.updatedAt) }];
     })
     .sort(

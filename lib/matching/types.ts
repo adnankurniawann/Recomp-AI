@@ -11,20 +11,10 @@ export type WorkTime = "morning" | "afternoon" | "night" | "flexible";
 
 // Mirrors comp_category_t and comp_result_t in supabase/migrations (PRD §12.1).
 export type CompetitionCategory =
-  | "hackathon"
-  | "it_competition"
-  | "ui_ux"
-  | "data"
-  | "business_case"
-  | "paper";
+  "hackathon" | "it_competition" | "ui_ux" | "data" | "business_case" | "paper";
 
 export type CompetitionResult =
-  | "participant"
-  | "finalist"
-  | "winner_1"
-  | "winner_2"
-  | "winner_3"
-  | "honorable";
+  "participant" | "finalist" | "winner_1" | "winner_2" | "winner_3" | "honorable";
 
 export interface RoleRequirement {
   id: string;
@@ -63,14 +53,7 @@ export interface MatchingConfig {
 }
 
 export type ReasonIcon =
-  | "check"
-  | "check-partial"
-  | "link"
-  | "trophy"
-  | "clock"
-  | "clock-short"
-  | "star"
-  | "people";
+  "check" | "check-partial" | "link" | "trophy" | "clock" | "clock-short" | "star" | "people";
 
 export interface Reason {
   code: string;
