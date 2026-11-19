@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "sonner";
+import { Intro, INTRO_SCRIPT } from "@/components/layout/intro";
 import "./globals.css";
 
 const inter = Inter({
@@ -25,8 +26,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id" className={`${inter.variable} ${jetbrains.variable}`}>
+    // suppressHydrationWarning: INTRO_SCRIPT sets data-intro on <html> before React hydrates.
+    <html lang="id" className={`${inter.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
+      </head>
       <body>
+        <Intro />
         {children}
         <Toaster position="bottom-right" />
       </body>

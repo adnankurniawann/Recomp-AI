@@ -66,3 +66,49 @@
 body {
   @apply bg-bg font-sans text-ink antialiased;
 }
+
+/* Brand intro (components/layout/intro.tsx). Brand motion, so it is outside the 150 ms UI rule. */
+.intro {
+  animation: intro-out 320ms ease-out 1500ms forwards;
+}
+.intro-stem {
+  animation: intro-rise 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.intro-shoulder {
+  animation: intro-join 440ms cubic-bezier(0.3, 1.4, 0.5, 1) 300ms both;
+}
+.intro-wordmark {
+  animation: intro-name 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 720ms both;
+}
+html[data-intro="seen"] .intro {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .intro {
+    display: none;
+  }
+}
+@keyframes intro-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes intro-rise {
+  from {
+    transform: translateY(48px);
+    opacity: 0;
+  }
+}
+@keyframes intro-join {
+  from {
+    transform: translateX(56px);
+    opacity: 0;
+  }
+}
+@keyframes intro-name {
+  from {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+}

@@ -189,7 +189,7 @@ From PRD §24. Each one needs an owner before H1.
 - [ ] Is the stack in PRD §11.1 accepted? ([ADR 0001](docs/adr/0001-nextjs-supabase-gemini-stack.md) is still `proposed`)
 - [ ] Which eight real competitions go in the seed
 - [ ] Who has admin access to Supabase and Vercel
-- [ ] Final logo and domain (placeholder: "r" in a blue square)
+- [ ] Final logo and domain (logo proposed in [docs/brand](docs/brand/README.md), needs team approval; domain still open)
 - [ ] Real mentors who can give written permission
 - [ ] Platform fee (proposed 20%) and sample service prices
 - [ ] Semifinal fee and who pays
