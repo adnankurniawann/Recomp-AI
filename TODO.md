@@ -64,7 +64,7 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] RLS on profiles and the tables under it
 
 **@angseleong**
-- [ ] #15 Landing page (PRD §10.1)
+- [x] #15 Landing page (PRD §10.1)
 - [ ] #16 `/lomba` with `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filters (F-CMP-01)
 - [ ] #17 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
 
