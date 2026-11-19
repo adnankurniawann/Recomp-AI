@@ -20,6 +20,7 @@
     "seed:profiles": "tsx scripts/seed-profiles.ts"
   },
   "dependencies": {
+    "@google/genai": "^3.6.1",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.119.0",
     "clsx": "^2.1.1",

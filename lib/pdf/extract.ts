@@ -27,7 +27,8 @@ export interface PdfText {
 
 /** Reads a PDF and returns its text per page, cut to the agent's limits. Throws on a broken PDF. */
 export async function extractPdfPages(data: Uint8Array): Promise<PdfText> {
-  const { text } = await extractText(data, { mergePages: false });
+  // pdf.js takes over (detaches) the buffer it is given; copy so the caller keeps its bytes.
+  const { text } = await extractText(data.slice(), { mergePages: false });
   return preparePages(text);
 }
 
