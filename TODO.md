@@ -47,9 +47,9 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #6 `AppShell`, `Sidebar` and `PublicNavbar` skeletons (F-FND-03)
 
 **@adnankurniawann**
-- [ ] #27 `lib/matching/types.ts`, `score.ts` skeleton, the Dinda test case (PRD §7.6)
-- [ ] Skill list and role templates for `seed.sql` (PRD §7.1, §15)
-- [ ] UI fixtures in `lib/fixtures` (profiles, a team, a ranking result) for building screens early
+- [x] #27 `lib/matching/types.ts`, `score.ts` skeleton, the Dinda test case (PRD §7.6)
+- [x] Skill list and role templates for `seed.sql` (PRD §7.1, §15)
+- [x] UI fixtures in `lib/fixtures` (profiles, a team, a ranking result) for building screens early
 
 ## H1 Fri Nov 20
 
@@ -69,7 +69,7 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #17 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
 
 **@adnankurniawann**
-- [ ] #27 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
+- [x] #27 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
 - [ ] #9 `seed-profiles.ts`, 50 simulated profiles (F-FND-04)
 - [ ] #20 `lib/pdf/extract.ts`, text per page (F-GBA-01)
 
