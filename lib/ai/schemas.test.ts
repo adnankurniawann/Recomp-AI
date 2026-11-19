@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GUIDEBOOK_JSON_SCHEMA, GuidebookExtraction, describeIssues } from "./schemas";
+import { GUIDEBOOK_JSON_SCHEMA, GuidebookExtraction, describeIssues, stripLimits } from "./schemas";
 import { validExtraction } from "./test-fixtures";
 
 describe("GuidebookExtraction", () => {
@@ -66,5 +66,36 @@ describe("describeIssues", () => {
   it("lists one line per issue with its path", () => {
     const r = GuidebookExtraction.safeParse({ ...validExtraction, summary: 5 });
     expect(describeIssues(r.error!)).toMatch(/^- summary: /);
+  });
+});
+
+describe("GUIDEBOOK_JSON_SCHEMA", () => {
+  it("has no limit keywords, which make Gemini reject the schema", () => {
+    const text = JSON.stringify(GUIDEBOOK_JSON_SCHEMA);
+    for (const key of [
+      "pattern",
+      "maxItems",
+      "minItems",
+      "maxLength",
+      "maximum",
+      "minimum",
+      "$schema",
+    ]) {
+      expect(text).not.toContain(`"${key}"`);
+    }
+  });
+
+  it("keeps the enums and nullable fields", () => {
+    const text = JSON.stringify(GUIDEBOOK_JSON_SCHEMA);
+    expect(text).toContain('"enum":["guidebook","criteria","template"]');
+    expect(text).toContain('"type":"null"');
+  });
+});
+
+describe("stripLimits", () => {
+  it("keeps a field whose name is also a keyword", () => {
+    expect(
+      stripLimits({ type: "object", properties: { pattern: { type: "string", maxLength: 5 } } }),
+    ).toEqual({ type: "object", properties: { pattern: { type: "string" } } });
   });
 });

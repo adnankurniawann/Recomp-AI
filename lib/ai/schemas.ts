@@ -69,8 +69,44 @@ export const GuidebookExtraction = z
 
 export type GuidebookExtraction = z.infer<typeof GuidebookExtraction>;
 
-/** JSON schema for Gemini's `responseJsonSchema`. Refinements are not included; Zod checks them. */
-export const GUIDEBOOK_JSON_SCHEMA = z.toJSONSchema(GuidebookExtraction, { io: "input" });
+// Gemini rejects schemas whose limits make "too many states" (pattern, max lengths, item counts).
+// It gets the shape only: fields, types, enums and required. Zod checks the limits afterwards,
+// and a failure gets the one retry with the reason.
+const LIMIT_KEYWORDS = new Set([
+  "$schema",
+  "pattern",
+  "format",
+  "minLength",
+  "maxLength",
+  "minItems",
+  "maxItems",
+  "minimum",
+  "maximum",
+  "exclusiveMinimum",
+  "exclusiveMaximum",
+  "additionalProperties",
+]);
+
+export function stripLimits(schema: unknown): unknown {
+  if (Array.isArray(schema)) return schema.map(stripLimits);
+  if (schema === null || typeof schema !== "object") return schema;
+  return Object.fromEntries(
+    Object.entries(schema)
+      .filter(([key]) => !LIMIT_KEYWORDS.has(key))
+      // Inside `properties` the keys are field names, never keywords, so keep them all.
+      .map(([key, value]) => [
+        key,
+        key === "properties" && value && typeof value === "object"
+          ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, stripLimits(v)]))
+          : stripLimits(value),
+      ]),
+  );
+}
+
+/** JSON schema for Gemini's `responseJsonSchema`: the shape without limits or refinements. */
+export const GUIDEBOOK_JSON_SCHEMA = stripLimits(
+  z.toJSONSchema(GuidebookExtraction, { io: "input" }),
+);
 
 /** Short, one-line-per-issue description of what failed, for the repair prompt. */
 export function describeIssues(error: z.ZodError): string {

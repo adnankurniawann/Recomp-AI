@@ -92,7 +92,8 @@ export async function runGuidebookAgent(input: {
         jsonSchema: GUIDEBOOK_JSON_SCHEMA,
         signal,
       });
-    } catch {
+    } catch (err) {
+      console.error("guidebook agent: LLM call failed", err);
       const error = signal.aborted ? GUIDEBOOK_ERRORS.timeout : GUIDEBOOK_ERRORS.failed;
       return { status: "failed", error, warnings, pageCount };
     }
