@@ -70,8 +70,8 @@ Contracts first, so everyone can work in parallel from H1.
 
 **@adnankurniawann**
 - [x] #27 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
-- [ ] #9 `seed-profiles.ts`, 50 simulated profiles (F-FND-04)
-- [ ] #20 `lib/pdf/extract.ts`, text per page (F-GBA-01)
+- [x] #9 `seed-profiles.ts`, 50 simulated profiles (F-FND-04)
+- [x] #20 `lib/pdf/extract.ts`, text per page (F-GBA-01)
 
 ## H2 Sat Nov 21
 
