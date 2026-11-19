@@ -127,3 +127,13 @@ export const SKILL_CATEGORY_LABELS: Record<SkillCategory, string> = {
 
 export const ROLE_SOURCES = ["guidebook", "criteria", "template", "manual"] as const;
 export type RoleSource = (typeof ROLE_SOURCES)[number];
+
+// Lowercase, as it reads mid-sentence in match reasons: "Pernah ikut 2 hackathon".
+export const COMPETITION_CATEGORY_LABELS: Record<CompCategory, string> = {
+  hackathon: "hackathon",
+  it_competition: "lomba IT",
+  ui_ux: "lomba UI/UX",
+  data: "lomba data",
+  business_case: "business case",
+  paper: "lomba karya tulis",
+};
