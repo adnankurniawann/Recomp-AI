@@ -6,7 +6,7 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
 }
 
-/** Minimal Card from the design-system recipe. Issue #4 owns the full version. */
+/** White, 1 px `line` border, 16 px radius, `shadow-xs`. `interactive` darkens the border on hover; it never lifts. */
 export function Card({ padding = "md", interactive, className, ...props }: CardProps) {
   return (
     <div

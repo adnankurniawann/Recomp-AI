@@ -43,7 +43,7 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] `lib/format/phone.ts` with tests (`08…` and `+62 …` become `+62…`)
 
 **@angseleong**
-- [ ] #4 v2 tokens in `app/globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `SectionLabel` (F-FND-03)
+- [x] #4 v2 tokens in `app/globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `SectionLabel` (F-FND-03)
 - [ ] #6 `AppShell`, `Sidebar` and `PublicNavbar` skeletons (F-FND-03)
 
 **@adnankurniawann**
