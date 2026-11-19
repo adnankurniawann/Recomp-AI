@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #fcfcfc;
+  --color-surface: #ffffff;
+  --color-surface-2: #f1f5f9;
+  --color-wash: #f0f4fe;
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
+  --color-ink-strong: #020520;
+  --color-ink: #14141e;
+  --color-ink-2: #374151;
+  --color-ink-3: #6b7280;
+
+  --color-primary: #145aff;
+  --color-primary-hover: #1048cc;
+  --color-primary-200: #dce6ff;
+
+  --color-success: #16a34a;
+  --color-success-ink: #15803d;
+  --color-success-50: #f0fdf4;
+  --color-danger: #f26052;
+  --color-danger-ink: #b42318;
+  --color-danger-50: #fef3f2;
+  --color-warning: #f59e0b;
+  --color-warning-ink: #9a5b00;
+  --color-warning-50: #fffbeb;
+
+  --color-role-backend: #0284c7;
+  --color-role-backend-soft: #e0f2fe;
+  --color-role-backend-ink: #075985;
+  --color-role-frontend: #16a34a;
+  --color-role-frontend-soft: #f0fdf4;
+  --color-role-frontend-ink: #15803d;
+  --color-role-uiux: #db2777;
+  --color-role-uiux-soft: #fce7f3;
+  --color-role-uiux-ink: #be185d;
+  --color-role-data: #7a5af8;
+  --color-role-data-soft: #f1edff;
+  --color-role-data-ink: #6941c6;
+  --color-role-product: #ea580c;
+  --color-role-product-soft: #ffedd5;
+  --color-role-product-ink: #9a3412;
+  --color-role-business: #0e9f9a;
+  --color-role-business-soft: #e5f6f5;
+  --color-role-business-ink: #0f766e;
+  --color-role-other: #6b7280;
+  --color-role-other-soft: #f1f5f9;
+  --color-role-other-ink: #374151;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 40px;
+
+  --shadow-xs: 0 1px 2px rgba(2, 5, 32, 0.06);
+  --shadow-primary: 0 1px 2px rgba(20, 90, 255, 0.25);
+  --shadow-pop: 0 12px 32px rgba(2, 5, 32, 0.12);
+  --shadow-glow: 0 0 100px -28px rgba(20, 90, 255, 0.35);
+}
+
+body {
+  @apply bg-bg font-sans text-ink antialiased;
+}

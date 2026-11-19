@@ -90,7 +90,7 @@ No illustrations or photos from other sites.
 | Tool | Role |
 | --- | --- |
 | Gemini API | Inside the product: guidebook extraction, invitation drafts, case-study feedback. Candidate scores never use it |
-| Claude Code (Anthropic) | During development: drafted the project docs (README, AGENTS, CONTEXT, CONTRIBUTING, TODO, ADRs, design system, PRD v1.2 edits) and the design mock. The team reviews them in the pull request before merge |
+| Claude Code (Anthropic) | During development: drafted the project docs (README, AGENTS, CONTEXT, CONTRIBUTING, TODO, ADRs, design system, PRD v1.2 edits) and the design mock. Drafted Dhanes's H0–H1 code: Zod schemas, `ActionResult`, phone formatting, `Avatar`, `Stepper`, `EmptyState`, `ProgressBar`, profile RLS and SQL functions, the onboarding wizard and `/profil`. The team reviews them in the pull request before merge |
 
 Every member adds a row or a line here when an AI tool materially helps with their work.
 

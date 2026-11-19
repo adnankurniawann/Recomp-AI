@@ -44,7 +44,7 @@ export function buildReasons({ role, cand, team, factors, cfg, skillNames }: Rea
   for (const r of matched) {
     const s = owned.get(r.skillId)!;
     if (s.level >= 3 && s.hasEvidence) {
-      add("level", "skill_evidence", `${name(r.skillId)} level ${LEVEL_LABELS[s.level]}, ada bukti portofolio`, "link");
+      add("level", "skill_evidence", `${name(r.skillId)} level ${LEVEL_LABELS[s.level].label}, ada bukti portofolio`, "link");
     }
   }
 
