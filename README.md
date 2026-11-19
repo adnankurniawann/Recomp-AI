@@ -27,7 +27,7 @@ Teams then prepare through short courses and paid mentor sessions (simulated).
 | Competition list, detail and "Tertarik" | F-CMP-01..03 | Planned |
 | Guidebook extraction and suggested roles | F-GBA-01..04 | Planned |
 | Team creation and role editor | F-TEM-01..04 | Planned |
-| Explainable candidate ranking per role | F-RNK-01..04 | Planned |
+| Explainable candidate ranking per role | F-RNK-01..04 | In progress: scoring and reasons in `lib/matching`, no UI yet |
 | Invitations and contacts that open on accept | F-INV-01..04 | Planned |
 | Recruiter agent drafts (sent only on click) | F-RCR-01..03 | Planned |
 | Course player, quizzes and case-study feedback | F-LRN-01..06 | Planned |
@@ -90,7 +90,7 @@ No illustrations or photos from other sites.
 | Tool | Role |
 | --- | --- |
 | Gemini API | Inside the product: guidebook extraction, invitation drafts, case-study feedback. Candidate scores never use it |
-| Claude Code (Anthropic) | During development: drafted the project docs (README, AGENTS, CONTEXT, CONTRIBUTING, TODO, ADRs, design system, PRD v1.2 edits) and the design mock. Drafted Dhanes's H0–H1 code: Zod schemas, `ActionResult`, phone formatting, `Avatar`, `Stepper`, `EmptyState`, `ProgressBar`, profile RLS and SQL functions, the onboarding wizard and `/profil`. The team reviews them in the pull request before merge |
+| Claude Code (Anthropic) | During development: drafted the project docs (README, AGENTS, CONTEXT, CONTRIBUTING, TODO, ADRs, design system, PRD v1.2 edits) and the design mock. Drafted Dhanes's H0–H1 code: Zod schemas, `ActionResult`, phone formatting, `Avatar`, `Stepper`, `EmptyState`, `ProgressBar`, profile RLS and SQL functions, the onboarding wizard and `/profil`. Drafted Adnan's H0 work: the matching score and reasons in `lib/matching` with their tests, the skill list and role templates in `seed.sql`, the UI fixtures in `lib/fixtures`, and the CI workflow. The team reviews them in the pull request before merge |
 
 Every member adds a row or a line here when an AI tool materially helps with their work.
 
