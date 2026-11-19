@@ -10,7 +10,7 @@ Versi 1.2, 19 November 2026. Menggantikan PRD v1.1, v1.0, v0.2, dan PRD 5 Novemb
 | --- | --- | --- |
 | 9, 10 | Design v2: satu biru `#145AFF`, Inter dan JetBrains Mono, tombol radius 10 px, kartu bergaris, sidebar di halaman app, ranking jadi tabel di desktop | ADR 0008 |
 | 19, 20.2, 20.3, 20.6, 21.7 | Pembagian tim baru: Malik dan Dhanes backend, Adnan AI dan data, Alek frontend. Kerja dibagi per fitur utuh supaya rata dan paralel | ADR 0009 |
-| 21.1, 21.2 | Branch `develop` untuk integrasi, `main` hanya untuk rilis | ADR 0009 |
+| 21.1, 21.2 | Satu branch tetap `main`. Branch fitur dari `main`, rilis ditandai dengan tag | ADR 0009 |
 | 22 | Aturan agent AI pindah ke `AGENTS.md`, `CLAUDE.md` hanya mengimpornya | - |
 | 0 | Dokumen repo selain PRD ditulis dalam bahasa Inggris | - |
 | 6.1, 6.6, 11.3 | Nama komponen disesuaikan: `AppShell`, `Sidebar`, `CandidateRow`, `ScoreBadge` | ADR 0008 |
@@ -2406,7 +2406,7 @@ Handbook menyebut tanggal bisa berubah. Pantau @gdgocitb.
 
 | Anggota | GitHub | Lead dan reviewer untuk | Fitur yang dikerjakan utuh (UI sampai database) |
 | --- | --- | --- | --- |
-| Malik (ketua tim) | `@malikmadani` | Backend: Supabase, migrasi, auth, deploy | Setup repo dan CI, auth dan middleware, `seed.sql`, Tertarik, admin lomba, tim (wizard, editor role, dashboard, `create_team`), mentor (grid, detail, booking, checkout), Playwright, rilis |
+| Malik (ketua tim) | `@malikarsya` | Backend: Supabase, migrasi, auth, deploy | Setup repo dan CI, auth dan middleware, `seed.sql`, Tertarik, admin lomba, tim (wizard, editor role, dashboard, `create_team`), mentor (grid, detail, booking, checkout), Playwright, rilis |
 | Dhanesworo | `@dhanesmd3` | Backend: RLS, fungsi SQL, keamanan data | Profil (onboarding, edit, publik, sheet), kontak dan RLS-nya, undangan (`accept_invite`, `/undangan`), notifikasi, `submit_mcq`, akses kursus dan promo |
 | Axeleon (Alek) | `@angseleong` | Frontend: sistem desain, komponen, aksesibilitas | Token dan komponen dasar, `AppShell` dan sidebar, landing, daftar dan detail lomba, UI ranking, katalog dan pemutar materi, pass responsif, README |
 | Adnan | `@adnankurniawann` | AI dan data: matching, agent, seed, metrik | Fungsi skor dan tesnya, seed profil, agent guidebook, SQL dan API ranking, umpan balik rekomendasi, agent perekrut, feedback studi kasus, metrik admin, evaluasi akurasi |
@@ -2422,17 +2422,17 @@ Handbook menyebut tanggal bisa berubah. Pantau @gdgocitb.
 
 | Hari | Malik | Dhanesworo | Axeleon (Alek) | Adnan |
 | --- | --- | --- | --- | --- |
-| **H0 Kam 19 malam** | Repo Next.js, pnpm, ESLint, Prettier, Vitest, CI. Branch `develop` dan proteksi branch. Supabase lokal dan cloud, migrasi `0001_init.sql`, generate tipe. Buat semua issue dan milestone | Schema Zod di `lib/validation` (profil, tim, undangan), tipe `ActionResult`, `lib/format/phone.ts` dan tesnya | Token desain v2 di `globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `Avatar`, `SectionLabel`, kerangka `AppShell` dan `PublicNavbar` | `lib/matching/types.ts`, kerangka `score.ts` dan tes kasus Dinda, daftar skill dan template role untuk seed, fixture profil di `lib/fixtures` untuk UI |
+| **H0 Kam 19 malam** | Repo Next.js, pnpm, ESLint, Prettier, Vitest, CI. Proteksi branch `main`. Supabase lokal dan cloud, migrasi `0001_init.sql`, generate tipe. Buat semua issue dan milestone | Schema Zod di `lib/validation` (profil, tim, undangan), tipe `ActionResult`, `lib/format/phone.ts` dan tesnya | Token desain v2 di `globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `Avatar`, `SectionLabel`, kerangka `AppShell` dan `PublicNavbar` | `lib/matching/types.ts`, kerangka `score.ts` dan tes kasus Dinda, daftar skill dan template role untuk seed, fixture profil di `lib/fixtures` untuk UI |
 | **H1 Jum 20** | Auth Google dan email, trigger profil, middleware onboarding, `seed.sql` (skill, template, lomba), bucket Storage, RLS lomba, `toggleInterest` | Wizard onboarding 4 langkah (UI dan server actions), `/profil`, RLS profil dan tabel turunannya | Landing, `/lomba` dengan `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filter. `/lomba/[slug]` tanpa tab ringkasan. `Stepper`, `EmptyState`, `ProgressBar` | `scoreCandidate`, `reasons.ts`, tujuh unit test lolos. `seed-profiles.ts` 50 profil. `lib/pdf/extract.ts` |
 | **H2 Sab 21** | `create_team`, `/tim/baru` 3 langkah, editor role, `saveRoles`, `recompute_team_status` | `/u/[username]`, `HistoryTimeline`, `PortfolioGrid`, `ProfileSheet` tanpa panel kecocokan, unggah portofolio, tabel kontak, RLS kontak dan tes integrasinya | `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` di atas fixture. Tab "Ringkasan guidebook" di detail lomba (UI) | Agent guidebook end-to-end: Gemini, schema Zod, retry, pemetaan skill, cache, form cadangan. Data untuk tab ringkasan |
 | **H3 Min 22** | Dashboard tim dengan data asli, `assignMemberRole`, admin lomba, unggah guidebook, tombol "Jalankan ekstraksi" | `sendInvite` dan dialog undang, `accept_invite` atomik dan tes konkurensi, `decline_invite`, `cancel_invite`, `/undangan`, kontak di dashboard tim | Sambungkan tab ranking ke API (muat lagi, urut, state kosong), sambungkan tab ringkasan, badge undangan di sidebar | `ranking_candidates` SQL dan `GET /api/ranking`, panel kecocokan di `ProfileSheet` (bareng Dhanes), `recommendation_feedback`. **Malam: demo internal alur inti, semua** |
-| **H4 Sen 23** | `/mentor`, `MentorCard`, `/mentor/[id]`, checkout, `create_booking`, `simulate_booking_payment`, seed mentor. Deploy Vercel (`main` produksi, `develop` staging) | `submit_mcq`, `redeem_promo`, `simulate_course_purchase`, `seed-content.ts`, notifikasi dan lonceng | `/belajar`, `/belajar/[kursus]`, `LessonShell`, pemutar materi, `QuestionMCQ`, progres dan poin | Agent perekrut (API dan kartu draf), feedback studi kasus (API), `QuestionCase`. **Semua: tulis isi kursus, 2 materi per orang** |
-| **H5 Sel 24** | Playwright alur inti, cadangan lokal `DEMO_MODE`, PR rilis `develop` ke `main`. **21.00: tag `v0.1.0`** | Semua tes integrasi RLS (bagian 16.2), perbaikan bug profil dan undangan | Responsif semua halaman di 360 px, state loading, kosong, dan error, Lighthouse Accessibility ≥ 90, README | `eval-guidebook` di 5 sampai 10 guidebook, halaman metrik admin, AI Disclosure, perbaikan bug ranking |
+| **H4 Sen 23** | `/mentor`, `MentorCard`, `/mentor/[id]`, checkout, `create_booking`, `simulate_booking_payment`, seed mentor. Deploy Vercel (`main` produksi, PR dapat preview URL) | `submit_mcq`, `redeem_promo`, `simulate_course_purchase`, `seed-content.ts`, notifikasi dan lonceng | `/belajar`, `/belajar/[kursus]`, `LessonShell`, pemutar materi, `QuestionMCQ`, progres dan poin | Agent perekrut (API dan kartu draf), feedback studi kasus (API), `QuestionCase`. **Semua: tulis isi kursus, 2 materi per orang** |
+| **H5 Sel 24** | Playwright alur inti, cadangan lokal `DEMO_MODE`, **21.00: tag `v0.1.0` di `main`** | Semua tes integrasi RLS (bagian 16.2), perbaikan bug profil dan undangan | Responsif semua halaman di 360 px, state loading, kosong, dan error, Lighthouse Accessibility ≥ 90, README | `eval-guidebook` di 5 sampai 10 guidebook, halaman metrik admin, AI Disclosure, perbaikan bug ranking |
 
 **Aturan harian**
 
 - Stand-up 10 menit jam 09.00: kemarin selesai apa, hari ini apa, ada yang menghambat atau tidak.
-- Merge ke `develop` paling lambat jam 21.00. Setelah itu hanya perbaikan bug.
+- Merge ke `main` paling lambat jam 21.00. Setelah itu hanya perbaikan bug.
 - Kalau satu issue P0 macet lebih dari 2 jam, bilang ke grup dan minta bantuan.
 - Kalau hari H berakhir dengan P0 belum selesai, P1 hari berikutnya ditunda dulu.
 
@@ -2478,41 +2478,17 @@ Kalau ternyata lolos Top 10 dan ada masalah besar dari uji coba, salah satu tuga
 - Repo: `github.com/adnankurniawann/Recomp-AI`, privat sampai submission, lalu dibagikan ke juri sesuai instruksi panitia.
 - Semua anggota menjadi collaborator dengan akun GitHub masing-masing, supaya kontribusi terlihat.
 
-**Branch tetap**
+**Branch**
 
-| Branch | Isi | Deploy | Aturan |
-| --- | --- | --- | --- |
-| `main` | Hanya versi rilis: `v0.1.0` (H5), versi semifinal, versi Final Day | Vercel produksi | Dilindungi. Hanya menerima PR dari `develop` atau `hotfix/*`. 1 review, CI hijau |
-| `develop` | Integrasi harian. Semua fitur masuk ke sini dulu | Vercel staging (preview URL tetap) | Dilindungi. Wajib lewat PR, 1 review, CI hijau |
-
-**Alur**
-
-```mermaid
-gitGraph
-    commit id: "first commit"
-    branch develop
-    checkout develop
-    branch feat/rnk-01-ranking-tab
-    commit id: "feat(ranking)"
-    checkout develop
-    merge feat/rnk-01-ranking-tab
-    checkout main
-    merge develop tag: "v0.1.0"
-    branch hotfix/inv-03-double-accept
-    commit id: "fix(invite)"
-    checkout main
-    merge hotfix/inv-03-double-accept
-    checkout develop
-    merge main
-```
-
-1. Branch fitur dibuat dari `develop`, PR kembali ke `develop`.
-2. Rilis: Malik membuka PR `develop` ke `main`, lalu memberi tag (`v0.1.0`, `v0.2.0-semifinal`, `v1.0.0-final`).
-3. Hotfix: branch `hotfix/*` dari `main`, PR ke `main`, lalu `main` di-merge balik ke `develop` di hari yang sama.
+- Hanya ada satu branch tetap: `main`. Vercel men-deploy `main` ke produksi, dan setiap PR mendapat preview URL.
+- `main` dilindungi: wajib lewat PR, 1 review, CI hijau. Tidak ada push langsung.
+- Branch fitur dibuat dari `main` dan kembali ke `main` lewat PR. Hapus branch setelah merge.
+- Rilis ditandai dengan tag di `main` oleh Malik: `v0.1.0` (H5), `v0.2.0-semifinal`, `v1.0.0-final`. Commit awal dan akhir Final Day dicatat dari tag ini.
+- Karena `main` selalu bisa di-deploy, PR yang belum selesai tidak boleh di-merge. Fitur besar dipecah jadi PR kecil yang masing-masing tetap jalan.
 
 ### 21.2 Branch dan commit
 
-- Nama branch: `<tipe>/<id-fitur>-<deskripsi-singkat>`, contoh `feat/rnk-01-ranking-tab`, `fix/inv-03-double-accept`, `docs/fnd-00-project-docs`, `hotfix/inv-03-double-accept`.
+- Nama branch: `<tipe>/<id-fitur>-<deskripsi-singkat>`, contoh `feat/rnk-01-ranking-tab`, `fix/inv-03-double-accept`, `docs/fnd-00-project-docs`.
 - Pesan commit: Conventional Commits pendek dalam bahasa Inggris, contoh `feat(ranking): add score badge and factor popover`, `fix(invite): lock role row on accept`.
 - Satu PR untuk satu issue, idealnya di bawah 400 baris perubahan. PR di-squash merge.
 - Jangan menambahkan baris `Co-Authored-By`, tautan sesi, atau atribusi AI lain di commit dan PR. Pengungkapan AI cukup di README dan proposal sesuai handbook.
@@ -2581,7 +2557,7 @@ F-XXX-00
 
 | # | ID | Judul issue | Assignee | Milestone | Prioritas |
 | --- | --- | --- | --- | --- | --- |
-| 1 | F-FND-01 | Setup Next.js, pnpm, lint, Vitest, CI, branch `develop` | Malik | M0 | P0 |
+| 1 | F-FND-01 | Setup Next.js, pnpm, lint, Vitest, CI, proteksi `main` | Malik | M0 | P0 |
 | 2 | F-FND-01 | Setup Supabase lokal dan cloud, migrasi awal, generate tipe | Malik | M0 | P0 |
 | 3 | F-FND-03 | Token desain v2 dan komponen dasar (Button, IconButton, Card, Chip, StatusBadge, SimulatedBadge, SectionLabel) | Alek | M0 | P0 |
 | 4 | F-FND-03 | Komponen Avatar, Stepper, EmptyState, ProgressBar, SegmentedTabs, SearchInput | Alek | M0 | P0 |

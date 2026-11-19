@@ -3,7 +3,7 @@
 Everything before the semifinal submission, day by day, one list per person. Every item comes from
 [PRD §20.3](docs/PRD.md#203-rencana-per-hari-per-orang) and the backlog in
 [§21.7](docs/PRD.md#217-backlog-issue) (`#n` = backlog number, the GitHub issue once created).
-**Tick an item only when it works on `develop`**, not when the code is written.
+**Tick an item only when it works on `main`**, not when the code is written.
 
 | Day | Date | Goal you can try |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Everything before the semifinal submission, day by day, one list per person. Eve
 | [M4](#m4-final-day-dec-16) | Dec 16 | The three Final Day tasks |
 
 Load per person: Malik 13, Dhanes 13, Adnan 13, Alek 12 backlog issues (PRD §21.7). Leads review
-their area: backend `@malikmadani` / `@dhanesmd3`, frontend `@angseleong`, AI and data
+their area: backend `@malikarsya` / `@dhanesmd3`, frontend `@angseleong`, AI and data
 `@adnankurniawann`.
 
 ## Done
@@ -28,9 +28,9 @@ their area: backend `@malikmadani` / `@dhanesmd3`, frontend `@angseleong`, AI an
 
 Contracts first, so everyone can work in parallel from H1.
 
-**@malikmadani**
+**@malikarsya**
 - [ ] #1 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
-- [ ] Protect `main` and `develop` (PR, 1 review, CI green)
+- [ ] Protect `main` (PR, 1 review, CI green). Needs admin: ask @adnankurniawann
 - [ ] #2 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
 - [ ] Create all GitHub labels, milestones and issues from PRD §21.3–21.7
 
@@ -50,7 +50,7 @@ Contracts first, so everyone can work in parallel from H1.
 
 ## H1 Fri Nov 20
 
-**@malikmadani**
+**@malikarsya**
 - [ ] #6 Google and email sign-in, profile trigger, onboarding middleware (F-FND-02)
 - [ ] #7 `seed.sql`: skills, role templates, competitions; Storage buckets; RLS on competitions (F-FND-04)
 - [ ] #17 "Tertarik" button and `toggleInterest` (F-CMP-03)
@@ -73,7 +73,7 @@ Contracts first, so everyone can work in parallel from H1.
 
 ## H2 Sat Nov 21
 
-**@malikmadani**
+**@malikarsya**
 - [ ] #23 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
 - [ ] #24 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
 
@@ -94,7 +94,7 @@ Contracts first, so everyone can work in parallel from H1.
 
 ## H3 Sun Nov 22
 
-**@malikmadani**
+**@malikarsya**
 - [ ] #25 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04)
 - [ ] #18 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
 
@@ -119,11 +119,11 @@ waits and everyone helps fix P0.
 
 ## H4 Mon Nov 23
 
-**@malikmadani**
+**@malikarsya**
 - [ ] #42 `/mentor` with `MentorCard` and role filter (F-MNT-01)
 - [ ] #43 `/mentor/[id]` (F-MNT-02)
 - [ ] #44 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04)
-- [ ] Vercel: `main` to production, `develop` to staging
+- [ ] Vercel: `main` to production, a preview URL for every PR
 
 **@dhanesmd3**
 - [ ] #38 `submit_mcq` and progress (F-LRN-03)
@@ -144,10 +144,10 @@ waits and everyone helps fix P0.
 
 ## H5 Tue Nov 24
 
-**@malikmadani**
+**@malikarsya**
 - [ ] #47 Playwright core flow (PRD §16.3)
 - [ ] Local backup with `DEMO_MODE=true`, screen recording of the core flow
-- [ ] Release PR `develop` → `main`, **tag `v0.1.0` at 21.00**
+- [ ] **Tag `v0.1.0` on `main` at 21.00**
 
 **@dhanesmd3**
 - [ ] All database integration tests in PRD §16.2
@@ -165,13 +165,13 @@ waits and everyone helps fix P0.
 
 ## M3 Semifinal, Nov 25–30
 
-- [ ] Recruit trial students (target 30) through student associations: @malikmadani
+- [ ] Recruit trial students (target 30) through student associations: @malikarsya
 - [ ] Run the trial: leaders create teams, rate recommendations, invite: everyone
 - [ ] Count the metrics with the real number of participants (PRD §17): @adnankurniawann
-- [ ] 2-minute video in English: script @malikmadani, recording and editing @dhanesmd3
+- [ ] 2-minute video in English: script @malikarsya, recording and editing @dhanesmd3
 - [ ] Proposal, at most 10 pages, sections split as in PRD §20.6: everyone
-- [ ] Signed originality declaration: @malikmadani
-- [ ] Submit before 23.59 WIB on Nov 30: @malikmadani
+- [ ] Signed originality declaration: @malikarsya
+- [ ] Submit before 23.59 WIB on Nov 30: @malikarsya
 
 ## M4 Final Day, Dec 16
 

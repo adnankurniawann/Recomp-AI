@@ -86,10 +86,10 @@ The PRD is long. Find your area here and read that section, plus §0 and §1 onc
 
 ## Git and pull requests
 
-- `main` holds releases only. `develop` is where work lands. Branch from `develop`:
+- One long-lived branch, `main`, protected and always deployable. Branch from `main`:
   `<type>/<feature-id>-<short-description>`, for example `feat/rnk-01-ranking-tab`
-  ([ADR 0009](docs/adr/0009-develop-branch-and-feature-slices.md)).
-- One issue, one branch, one pull request into `develop`, ideally under 400 changed lines,
+  ([ADR 0009](docs/adr/0009-main-only-branches-and-feature-slices.md)).
+- One issue, one branch, one pull request into `main`, ideally under 400 changed lines,
   squash-merged.
 - Commits and PR titles are short Conventional Commits in English: `feat(ranking): add score badge`.
 - **No `Co-Authored-By`, session links or other AI attribution in commits or pull requests.** AI use

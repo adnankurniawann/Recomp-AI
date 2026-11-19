@@ -8,7 +8,7 @@ Issues live in this repo's GitHub Issues. Use the `gh` CLI.
   copied from PRD §6 as checkboxes.
 - Labels: one priority, one area, one type (`docs/agents/labels.md`). Milestone: M0 to M4
   (PRD §21.4). Assignee: the GitHub handle from PRD §20.2.
-- An issue closes only when every acceptance criterion passes on `develop`.
+- An issue closes only when every acceptance criterion passes on `main`.
 
 ```sh
 gh issue list --label area:rnk --state open

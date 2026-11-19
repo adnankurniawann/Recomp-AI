@@ -1,5 +1,5 @@
 <!-- Title: a short Conventional Commit in English, like "feat(ranking): add score badge".
-     PRs into develop are squash-merged, so the title becomes the commit. -->
+     PRs into main are squash-merged, so the title becomes the commit. -->
 
 ## What changed
 

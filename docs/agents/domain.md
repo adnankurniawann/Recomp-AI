@@ -20,4 +20,4 @@ there's a real gap: add it to `CONTEXT.md` in the same pull request.
 ## Be honest about status
 
 An ADR marked `proposed` isn't decided. Don't describe anything in `README.md` or `docs/` as working
-until it runs on `develop`.
+until it runs on `main`.
