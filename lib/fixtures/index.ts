@@ -90,12 +90,36 @@ export const fixtureProfiles: FixtureProfile[] = [
     updatedAt: "2026-11-15T10:00:00Z",
     skills: [skill(16, 3, "https://example.com/dinda/figma"), skill(17, 2), skill(18, 2)],
     history: [
-      { competitionName: "Hackathon Contoh A", year: 2025, category: "hackathon", role: "UI/UX Designer", result: "finalist", evidenceUrl: "https://example.com/dinda/finalis" },
-      { competitionName: "Hackathon Contoh B", year: 2024, category: "hackathon", role: "UI/UX Designer", result: "participant", evidenceUrl: null },
+      {
+        competitionName: "Hackathon Contoh A",
+        year: 2025,
+        category: "hackathon",
+        role: "UI/UX Designer",
+        result: "finalist",
+        evidenceUrl: "https://example.com/dinda/finalis",
+      },
+      {
+        competitionName: "Hackathon Contoh B",
+        year: 2024,
+        category: "hackathon",
+        role: "UI/UX Designer",
+        result: "participant",
+        evidenceUrl: null,
+      },
     ],
     portfolio: [
-      { title: "Aplikasi antre klinik", description: "Riset dan desain alur antre untuk klinik kampus.", url: "https://example.com/dinda/klinik", skillIds: [16, 17] },
-      { title: "Redesain portal mahasiswa", description: "Prototipe portal yang lebih ringkas.", url: "https://example.com/dinda/portal", skillIds: [16, 18] },
+      {
+        title: "Aplikasi antre klinik",
+        description: "Riset dan desain alur antre untuk klinik kampus.",
+        url: "https://example.com/dinda/klinik",
+        skillIds: [16, 17],
+      },
+      {
+        title: "Redesain portal mahasiswa",
+        description: "Prototipe portal yang lebih ringkas.",
+        url: "https://example.com/dinda/portal",
+        skillIds: [16, 18],
+      },
     ],
   },
   {
@@ -114,7 +138,14 @@ export const fixtureProfiles: FixtureProfile[] = [
     updatedAt: "2026-11-12T08:00:00Z",
     skills: [skill(16, 2), skill(2, 3, "https://example.com/arif/web"), skill(3, 3)],
     history: [
-      { competitionName: "Hackathon Contoh A", year: 2025, category: "hackathon", role: "Frontend Developer", result: "participant", evidenceUrl: null },
+      {
+        competitionName: "Hackathon Contoh A",
+        year: 2025,
+        category: "hackathon",
+        role: "Frontend Developer",
+        result: "participant",
+        evidenceUrl: null,
+      },
     ],
   },
   {
@@ -150,7 +181,14 @@ export const fixtureProfiles: FixtureProfile[] = [
     updatedAt: "2026-11-14T08:00:00Z",
     skills: [skill(1, 3, "https://example.com/budi/api"), skill(6, 3), skill(7, 2)],
     history: [
-      { competitionName: "Hackathon Contoh B", year: 2024, category: "hackathon", role: "Backend Developer", result: "winner_2", evidenceUrl: null },
+      {
+        competitionName: "Hackathon Contoh B",
+        year: 2024,
+        category: "hackathon",
+        role: "Backend Developer",
+        result: "winner_2",
+        evidenceUrl: null,
+      },
     ],
   },
   {
@@ -186,7 +224,14 @@ export const fixtureProfiles: FixtureProfile[] = [
     updatedAt: "2026-11-11T08:00:00Z",
     skills: [skill(36, 3, "https://example.com/kevin/pitch"), skill(34, 3), skill(31, 2)],
     history: [
-      { competitionName: "Hackathon Contoh C", year: 2025, category: "hackathon", role: "Pitching", result: "participant", evidenceUrl: null },
+      {
+        competitionName: "Hackathon Contoh C",
+        year: 2025,
+        category: "hackathon",
+        role: "Pitching",
+        result: "participant",
+        evidenceUrl: null,
+      },
     ],
   },
 ];
@@ -194,7 +239,11 @@ export const fixtureProfiles: FixtureProfile[] = [
 export const toCandidateInput = (p: FixtureProfile): CandidateInput => ({
   profileId: p.id,
   preferredRoles: p.preferredRoles,
-  skills: p.skills.map((s) => ({ skillId: s.skillId, level: s.level, hasEvidence: s.evidenceUrl !== null })),
+  skills: p.skills.map((s) => ({
+    skillId: s.skillId,
+    level: s.level,
+    hasEvidence: s.evidenceUrl !== null,
+  })),
   hoursPerWeek: p.hoursPerWeek,
   goal: p.goal,
   workTime: p.workTime,
@@ -203,7 +252,8 @@ export const toCandidateInput = (p: FixtureProfile): CandidateInput => ({
 });
 
 const byId = (id: string) => fixtureProfiles.find((p) => p.id === id)!;
-const [, , , budi, rani] = fixtureProfiles;
+const budi = fixtureProfiles[3]!;
+const rani = fixtureProfiles[4]!;
 
 export interface FixtureTeamRole extends RoleRequirement {
   source: "guidebook" | "criteria" | "template" | "manual";
@@ -218,7 +268,12 @@ export interface FixtureTeamRole extends RoleRequirement {
 export const fixtureTeam = {
   id: "10000000-0000-4000-8000-000000000001",
   name: "Tim Rani",
-  competition: { slug: "hackathon-contoh", name: "Hackathon Contoh 2026", category: "hackathon" as const, isSimulated: true },
+  competition: {
+    slug: "hackathon-contoh",
+    name: "Hackathon Contoh 2026",
+    category: "hackathon" as const,
+    isSimulated: true,
+  },
   leaderId: rani.id,
   goal: "win" as const,
   workTime: "night" as const,
@@ -236,7 +291,10 @@ export const fixtureTeam = {
       sourcePage: 3,
       sourceCriterion: null,
       edited: false,
-      requiredSkills: [{ skillId: 1, minLevel: 2 }, { skillId: 6, minLevel: 2 }],
+      requiredSkills: [
+        { skillId: 1, minLevel: 2 },
+        { skillId: 6, minLevel: 2 },
+      ],
       optionalSkillIds: [7],
       hoursPerWeek: 10,
       slots: 1,
@@ -250,7 +308,10 @@ export const fixtureTeam = {
       sourcePage: 7,
       sourceCriterion: "Desain antarmuka 20%",
       edited: false,
-      requiredSkills: [{ skillId: 16, minLevel: 2 }, { skillId: 17, minLevel: 1 }],
+      requiredSkills: [
+        { skillId: 16, minLevel: 2 },
+        { skillId: 17, minLevel: 1 },
+      ],
       optionalSkillIds: [18],
       hoursPerWeek: 8,
       slots: 1,
@@ -264,7 +325,10 @@ export const fixtureTeam = {
       sourcePage: 8,
       sourceCriterion: "Presentasi 15%",
       edited: false,
-      requiredSkills: [{ skillId: 36, minLevel: 2 }, { skillId: 30, minLevel: 1 }],
+      requiredSkills: [
+        { skillId: 36, minLevel: 2 },
+        { skillId: 30, minLevel: 1 },
+      ],
       optionalSkillIds: [34],
       hoursPerWeek: 6,
       slots: 1,
@@ -284,7 +348,13 @@ export function fixtureRanking(teamRoleId: string) {
   const role = fixtureTeam.roles.find((r) => r.id === teamRoleId)!;
   const memberIds = new Set(fixtureTeam.members.map((m) => m.profileId));
   const pool = fixtureProfiles.filter((p) => !memberIds.has(p.id)).map(toCandidateInput);
-  const ranked = rankCandidates(role, pool, teamContext, DEFAULT_MATCHING_CONFIG, fixtureSkillNames);
+  const ranked = rankCandidates(
+    role,
+    pool,
+    teamContext,
+    DEFAULT_MATCHING_CONFIG,
+    fixtureSkillNames,
+  );
   const name = (id: number) => fixtureSkillNames.get(id)!;
 
   return {
