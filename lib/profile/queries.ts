@@ -1,5 +1,5 @@
 import "server-only";
-import { SKILL_CATEGORIES, type SkillCategory } from "@/lib/constants";
+import { isRoleKey, SKILL_CATEGORIES, type RoleKey, type SkillCategory } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import { toFormValues, toSavedState, type OwnProfileRows, type SkillOption } from "./form";
 import { requiredSkillIdsFromJson, type RoleTemplateSkills } from "./suggest";
@@ -83,5 +83,39 @@ export async function loadSkillCatalog(): Promise<{
       requiredSkillIds: requiredSkillIdsFromJson(t.required_skills),
       optionalSkillIds: t.optional_skill_ids,
     })),
+  };
+}
+
+export interface Viewer {
+  name: string;
+  avatarUrl: string | null;
+  colorKey: RoleKey | null;
+  isAdmin: boolean;
+}
+
+/** Who is signed in, for the navbar and sidebar. Null when signed out or Supabase isn't configured. */
+export async function loadViewer(): Promise<Viewer | null> {
+  // Lets public pages render before .env.local is set up.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return null;
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  // A failed read only costs the avatar and admin group; the page itself still loads.
+  const { data } = await supabase
+    .from("profiles")
+    .select("full_name, avatar_url, preferred_roles, app_role")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  const firstRole = data?.preferred_roles?.[0];
+
+  return {
+    name: data?.full_name || user.email || "Akun",
+    avatarUrl: data?.avatar_url ?? null,
+    colorKey: isRoleKey(firstRole) ? firstRole : null,
+    isAdmin: data?.app_role === "admin",
   };
 }
