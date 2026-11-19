@@ -90,7 +90,7 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #23 Guidebook summary tab UI on the competition page (F-CMP-02)
 
 **@adnankurniawann**
-- [ ] #21 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
+- [x] #21 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
 - [ ] #22 Skill mapping, cache per competition, manual fallback form (F-GBA-02..04)
 - [ ] #23 Data for the guidebook summary tab (F-CMP-02)
 

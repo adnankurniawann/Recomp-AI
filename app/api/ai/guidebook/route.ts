@@ -4,11 +4,19 @@ import { ERROR_MESSAGES, type ErrorCode } from "@/lib/action-result";
 import { getGemini } from "@/lib/ai/gemini";
 import { runGuidebookAgent } from "@/lib/ai/guidebook";
 import { GUIDEBOOK_PROMPT_VERSION, type PromptTemplate } from "@/lib/ai/prompts/guidebook";
+import {
+  buildSkillIndex,
+  extractionToSuggestions,
+  pickUsableExtraction,
+  type StoredExtraction,
+} from "@/lib/ai/skill-map";
 import { createClient } from "@/lib/supabase/server";
+import type { Json } from "@/lib/supabase/types";
 
 export const maxDuration = 60;
 
-const body = z.object({ competitionId: z.uuid() });
+// `force` runs the agent again even when a usable result exists (the admin wants a fresh read).
+const body = z.object({ competitionId: z.uuid(), force: z.boolean().optional() });
 const RATE_LIMIT_PER_HOUR = 10;
 
 function fail(status: number, code: ErrorCode, message: string = ERROR_MESSAGES[code]) {
@@ -18,12 +26,15 @@ function fail(status: number, code: ErrorCode, message: string = ERROR_MESSAGES[
 /**
  * POST /api/ai/guidebook (PRD §13.2, F-GBA-01). Admin only. Reads the competition's guidebook
  * PDF, runs the guidebook agent and stores the result in `competition_extractions` as `draft` or
- * `failed`. Response: `{ extractionId, status, data?, warnings, error? }`.
+ * `failed`, with skills mapped to ids (F-GBA-02). A guidebook file that already has a `reviewed`
+ * or `draft` result is not read again; that result comes back with `cached: true` (F-GBA-03).
+ * This is also how demo mode works without the LLM (ADR 0006).
+ * Response: `{ extractionId, status, data?, warnings, error?, cached }`.
  */
 export async function POST(req: Request) {
   const parsed = body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return fail(400, "VALIDATION");
-  const { competitionId } = parsed.data;
+  const { competitionId, force } = parsed.data;
 
   const supabase = await createClient();
   const {
@@ -37,16 +48,6 @@ export async function POST(req: Request) {
   ]);
   if (!isAdmin || !profile) return fail(403, "FORBIDDEN");
 
-  const gemini = getGemini();
-  if (!gemini) return fail(503, "AI_UNAVAILABLE");
-
-  const { count } = await supabase
-    .from("agent_actions")
-    .select("id", { count: "exact", head: true })
-    .eq("actor_id", profile.id)
-    .gte("created_at", new Date(Date.now() - 3_600_000).toISOString());
-  if ((count ?? 0) >= RATE_LIMIT_PER_HOUR) return fail(429, "RATE_LIMITED");
-
   const { data: competition } = await supabase
     .from("competitions")
     .select("id, category, guidebook_path")
@@ -57,9 +58,39 @@ export async function POST(req: Request) {
     return fail(400, "NOT_FOUND", "Lomba ini belum punya guidebook. Unggah PDF-nya dulu.");
   }
 
+  const guidebookPath = competition.guidebook_path;
+
+  if (!force) {
+    const { data: rows } = await supabase
+      .from("competition_extractions")
+      .select("id, status, created_at, data, warnings")
+      .eq("competition_id", competitionId)
+      .in("status", ["reviewed", "draft"]);
+    const cached = pickUsableExtraction(rows ?? [], guidebookPath);
+    if (cached) {
+      return NextResponse.json({
+        extractionId: cached.id,
+        status: cached.status,
+        data: cached.data,
+        warnings: cached.warnings,
+        cached: true,
+      });
+    }
+  }
+
+  const gemini = getGemini();
+  if (!gemini) return fail(503, "AI_UNAVAILABLE");
+
+  const { count } = await supabase
+    .from("agent_actions")
+    .select("id", { count: "exact", head: true })
+    .eq("actor_id", profile.id)
+    .gte("created_at", new Date(Date.now() - 3_600_000).toISOString());
+  if ((count ?? 0) >= RATE_LIMIT_PER_HOUR) return fail(429, "RATE_LIMITED");
+
   const [file, skills, templates] = await Promise.all([
-    supabase.storage.from("guidebooks").download(competition.guidebook_path),
-    supabase.from("skills").select("id, name").order("id"),
+    supabase.storage.from("guidebooks").download(guidebookPath),
+    supabase.from("skills").select("id, slug, name, aliases").order("id"),
     supabase
       .from("role_templates")
       .select("name, required_skills, optional_skill_ids, hours_per_week, slots")
@@ -98,12 +129,21 @@ export async function POST(req: Request) {
   const durationMs = Date.now() - started;
 
   const error = result.status === "failed" ? result.error : null;
+  const data: StoredExtraction | null =
+    result.status === "draft"
+      ? {
+          ...result.data,
+          guidebook_path: guidebookPath,
+          roles: extractionToSuggestions(result.data, buildSkillIndex(skills.data ?? [])),
+        }
+      : null;
   const [update] = await Promise.all([
     supabase
       .from("competition_extractions")
       .update({
         status: result.status,
-        data: result.status === "draft" ? result.data : null,
+        // Plain JSON from Zod output; `Json` only rejects the optional (undefined) fields.
+        data: data as Json,
         page_count: result.pageCount,
         warnings: result.warnings,
         error,
@@ -129,8 +169,9 @@ export async function POST(req: Request) {
   return NextResponse.json({
     extractionId: extraction.id,
     status: result.status,
-    ...(result.status === "draft" ? { data: result.data } : { error }),
+    ...(data ? { data } : { error }),
     warnings: result.warnings,
+    cached: false,
   });
 }
 
