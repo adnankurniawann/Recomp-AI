@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import { isRoleKey, SKILL_CATEGORIES, type RoleKey, type SkillCategory } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import { toFormValues, toSavedState, type OwnProfileRows, type SkillOption } from "./form";
@@ -94,7 +95,8 @@ export interface Viewer {
 }
 
 /** Who is signed in, for the navbar and sidebar. Null when signed out or Supabase isn't configured. */
-export async function loadViewer(): Promise<Viewer | null> {
+// cache: the layout and the page both ask in one request; Supabase is read once.
+export const loadViewer = cache(async function loadViewer(): Promise<Viewer | null> {
   // Lets public pages render before .env.local is set up.
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return null;
 
@@ -118,4 +120,4 @@ export async function loadViewer(): Promise<Viewer | null> {
     colorKey: isRoleKey(firstRole) ? firstRole : null,
     isAdmin: data?.app_role === "admin",
   };
-}
+});
