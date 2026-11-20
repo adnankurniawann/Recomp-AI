@@ -759,8 +759,14 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "are_teammates":
+            "accept_invite":
+{ Args: { "p_invite": string }; Returns: string
+                           },
+"are_teammates":
 { Args: { "a": string,"b": string }; Returns: boolean
+                           },
+"cancel_invite":
+{ Args: { "p_invite": string }; Returns: undefined
                            },
 "complete_onboarding":
 { Args: Record<PropertyKey, never>; Returns: undefined
@@ -768,11 +774,17 @@ isOneToOne: false
 "current_profile_id":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"decline_invite":
+{ Args: { "p_invite": string }; Returns: string
+                           },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "is_team_member":
 { Args: { "p_team": string }; Returns: boolean
+                           },
+"recompute_team_status":
+{ Args: { "p_team": string }; Returns: Database["public"]['Enums']["team_status_t"]
                            },
 "save_profile_contact":
 { Args: { "p_contact_email": string,"p_goal": Database["public"]['Enums']["goal_t"],"p_hours_per_week": number,"p_open_to_invite": boolean,"p_whatsapp": string,"p_work_time": Database["public"]['Enums']["work_time_t"] }; Returns: undefined
@@ -782,6 +794,9 @@ isOneToOne: false
                            },
 "save_profile_skills":
 { Args: { "p_preferred_roles": (string)[],"p_skills": Json }; Returns: number
+                           },
+"send_invite":
+{ Args: { "p_agent_action"?: string,"p_ai_drafted"?: boolean,"p_candidate": string,"p_message": string,"p_team_role": string }; Returns: string
                            }
           }
           Enums: {
