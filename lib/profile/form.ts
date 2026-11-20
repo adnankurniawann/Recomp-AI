@@ -8,6 +8,7 @@ import {
   type SkillCategory,
   type WorkTime,
 } from "@/lib/constants";
+import { publicStorageUrl } from "@/lib/supabase/storage";
 import type { Tables } from "@/lib/supabase/types";
 import type { SavedProfileState } from "./progress";
 
@@ -55,6 +56,8 @@ export interface PortfolioValue {
   description: string;
   url: string;
   skillIds: number[];
+  /** Shown only; the cover is uploaded and removed by its own actions, never by the step save. */
+  coverUrl?: string | null;
 }
 
 export interface HistoryPortfolioValues {
@@ -165,6 +168,7 @@ export function toFormValues(rows: OwnProfileRows): ProfileFormValues {
           description: p.description ?? "",
           url: p.url,
           skillIds: p.skill_ids,
+          coverUrl: publicStorageUrl("portfolio", p.cover_path),
         })),
     },
     contactPrefs: {
@@ -187,5 +191,19 @@ export function toSavedState(rows: OwnProfileRows): SavedProfileState {
     preferredRoleCount: rows.profile.preferred_roles.length,
     skillCount: rows.skills.length,
     hasWhatsapp: Boolean(rows.contact?.whatsapp),
+  };
+}
+
+/**
+ * Give history and portfolio items the row ids the server saved them under (same order as sent),
+ * so the next save updates them. Keys stay as they are, so React keeps each card mounted.
+ */
+export function withSavedIds(
+  values: HistoryPortfolioValues,
+  ids: { history: string[]; portfolio: string[] },
+): HistoryPortfolioValues {
+  return {
+    history: values.history.map((h, i) => ({ ...h, id: ids.history[i] ?? h.id })),
+    portfolio: values.portfolio.map((p, i) => ({ ...p, id: ids.portfolio[i] ?? p.id })),
   };
 }

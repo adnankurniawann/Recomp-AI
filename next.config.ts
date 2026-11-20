@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
+  experimental: {
+    // Portfolio covers go through a server action: 2 MB image plus form overhead (PRD F-PRF-04).
+    serverActions: { bodySizeLimit: "3mb" },
+  },
 };
 
 export default nextConfig;

@@ -4,6 +4,16 @@ import { fail, failFromDb, failValidation, ok, type ActionResult } from "@/lib/a
 import { createClient } from "@/lib/supabase/server";
 import { onboardingStepInput, type OnboardingStep } from "@/lib/validation/profile";
 
+export interface SavedStep {
+  step: OnboardingStep;
+  /**
+   * Step 3 only: the row ids of the saved history and portfolio, in the order sent. New items get
+   * their id here, so the next save updates them instead of deleting and re-creating them (which
+   * would also drop an uploaded portfolio cover).
+   */
+  ids?: { history: string[]; portfolio: string[] };
+}
+
 /**
  * Save one wizard step or /profil tab (PRD §13.1 `saveOnboardingStep`). Validates on the server,
  * then writes under the student's session: step 1 is a plain update guarded by RLS, steps 2 to 4
@@ -12,7 +22,7 @@ import { onboardingStepInput, type OnboardingStep } from "@/lib/validation/profi
 export async function saveProfileStep(
   step: OnboardingStep,
   data: unknown,
-): Promise<ActionResult<{ step: OnboardingStep }>> {
+): Promise<ActionResult<SavedStep>> {
   const parsed = onboardingStepInput.safeParse({ step, data });
   if (!parsed.success) {
     // Paths come back as "data.username"; the form keys fields without the "data." prefix.
@@ -31,6 +41,7 @@ export async function saveProfileStep(
   if (!user) return fail("AUTH_REQUIRED");
 
   const input = parsed.data;
+  let ids: SavedStep["ids"];
   switch (input.step) {
     case 1: {
       const d = input.data;
@@ -68,8 +79,12 @@ export async function saveProfileStep(
     }
     case 3: {
       const d = input.data;
+      // An id for every new item, made here; ids from the client that the student doesn't own are
+      // ignored by the SQL function.
+      const history = d.history.map((h) => ({ ...h, id: h.id ?? crypto.randomUUID() }));
+      const portfolio = d.portfolio.map((p) => ({ ...p, id: p.id ?? crypto.randomUUID() }));
       const { error } = await supabase.rpc("save_profile_history_portfolio", {
-        p_history: d.history.map((h) => ({
+        p_history: history.map((h) => ({
           id: h.id,
           competition_name: h.competitionName,
           year: h.year,
@@ -79,7 +94,7 @@ export async function saveProfileStep(
           evidence_url: h.evidenceUrl,
           note: h.note,
         })),
-        p_portfolio: d.portfolio.map((p) => ({
+        p_portfolio: portfolio.map((p) => ({
           id: p.id,
           title: p.title,
           description: p.description,
@@ -88,6 +103,7 @@ export async function saveProfileStep(
         })),
       });
       if (error) return logged(error);
+      ids = { history: history.map((h) => h.id), portfolio: portfolio.map((p) => p.id) };
       break;
     }
     case 4: {
@@ -106,7 +122,7 @@ export async function saveProfileStep(
   }
 
   revalidatePath("/profil");
-  return ok({ step });
+  return ok(ids ? { step, ids } : { step });
 }
 
 /** Finish onboarding (PRD §13.1 `completeOnboarding`). The SQL function checks every step is saved. */

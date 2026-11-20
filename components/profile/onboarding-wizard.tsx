@@ -9,7 +9,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Stepper } from "@/components/ui/stepper";
 import { ERROR_MESSAGES, issuesToFields } from "@/lib/action-result";
-import type { FieldErrors, ProfileFormValues, SkillOption } from "@/lib/profile/form";
+import {
+  withSavedIds,
+  type FieldErrors,
+  type ProfileFormValues,
+  type SkillOption,
+} from "@/lib/profile/form";
 import type { RoleTemplateSkills } from "@/lib/profile/suggest";
 import {
   MIN_SKILLS,
@@ -99,6 +104,9 @@ export function OnboardingWizard({
         toast.error(saved.error.message);
         return;
       }
+      const ids = saved.data.ids;
+      if (ids)
+        setValues((v) => ({ ...v, historyPortfolio: withSavedIds(v.historyPortfolio, ids) }));
       if (step < 4) {
         goTo((step + 1) as OnboardingStep);
         return;
