@@ -134,18 +134,19 @@ values
 insert into matching_config default values;
 
 -- COMPETITIONS ----------------------------------------------------------------------------------
--- Eight simulated competitions until the team picks the eight real ones with official guidebooks
--- (TODO.md, open decisions). They carry is_simulated, so the UI shows "Simulasi" (ADR 0005).
--- Dates are relative to the day of `pnpm db:reset`, so /lomba always shows open, closing-soon
--- (within 7 days) and closed competitions. Guidebook PDFs are uploaded through admin (#19).
+-- STACK 2026 is real: dates, team size and link from its official handbook (Handbook STACK 2026,
+-- GDGoC ITB), which is the guidebook at supabase/seed/guidebooks/stack-2026/guidebook.pdf.
+-- The other seven are simulated until the team picks real ones (TODO.md, open decisions). They
+-- carry is_simulated, so the UI shows "Simulasi" (ADR 0005). Their dates are relative to the day
+-- of `pnpm db:reset`, so /lomba always shows open and closing-soon (within 7 days) competitions.
 insert into competitions
   (slug, name, organizer, category, description, registration_deadline, event_date,
    team_min, team_max, official_url, eligibility, is_featured, is_simulated)
 values
-  ('hackathon-kampus-hijau', 'Hackathon Kampus Hijau', 'Himpunan Mahasiswa Informatika',
-    'hackathon', 'Hackathon 36 jam untuk membangun produk digital yang mengurangi sampah dan emisi di lingkungan kampus.',
-    current_date + 21, current_date + 35, 3, 5, 'https://example.com/lomba/hackathon-kampus-hijau',
-    '{"degree":["S1","D3"]}', true, true),
+  ('stack-2026', 'STACK 2026', 'GDGoC ITB',
+    'hackathon', 'Hackathon mahasiswa bertema "Agent of the Ocean: Vibing Beyond the Code". Pilih satu kasus, Smarter Campus and Learning atau Stronger Communities and Everyday Services, lalu bawa ide orisinal sampai jadi prototipe lewat babak penyisihan, semifinal, dan Final Day di Bandung. Semua materi dalam bahasa Inggris.',
+    '2026-11-07', '2026-12-16', 3, 4, 'https://gdgoncampusitb.com/hackathon',
+    '{"student":"active","citizenship":"WNI"}', true, false),
   ('build-for-health', 'Build for Health Hackathon', 'Komunitas Teknologi Kesehatan',
     'hackathon', 'Bangun solusi untuk layanan kesehatan primer: antrean puskesmas, rekam medis sederhana, atau edukasi pasien.',
     current_date + 5, current_date + 20, 3, 4, 'https://example.com/lomba/build-for-health',
@@ -172,5 +173,8 @@ values
     '{"degree":["S1","D3"]}', false, true),
   ('lkti-teknologi-terapan', 'Lomba Karya Tulis Ilmiah Teknologi Terapan', 'Kelompok Penulis Ilmiah Mahasiswa',
     'paper', 'Tulis karya ilmiah tentang penerapan teknologi untuk masalah nyata di sekitar kampus.',
-    current_date - 3, current_date + 10, 1, 3, 'https://example.com/lomba/lkti-teknologi-terapan',
+    current_date + 25, current_date + 40, 1, 3, 'https://example.com/lomba/lkti-teknologi-terapan',
     '{"degree":["S1","D3"]}', false, true);
+
+-- The file is uploaded from supabase/seed/guidebooks (config.toml, [storage.buckets.guidebooks]).
+update competitions set guidebook_path = 'stack-2026/guidebook.pdf' where slug = 'stack-2026';
