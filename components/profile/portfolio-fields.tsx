@@ -12,6 +12,7 @@ import {
   type SkillOption,
 } from "@/lib/profile/form";
 import { cn } from "@/lib/utils";
+import { PortfolioCover } from "./portfolio-cover";
 
 interface PortfolioFieldsProps {
   value: PortfolioValue[];
@@ -19,12 +20,20 @@ interface PortfolioFieldsProps {
   errors: FieldErrors;
   /** The student's own skills, offered as "skill terkait". */
   skillOptions: SkillOption[];
+  /** Show the cover uploader (on /profil). An item gets it once it has been saved and has an id. */
+  covers?: boolean;
 }
 
 const MAX_RELATED_SKILLS = 6;
 
-/** Portfolio items, optional (PRD F-PRF-04). Cover images are uploaded from /profil later (issue #11). */
-export function PortfolioFields({ value, onChange, errors, skillOptions }: PortfolioFieldsProps) {
+/** Portfolio items, optional (PRD F-PRF-04). Covers are uploaded on /profil, after the item is saved. */
+export function PortfolioFields({
+  value,
+  onChange,
+  errors,
+  skillOptions,
+  covers = false,
+}: PortfolioFieldsProps) {
   const update = (index: number, patch: Partial<PortfolioValue>) =>
     onChange(value.map((p, i) => (i === index ? { ...p, ...patch } : p)));
   const add = () => onChange([...value, emptyPortfolio()]);
@@ -119,6 +128,19 @@ export function PortfolioFields({ value, onChange, errors, skillOptions }: Portf
                   aria-describedby={fieldDescribedBy(id("description"), true, err("description"))}
                 />
               </Field>
+
+              {covers &&
+                (p.id ? (
+                  <PortfolioCover
+                    portfolioId={p.id}
+                    coverUrl={p.coverUrl}
+                    onChange={(coverUrl) => update(index, { coverUrl })}
+                  />
+                ) : (
+                  <p className="text-xs text-ink-3">
+                    Simpan perubahan dulu, lalu kamu bisa menambah gambar sampul.
+                  </p>
+                ))}
 
               {skillOptions.length > 0 && (
                 <fieldset className="flex flex-col gap-2">

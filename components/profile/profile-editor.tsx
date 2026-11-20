@@ -6,7 +6,12 @@ import { saveProfileSection } from "@/app/(app)/profil/actions";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ERROR_MESSAGES, issuesToFields } from "@/lib/action-result";
-import type { FieldErrors, ProfileFormValues, SkillOption } from "@/lib/profile/form";
+import {
+  withSavedIds,
+  type FieldErrors,
+  type ProfileFormValues,
+  type SkillOption,
+} from "@/lib/profile/form";
 import type { RoleTemplateSkills } from "@/lib/profile/suggest";
 import { stepSchemas, type OnboardingStep } from "@/lib/validation/profile";
 import { cn } from "@/lib/utils";
@@ -86,6 +91,9 @@ export function ProfileEditor({
         return;
       }
       setErrors({});
+      const ids = result.data.ids;
+      if (ids)
+        setValues((v) => ({ ...v, historyPortfolio: withSavedIds(v.historyPortfolio, ids) }));
       toast.success("Perubahan tersimpan");
     });
   }
@@ -180,6 +188,7 @@ export function ProfileEditor({
               }
               errors={errors}
               skillOptions={ownSkills}
+              covers
             />
           )}
           {tab === "contact" && (

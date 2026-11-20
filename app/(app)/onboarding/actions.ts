@@ -1,14 +1,14 @@
 "use server";
 
 import type { ActionResult } from "@/lib/action-result";
-import { finishOnboarding, saveProfileStep } from "@/lib/profile/save";
+import { finishOnboarding, saveProfileStep, type SavedStep } from "@/lib/profile/save";
 import type { OnboardingStep } from "@/lib/validation/profile";
 
 /** Save one wizard step. Data is kept per step, so closing the tab loses nothing (F-PRF-01). */
 export async function saveOnboardingStep(
   step: OnboardingStep,
   data: unknown,
-): Promise<ActionResult<{ step: OnboardingStep }>> {
+): Promise<ActionResult<SavedStep>> {
   return saveProfileStep(step, data);
 }
 
