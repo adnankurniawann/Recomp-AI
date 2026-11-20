@@ -1,5 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { formatDate, todayIso } from "./date";
+import { formatDate, formatRelativeTime, todayIso } from "./date";
+
+describe("formatRelativeTime", () => {
+  const now = new Date("2026-11-20T10:00:00Z");
+  it.each([
+    ["2026-11-20T09:59:30Z", "baru saja"],
+    ["2026-11-20T10:00:05Z", "baru saja"],
+    ["2026-11-20T09:55:00Z", "5 menit lalu"],
+    ["2026-11-20T07:00:00Z", "3 jam lalu"],
+    ["2026-11-18T09:00:00Z", "2 hari lalu"],
+    ["2026-11-12T20:00:00Z", "13 Nov 2026"],
+  ])("%s → %s", (iso, expected) => {
+    expect(formatRelativeTime(iso, now)).toBe(expected);
+  });
+});
 
 describe("date format", () => {
   it("formats ISO dates the Indonesian way", () => {
