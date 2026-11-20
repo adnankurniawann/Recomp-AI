@@ -8,8 +8,9 @@ import { buttonClasses } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SectionLabel } from "@/components/ui/section-label";
 import { filterCompetitions, parseFilters } from "@/lib/competitions/filter";
-import { loadCompetitions } from "@/lib/competitions/queries";
+import { loadCompetitions, loadInterestedIds } from "@/lib/competitions/queries";
 import { todayIso } from "@/lib/format/date";
+import { loadViewer } from "@/lib/profile/queries";
 
 export const metadata: Metadata = { title: "Lomba" };
 
@@ -20,7 +21,11 @@ export default async function CompetitionsPage({
 }) {
   const filters = parseFilters(await searchParams);
   const today = todayIso();
-  const all = await loadCompetitions();
+  const [all, interestedIds, viewer] = await Promise.all([
+    loadCompetitions(),
+    loadInterestedIds(),
+    loadViewer(),
+  ]);
   const list = filterCompetitions(all, filters, today);
   const filtered = Object.values(filters).some(Boolean);
 
@@ -59,7 +64,12 @@ export default async function CompetitionsPage({
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((c) => (
             <li key={c.id} className="flex">
-              <CompetitionCard c={c} today={today} />
+              <CompetitionCard
+                c={c}
+                today={today}
+                interested={interestedIds.has(c.id)}
+                signedIn={!!viewer}
+              />
             </li>
           ))}
         </ul>
