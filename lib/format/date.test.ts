@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { formatDate, formatRelativeTime, todayIso } from "./date";
+import { formatDate, formatRelativeTime, formatSlot, todayIso } from "./date";
+
+describe("formatSlot", () => {
+  it("shows the day, date and Jakarta time", () => {
+    expect(formatSlot("2026-11-28T12:00:00Z")).toBe("Sab 28 Nov 19.00");
+    // 18:30 UTC on Friday is already Saturday 01.30 in Jakarta.
+    expect(formatSlot("2026-11-27T18:30:00Z")).toBe("Sab 28 Nov 01.30");
+  });
+});
 
 describe("formatRelativeTime", () => {
   const now = new Date("2026-11-20T10:00:00Z");
