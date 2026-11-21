@@ -24,7 +24,7 @@ Teams then prepare through short courses and paid mentor sessions (simulated).
 | Feature | PRD | Status |
 | --- | --- | --- |
 | Google sign-in and profile onboarding | F-FND-02, F-PRF-01 | Planned |
-| Competition list, detail and "Tertarik" | F-CMP-01..03 | Planned |
+| Competition list, detail and "Tertarik" | F-CMP-01..03 | Done: `/lomba`, `/lomba/[slug]` with the guidebook summary tab, "Tertarik" |
 | Guidebook extraction and suggested roles | F-GBA-01..04 | In progress: agent, skill mapping and cache work; no screen yet |
 | Team creation and role editor | F-TEM-01..04 | Planned |
 | Explainable candidate ranking per role | F-RNK-01..04 | In progress: scoring, reasons and the ranking UI with the profile sheet; waits for `GET /api/ranking` (#28) and the team page (#26) |

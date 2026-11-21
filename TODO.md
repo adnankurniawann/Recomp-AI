@@ -65,8 +65,8 @@ Contracts first, so everyone can work in parallel from H1.
 
 **@angseleong**
 - [x] #15 Landing page (PRD §10.1)
-- [ ] #16 `/lomba` with `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filters (F-CMP-01)
-- [ ] #17 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
+- [x] #16 `/lomba` with `CompetitionCard`, `SegmentedTabs`, `SearchInput`, filters (F-CMP-01)
+- [x] #17 `/lomba/[slug]` without the guidebook tab (F-CMP-02)
 
 **@adnankurniawann**
 - [x] #27 `scoreCandidate`, `reasons.ts`, all seven unit tests passing (PRD §7.6)
@@ -87,7 +87,7 @@ Contracts first, so everyone can work in parallel from H1.
 **@angseleong**
 - [x] #30 `ProfileSheet` without the match panel (F-RNK-03)
 - [x] #29 `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` on fixtures (F-RNK-01..02)
-- [ ] #23 Guidebook summary tab UI on the competition page (F-CMP-02)
+- [x] #23 Guidebook summary tab UI on the competition page (F-CMP-02)
 
 **@adnankurniawann**
 - [x] #21 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
@@ -110,7 +110,7 @@ Contracts first, so everyone can work in parallel from H1.
 **@angseleong**
 - [ ] #46 Notifications, the bell and the pending-invite count (F-NTF-01)
 - [ ] #29 Ranking tab on the real API: load more, sort, empty state (F-RNK-01)
-- [ ] #23 Wire the guidebook summary tab
+- [x] #23 Wire the guidebook summary tab
 
 **@adnankurniawann**
 - [ ] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01)
