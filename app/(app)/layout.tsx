@@ -28,7 +28,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <Link
           href="/profil"
           aria-label="Profil"
-          className="shrink-0 rounded-full focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+          className="tap-target shrink-0 rounded-full focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
         >
           <Avatar name={viewer.name} src={viewer.avatarUrl} colorKey={viewer.colorKey} size={32} />
         </Link>
