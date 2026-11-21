@@ -32,3 +32,19 @@ export async function loadCompetitions(): Promise<CompetitionSummary[]> {
     isSimulated: c.is_simulated,
   }));
 }
+
+/** Ids of the competitions the signed-in student marked "Tertarik". Empty when signed out. */
+export async function loadInterestedIds(): Promise<Set<string>> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return new Set();
+
+  const supabase = await createClient();
+  const { data: profileId } = await supabase.rpc("current_profile_id");
+  if (!profileId) return new Set();
+
+  const { data, error } = await supabase
+    .from("competition_interests")
+    .select("competition_id")
+    .eq("profile_id", profileId);
+  if (error) throw new Error(`competition_interests: ${error.message}`);
+  return new Set(data.map((r) => r.competition_id));
+}

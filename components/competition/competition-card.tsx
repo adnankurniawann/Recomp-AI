@@ -1,9 +1,10 @@
-import { CalendarDays, FileCheck, Heart, Trophy, Users } from "lucide-react";
+import { CalendarDays, FileCheck, Trophy, Users } from "lucide-react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { COMP_CATEGORY_LABELS } from "@/lib/constants";
+import { InterestButton } from "./interest-button";
 import { daysLeft, type CompetitionSummary } from "@/lib/competitions/filter";
 import { formatDate } from "@/lib/format/date";
 
@@ -19,8 +20,24 @@ function deadlineLabel(deadline: string | null, today: string) {
   return `${days} hari lagi · ${formatDate(deadline, { year: false })}`;
 }
 
-/** A competition in the `/lomba` grid (PRD §10.2). The whole card links to the detail page. */
-export function CompetitionCard({ c, today }: { c: CompetitionSummary; today: string }) {
+interface CompetitionCardProps {
+  c: CompetitionSummary;
+  today: string;
+  /** The viewer marked it "Tertarik". */
+  interested?: boolean;
+  signedIn?: boolean;
+}
+
+/**
+ * A competition in the `/lomba` grid (PRD §10.2). The whole card links to the detail page; the
+ * "Tertarik" heart sits above that link.
+ */
+export function CompetitionCard({
+  c,
+  today,
+  interested = false,
+  signedIn = false,
+}: CompetitionCardProps) {
   const closed = c.registrationDeadline !== null && daysLeft(c.registrationDeadline, today) < 0;
   return (
     <Card
@@ -66,12 +83,12 @@ export function CompetitionCard({ c, today }: { c: CompetitionSummary; today: st
       </ul>
 
       <div className="mt-auto flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3 text-sm">
-        <span className="flex items-center gap-1.5 text-ink-2">
-          <Heart aria-hidden size={16} strokeWidth={1.75} className="text-ink-3" />
-          <span>
-            <span className="font-mono tabular-nums">{c.interestCount}</span> mahasiswa tertarik
-          </span>
-        </span>
+        <InterestButton
+          competitionId={c.id}
+          interested={interested}
+          count={c.interestCount}
+          signedIn={signedIn}
+        />
         {c.hasGuidebook && (
           <span className="flex items-center gap-1 text-[13px] font-medium text-success-ink">
             <FileCheck aria-hidden size={14} strokeWidth={1.75} />
