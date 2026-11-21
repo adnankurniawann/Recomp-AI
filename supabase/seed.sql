@@ -1,5 +1,5 @@
--- Seed data (PRD §15). This file holds the fixed skill list, the role templates and the active
--- matching config. Competitions, mentors and the promo go below it (#8).
+-- Seed data (PRD §15). This file holds the fixed skill list, the role templates, the active
+-- matching config and the competitions. Mentors (#45), the course and the promo come later.
 
 -- SKILLS --------------------------------------------------------------------------------------
 -- Ids are fixed so role templates, fixtures and tests can refer to them. Never renumber; append.
@@ -132,3 +132,49 @@ values
 -- MATCHING CONFIG -------------------------------------------------------------------------------
 -- One active row with the defaults of PRD §7.3. Change weights here, never in code.
 insert into matching_config default values;
+
+-- COMPETITIONS ----------------------------------------------------------------------------------
+-- STACK 2026 is real: dates, team size and link from its official handbook (Handbook STACK 2026,
+-- GDGoC ITB), which is the guidebook at supabase/seed/guidebooks/stack-2026/guidebook.pdf.
+-- The other seven are simulated until the team picks real ones (TODO.md, open decisions). They
+-- carry is_simulated, so the UI shows "Simulasi" (ADR 0005). Their dates are relative to the day
+-- of `pnpm db:reset`, so /lomba always shows open and closing-soon (within 7 days) competitions.
+insert into competitions
+  (slug, name, organizer, category, description, registration_deadline, event_date,
+   team_min, team_max, official_url, eligibility, is_featured, is_simulated)
+values
+  ('stack-2026', 'STACK 2026', 'GDGoC ITB',
+    'hackathon', 'Hackathon mahasiswa bertema "Agent of the Ocean: Vibing Beyond the Code". Pilih satu kasus, Smarter Campus and Learning atau Stronger Communities and Everyday Services, lalu bawa ide orisinal sampai jadi prototipe lewat babak penyisihan, semifinal, dan Final Day di Bandung. Semua materi dalam bahasa Inggris.',
+    '2026-11-07', '2026-12-16', 3, 4, 'https://gdgoncampusitb.com/hackathon',
+    '{"student":"active","citizenship":"WNI"}', true, false),
+  ('build-for-health', 'Build for Health Hackathon', 'Komunitas Teknologi Kesehatan',
+    'hackathon', 'Bangun solusi untuk layanan kesehatan primer: antrean puskesmas, rekam medis sederhana, atau edukasi pasien.',
+    current_date + 5, current_date + 20, 3, 4, 'https://example.com/lomba/build-for-health',
+    '{"degree":["S1","D3","D4"]}', false, true),
+  ('hackathon-desa-digital', 'Hackathon Inovasi Desa Digital', 'Badan Eksekutif Mahasiswa Fakultas Teknik',
+    'hackathon', 'Rancang dan bangun aplikasi yang membantu pelayanan desa, UMKM lokal, atau pertanian.',
+    current_date + 40, current_date + 55, 2, 4, 'https://example.com/lomba/hackathon-desa-digital',
+    '{"degree":["S1","D3"]}', false, true),
+  ('kompetisi-aplikasi-mahasiswa', 'Kompetisi Pengembangan Aplikasi Mahasiswa', 'Unit Kegiatan Mahasiswa Teknologi',
+    'it_competition', 'Kembangkan aplikasi web atau mobile yang sudah bisa dicoba juri, lengkap dengan dokumentasi teknis.',
+    current_date + 14, current_date + 30, 2, 3, 'https://example.com/lomba/kompetisi-aplikasi-mahasiswa',
+    '{"degree":["S1","D3"]}', false, true),
+  ('ui-ux-design-sprint', 'UI/UX Design Sprint Nasional', 'Komunitas Desain Produk Indonesia',
+    'ui_ux', 'Design sprint lima hari: riset pengguna, wireframe, prototipe, dan uji kegunaan untuk satu studi kasus.',
+    current_date + 3, current_date + 12, 2, 3, 'https://example.com/lomba/ui-ux-design-sprint',
+    '{"degree":["S1","D3","D4"]}', false, true),
+  ('data-science-challenge', 'Data Science Challenge Mahasiswa', 'Kelompok Studi Sains Data',
+    'data', 'Olah dataset transportasi publik, bangun model prediksi, dan sajikan temuan dalam dasbor.',
+    current_date + 28, current_date + 45, 2, 3, 'https://example.com/lomba/data-science-challenge',
+    '{"degree":["S1"]}', false, true),
+  ('business-case-ekonomi-kreatif', 'Business Case Competition Ekonomi Kreatif', 'Himpunan Mahasiswa Manajemen',
+    'business_case', 'Analisis studi kasus perusahaan ekonomi kreatif dan presentasikan strategi pertumbuhan di depan juri.',
+    current_date + 18, current_date + 32, 3, 3, 'https://example.com/lomba/business-case-ekonomi-kreatif',
+    '{"degree":["S1","D3"]}', false, true),
+  ('lkti-teknologi-terapan', 'Lomba Karya Tulis Ilmiah Teknologi Terapan', 'Kelompok Penulis Ilmiah Mahasiswa',
+    'paper', 'Tulis karya ilmiah tentang penerapan teknologi untuk masalah nyata di sekitar kampus.',
+    current_date + 25, current_date + 40, 1, 3, 'https://example.com/lomba/lkti-teknologi-terapan',
+    '{"degree":["S1","D3"]}', false, true);
+
+-- The file is uploaded from supabase/seed/guidebooks (config.toml, [storage.buckets.guidebooks]).
+update competitions set guidebook_path = 'stack-2026/guidebook.pdf' where slug = 'stack-2026';

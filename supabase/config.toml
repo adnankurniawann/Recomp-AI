@@ -129,6 +129,14 @@ file_size_limit = "50MiB"
 # allowed_mime_types = ["image/png", "image/jpeg"]
 # objects_path = "./images"
 
+# Guidebook PDFs for the seeded competitions, uploaded on `supabase start` and `db reset`.
+# The bucket and its policies come from migration 0003; this only adds the files.
+[storage.buckets.guidebooks]
+public = true
+file_size_limit = "20MiB"
+allowed_mime_types = ["application/pdf"]
+objects_path = "./seed/guidebooks"
+
 # Allow connections via S3 compatible clients
 [storage.s3_protocol]
 enabled = true
