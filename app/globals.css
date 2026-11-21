@@ -67,7 +67,6 @@ body {
   @apply bg-bg font-sans text-ink antialiased;
 }
 
-
 /* Brand intro (components/layout/intro.tsx). Brand motion, so it is outside the 150 ms UI rule. */
 .intro {
   animation: intro-out 320ms ease-out 1500ms forwards;
