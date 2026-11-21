@@ -21,6 +21,11 @@ export const ERROR_MESSAGES = {
   VALIDATION: "Ada isian yang belum sesuai. Cek lagi ya.",
   UNKNOWN: "Terjadi kesalahan. Coba lagi sebentar lagi.",
 
+  // sign-in
+  INVALID_CREDENTIALS: "Email atau password salah.",
+  EMAIL_TAKEN: "Email ini sudah terdaftar. Coba masuk.",
+  PROVIDER_DISABLED: "Masuk dengan Google belum aktif. Pakai email dulu ya.",
+
   // profile and onboarding
   USERNAME_TAKEN: "Username ini sudah dipakai. Coba yang lain.",
   MIN_ROLES: "Pilih minimal 1 role yang kamu minati.",

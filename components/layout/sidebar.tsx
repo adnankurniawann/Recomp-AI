@@ -1,7 +1,9 @@
 "use client";
 
+import { LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { signOut } from "@/app/(auth)/masuk/actions";
 import { SectionLabel } from "@/components/ui/section-label";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
@@ -69,6 +71,15 @@ export function Sidebar({ isAdmin = false, counts = {} }: SidebarProps) {
           </div>
         ))}
       </nav>
+      <form action={signOut} className="mt-auto border-t border-line pt-2">
+        <button
+          type="submit"
+          className="flex h-11 w-full items-center gap-2.5 rounded-md px-2.5 text-sm font-medium text-ink-2 transition-[color,background-color] duration-150 ease-out hover:bg-surface/60 hover:text-ink focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none active:bg-surface lg:h-9"
+        >
+          <LogOut aria-hidden size={18} strokeWidth={1.75} className="shrink-0" />
+          Keluar
+        </button>
+      </form>
     </div>
   );
 }
