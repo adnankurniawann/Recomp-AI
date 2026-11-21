@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { RankingPreview } from "./preview";
+import { KpiPreview, RankingPreview } from "./preview";
 
 export const metadata: Metadata = { title: "Pratinjau ranking" };
 
@@ -15,6 +15,7 @@ export default function RankingPreviewPage() {
       <p className="text-xs text-ink-2">
         Pratinjau pengembang dengan data fixture. Undangan di sini memanggil server sungguhan.
       </p>
+      <KpiPreview />
       <RankingPreview />
     </main>
   );

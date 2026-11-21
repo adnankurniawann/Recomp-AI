@@ -27,7 +27,7 @@ Teams then prepare through short courses and paid mentor sessions (simulated).
 | Competition list, detail and "Tertarik" | F-CMP-01..03 | Planned |
 | Guidebook extraction and suggested roles | F-GBA-01..04 | In progress: agent, skill mapping and cache work; no screen yet |
 | Team creation and role editor | F-TEM-01..04 | Planned |
-| Explainable candidate ranking per role | F-RNK-01..04 | In progress: scoring and reasons in `lib/matching`, no UI yet |
+| Explainable candidate ranking per role | F-RNK-01..04 | In progress: scoring, reasons and the ranking UI with the profile sheet; waits for `GET /api/ranking` (#28) and the team page (#26) |
 | Invitations and contacts that open on accept | F-INV-01..04 | Planned |
 | Recruiter agent drafts (sent only on click) | F-RCR-01..03 | Planned |
 | Course player, quizzes and case-study feedback | F-LRN-01..06 | Planned |

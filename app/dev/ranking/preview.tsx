@@ -1,6 +1,7 @@
 "use client";
 
 import { RankingSection } from "@/components/ranking/ranking-section";
+import { KpiStrip } from "@/components/ui/kpi-strip";
 import { ok, fail } from "@/lib/action-result";
 import { fixtureProfiles, fixtureRanking, fixtureTeam } from "@/lib/fixtures";
 import type { PublicProfile } from "@/lib/profile/public";
@@ -65,6 +66,35 @@ export function RankingPreview() {
       }}
       fetchPage={fetchPage}
       loadProfile={loadProfile}
+    />
+  );
+}
+
+/** The KPI strip of the team dashboard (PRD §10.4), with the fixture team. */
+export function KpiPreview() {
+  const filled = fixtureTeam.roles.filter((r) => r.memberIds.length >= r.slots).length;
+  return (
+    <KpiStrip
+      items={[
+        {
+          label: "Role terisi",
+          value: `${filled}/${fixtureTeam.roles.length}`,
+          bar: { value: filled, max: fixtureTeam.roles.length, segments: true },
+        },
+        {
+          label: "Kandidat cocok",
+          value: "27",
+          sub: "dari 41 yang tertarik",
+          bar: { value: 27, max: 41 },
+        },
+        {
+          label: "Undangan",
+          value: "2",
+          sub: "1 menunggu respon",
+          bar: { value: 1, max: 2, segments: true },
+        },
+        { label: "Skill gap", value: "2", sub: "Figma, Public Speaking" },
+      ]}
     />
   );
 }

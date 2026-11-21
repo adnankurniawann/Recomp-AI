@@ -85,8 +85,8 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #12 `profile_contacts` RLS and its integration tests (F-PRF-05)
 
 **@angseleong**
-- [ ] #30 `ProfileSheet` without the match panel (F-RNK-03)
-- [ ] #29 `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` on fixtures (F-RNK-01..02)
+- [x] #30 `ProfileSheet` without the match panel (F-RNK-03)
+- [x] #29 `CandidateRow`, `CandidateCard`, `ScoreBadge`, `FactorBars`, `ReasonList`, `KpiStrip` on fixtures (F-RNK-01..02)
 - [ ] #23 Guidebook summary tab UI on the competition page (F-CMP-02)
 
 **@adnankurniawann**
