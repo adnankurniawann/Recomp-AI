@@ -122,10 +122,7 @@ export function OnboardingWizard({
   }
 
   return (
-    <Card
-      padding="lg"
-      className="flex flex-col gap-8 max-sm:rounded-none max-sm:border-x-0 max-sm:px-4"
-    >
+    <Card padding="lg" className="flex flex-col gap-8 max-sm:px-4">
       <Stepper steps={TITLES} current={step} />
 
       <form

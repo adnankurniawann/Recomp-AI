@@ -8,6 +8,7 @@ import { StatusBadge } from "@/components/ui/status-badge";
 import { formatRelativeTime } from "@/lib/format/date";
 import type { InviteView } from "@/lib/invites/queries";
 import { INVITE_STATUS } from "@/lib/invites/status";
+import { teamPhrase } from "@/lib/invites/template";
 import { CancelInviteButton, RespondButtons } from "./invite-actions";
 
 function Meta({ invite }: { invite: InviteView }) {
@@ -58,12 +59,12 @@ function RoleLine({ role }: { role: NonNullable<InviteView["role"]> }) {
 
 /** An invite to the student (PRD F-INV-02): team, role, members, message, "Terima" and "Tolak". */
 export function IncomingInviteCard({ invite, hasTeam }: { invite: InviteView; hasTeam: boolean }) {
-  const teamName = invite.team?.name ?? "tim ini";
+  const team = invite.team ? teamPhrase(invite.team.name) : "Sebuah tim";
   return (
     <Card padding="lg" className="flex flex-col gap-4 max-sm:px-4">
       <Meta invite={invite} />
       <h3 className="text-lg font-semibold tracking-[-0.01em] text-ink-strong">
-        Tim {teamName} mengajakmu jadi {invite.role?.name ?? "anggota"}
+        {team} mengajakmu jadi {invite.role?.name ?? "anggota"}
       </h3>
       {invite.role && <RoleLine role={invite.role} />}
 
@@ -101,7 +102,7 @@ export function IncomingInviteCard({ invite, hasTeam }: { invite: InviteView; ha
       )}
 
       {invite.status === "pending" && (
-        <RespondButtons inviteId={invite.id} teamName={teamName} hasTeam={hasTeam} />
+        <RespondButtons inviteId={invite.id} team={team} hasTeam={hasTeam} />
       )}
     </Card>
   );
@@ -129,7 +130,9 @@ export function SentInviteCard({ invite }: { invite: InviteView }) {
                 {c?.fullName ?? "Kandidat"}
               </span>
             )}
-            <span className="text-sm text-ink-2">Tim {invite.team?.name ?? "-"}</span>
+            <span className="text-sm text-ink-2">
+              {invite.team ? teamPhrase(invite.team.name) : "-"}
+            </span>
           </div>
         </div>
         {invite.status === "pending" && <CancelInviteButton inviteId={invite.id} />}

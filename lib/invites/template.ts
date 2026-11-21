@@ -10,6 +10,15 @@ export interface InviteTemplateInput {
   topReason?: string | null;
 }
 
+/**
+ * How a team is named in a sentence: "Ombak" becomes "Tim Ombak", while a name that already starts
+ * with "Tim" (the PRD's own example is "Tim Ombak") stays as it is, so it never reads "Tim Tim".
+ */
+export function teamPhrase(name: string): string {
+  const trimmed = name.trim();
+  return /^tim\b/i.test(trimmed) ? trimmed : `Tim ${trimmed}`;
+}
+
 function firstName(name: string): string {
   return name.trim().split(/\s+/)[0] ?? "";
 }
@@ -22,7 +31,7 @@ function firstName(name: string): string {
 export function inviteTemplate(input: InviteTemplateInput): string {
   const candidate = firstName(input.candidateName) || "kamu";
   const leader = firstName(input.leaderName) || "ketua tim";
-  const opening = `Halo ${candidate}, aku ${leader} dari tim ${input.teamName} untuk ${input.competitionName}.`;
+  const opening = `Halo ${candidate}, aku ${leader} dari ${teamPhrase(input.teamName)} untuk ${input.competitionName}.`;
   const closing = "Mau gabung?";
 
   const reason = input.topReason?.trim().replace(/\.$/, "");
