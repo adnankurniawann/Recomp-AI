@@ -14,8 +14,8 @@ export default async function OnboardingPage() {
   const catalog = await loadSkillCatalog();
 
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-col gap-6 py-8 sm:px-6 sm:py-12">
-      <header className="flex flex-col gap-2 px-4 sm:px-0">
+    <main className="mx-auto flex w-full max-w-3xl flex-col gap-6">
+      <header className="flex flex-col gap-2">
         <p className="font-mono text-[11px] tracking-[0.18em] text-ink-3 uppercase">Onboarding</p>
         <h1 className="text-[clamp(1.75rem,3vw,2.5rem)] leading-[1.1] font-semibold tracking-[-0.03em] text-ink-strong">
           Lengkapi profilmu
