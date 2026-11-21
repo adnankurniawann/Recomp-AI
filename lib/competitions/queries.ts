@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+import { getGuidebookSummary, type GuidebookSummary } from "@/lib/ai/guidebook-summary";
 import { createClient } from "@/lib/supabase/server";
 import type { CompetitionSummary } from "./filter";
 
@@ -124,4 +125,15 @@ async function loadViewerState(
       .maybeSingle(),
   ]);
   return { teamId: member?.team_id ?? null, interested: !!interest };
+}
+
+/** The "Ringkasan guidebook" tab content, or null to hide the tab (F-CMP-02). */
+export async function loadGuidebookSummary(c: CompetitionDetail): Promise<GuidebookSummary | null> {
+  if (!c.guidebookPath) return null;
+  const supabase = await createClient();
+  return getGuidebookSummary(supabase, {
+    id: c.id,
+    category: c.category,
+    guidebook_path: c.guidebookPath,
+  });
 }

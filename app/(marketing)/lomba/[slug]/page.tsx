@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { teamSizeLabel } from "@/components/competition/competition-card";
+import { GuidebookSummaryTab } from "@/components/competition/guidebook-summary";
 import { InterestButton } from "@/components/competition/interest-button";
 import { buttonClasses } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { Chip } from "@/components/ui/chip";
 import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { COMP_CATEGORY_LABELS } from "@/lib/constants";
 import { deadlineStatus } from "@/lib/competitions/filter";
-import { loadCompetition } from "@/lib/competitions/queries";
+import { loadCompetition, loadGuidebookSummary } from "@/lib/competitions/queries";
 import { formatDate, todayIso } from "@/lib/format/date";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CompetitionPage({ params }: Props) {
   const c = await loadCompetition((await params).slug);
   if (!c) notFound();
+  const summary = await loadGuidebookSummary(c);
   const closed = deadlineStatus(c.registrationDeadline, todayIso()) === "closed";
 
   return (
@@ -130,6 +132,21 @@ export default async function CompetitionPage({ params }: Props) {
           <h2 className="font-semibold text-ink-strong">Tentang lomba</h2>
           <p className="text-sm whitespace-pre-line text-ink-2">{c.description}</p>
         </Card>
+      )}
+
+      {summary && (
+        // The second tab, "Tim yang sedang mencari", lands on Final Day with F-INV-05.
+        <section aria-labelledby="tab-ringkasan" className="flex flex-col gap-4">
+          <div className="flex border-b border-line">
+            <h2
+              id="tab-ringkasan"
+              className="-mb-px border-b-2 border-primary px-1 pb-2.5 text-sm font-semibold text-ink-strong"
+            >
+              Ringkasan guidebook
+            </h2>
+          </div>
+          <GuidebookSummaryTab summary={summary} />
+        </section>
       )}
     </main>
   );
