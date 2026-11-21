@@ -67,23 +67,6 @@ body {
   @apply bg-bg font-sans text-ink antialiased;
 }
 
-/*
- * A hit area of at least 44 x 44 px around a smaller control (docs/agents/ui-review.md: touch
- * targets on phones) without changing how it looks. Only on elements that aren't positioned
- * already and don't use ::after themselves.
- */
-@utility tap-target {
-  position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: max(100%, 44px);
-    height: max(100%, 44px);
-    transform: translate(-50%, -50%);
-  }
-}
 
 /* Brand intro (components/layout/intro.tsx). Brand motion, so it is outside the 150 ms UI rule. */
 .intro {
@@ -128,5 +111,23 @@ html[data-intro="seen"] .intro {
   from {
     transform: translateX(-40px);
     opacity: 0;
+  }
+}
+
+/*
+ * A hit area of at least 44 x 44 px around a smaller control (docs/agents/ui-review.md: touch
+ * targets on phones) without changing how it looks. Only on elements that aren't positioned
+ * already and don't use ::after themselves.
+ */
+@utility tap-target {
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
   }
 }
