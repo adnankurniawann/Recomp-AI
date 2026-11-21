@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildOutline, type OutlineInput } from "./outline";
+import { buildOutline, resumeLesson, type OutlineInput } from "./outline";
 
 const lesson = (id: string, sort: number, isFreePreview: boolean) => ({
   id,
@@ -82,5 +82,28 @@ describe("buildOutline", () => {
     });
     expect(first.previous).toBeNull();
     expect(last.next).toBeNull();
+  });
+});
+
+describe("resumeLesson", () => {
+  it("starts at the first lesson of a new course", () => {
+    expect(resumeLesson({ chapters, doneLessonIds: new Set(), hasAccess: false })?.id).toBe("a1");
+  });
+
+  it("continues at the first open lesson not done yet", () => {
+    expect(resumeLesson({ chapters, doneLessonIds: new Set(["a1"]), hasAccess: true })?.id).toBe(
+      "a2",
+    );
+  });
+
+  it("goes to the first locked lesson once the free chapter is done", () => {
+    const done = new Set(["a1", "a2"]);
+    expect(resumeLesson({ chapters, doneLessonIds: done, hasAccess: false })?.id).toBe("b1");
+  });
+
+  it("goes back to the start when everything is done, and is null without lessons", () => {
+    const all = new Set(["a1", "a2", "b1", "b2"]);
+    expect(resumeLesson({ chapters, doneLessonIds: all, hasAccess: true })?.id).toBe("a1");
+    expect(resumeLesson({ chapters: [], doneLessonIds: all, hasAccess: true })).toBeNull();
   });
 });
