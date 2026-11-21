@@ -10,7 +10,7 @@ export function Footer() {
         <nav aria-label="Tautan footer" className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
           <Link
             href="/privasi"
-            className="rounded-sm text-ink-2 hover:text-ink focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+            className="tap-target rounded-sm text-ink-2 hover:text-ink focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
           >
             Kebijakan privasi
           </Link>

@@ -63,7 +63,7 @@ export function ScoreBadge({ score, factors, weights, align = "end", className }
           e.stopPropagation();
           setOpen((o) => !o);
         }}
-        className="inline-flex h-[30px] items-center gap-1.5 rounded-sm border border-line bg-surface px-2 transition-[border-color] duration-150 ease-out hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+        className="tap-target inline-flex h-[30px] items-center gap-1.5 rounded-sm border border-line bg-surface px-2 transition-[border-color] duration-150 ease-out hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
       >
         <span aria-hidden className={cn("size-2 rounded-full", DOTS[scoreTone(score)])} />
         <span className="font-mono text-[15px] text-ink-strong tabular-nums">{score}</span>

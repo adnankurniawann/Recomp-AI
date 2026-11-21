@@ -31,7 +31,7 @@ export default async function CompetitionPage({ params }: Props) {
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-12">
       <Link
         href="/lomba"
-        className="inline-flex items-center gap-1.5 self-start text-sm text-ink-2 hover:text-ink-strong"
+        className="inline-flex min-h-11 items-center gap-1.5 self-start text-sm text-ink-2 hover:text-ink-strong md:min-h-0"
       >
         <ArrowLeft aria-hidden size={16} strokeWidth={1.75} />
         Kembali ke daftar lomba
@@ -118,7 +118,7 @@ export default async function CompetitionPage({ params }: Props) {
               href={c.officialUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 self-start text-sm font-medium text-primary hover:text-primary-hover"
+              className="tap-target inline-flex items-center gap-1 self-start text-sm font-medium text-primary hover:text-primary-hover"
             >
               Situs resmi
               <ArrowUpRight aria-hidden size={14} strokeWidth={1.75} />

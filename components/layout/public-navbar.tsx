@@ -66,7 +66,7 @@ export function PublicNavbar({
               <Link
                 href="/profil"
                 aria-label="Profil"
-                className="rounded-full focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+                className="tap-target rounded-full focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
               >
                 <Avatar
                   name={viewer.name}
@@ -84,7 +84,7 @@ export function PublicNavbar({
               >
                 Masuk
               </Link>
-              <Link href="/masuk" className={buttonClasses("primary", "md", "h-[38px] px-3.5")}>
+              <Link href="/masuk" className={buttonClasses("primary", "md", "h-11 px-3.5 md:h-[38px]")}>
                 Mulai gratis
               </Link>
             </>

@@ -181,7 +181,7 @@ export function SignInCard({ next, callbackFailed }: SignInCardProps) {
               setMode(signUp ? "sign-in" : "sign-up");
               setFields({});
             }}
-            className="rounded-sm font-medium text-primary hover:underline focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+            className="tap-target rounded-sm font-medium text-primary hover:underline focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
           >
             {signUp ? "Masuk" : "Daftar dengan email"}
           </button>

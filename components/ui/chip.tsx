@@ -34,7 +34,7 @@ export function Chip({
     "inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-medium whitespace-nowrap transition-[color,background-color,border-color] duration-150 ease-out",
     colored ? cn("border-transparent", role.soft, role.ink) : "border-line bg-surface text-ink-2",
     onClick &&
-      "cursor-pointer hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
+      "tap-target cursor-pointer hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
     onRemove && "pr-1",
     className,
   );

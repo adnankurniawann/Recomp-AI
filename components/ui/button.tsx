@@ -20,8 +20,9 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-8 rounded-sm px-3 text-[13px]",
-  md: "h-10 rounded-md px-4 text-sm",
+  sm: "tap-target h-8 rounded-sm px-3 text-[13px]",
+  // 44 px on phones, 40 px from md up, like Input and Select.
+  md: "h-11 rounded-md px-4 text-sm md:h-10",
   lg: "h-11 rounded-md px-5 text-sm",
 };
 

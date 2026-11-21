@@ -30,7 +30,7 @@ export function SearchInput({ label, shortcut, className, ...props }: SearchInpu
   return (
     <label
       className={cn(
-        "flex h-10 items-center gap-2 rounded-md border border-line bg-surface px-3 text-ink-3 shadow-xs transition-[border-color,box-shadow] duration-150 ease-out focus-within:border-primary focus-within:ring-3 focus-within:ring-primary-200 hover:border-line-strong",
+        "flex h-11 items-center gap-2 rounded-md border border-line bg-surface px-3 text-ink-3 shadow-xs transition-[border-color,box-shadow] duration-150 ease-out focus-within:border-primary focus-within:ring-3 focus-within:ring-primary-200 hover:border-line-strong md:h-10",
         className,
       )}
     >
@@ -39,7 +39,7 @@ export function SearchInput({ label, shortcut, className, ...props }: SearchInpu
         ref={ref}
         type="search"
         aria-label={label}
-        className="min-w-0 flex-1 bg-transparent text-sm text-ink outline-none placeholder:text-ink-3 [&::-webkit-search-cancel-button]:hidden"
+        className="min-w-0 flex-1 self-stretch bg-transparent text-sm text-ink outline-none placeholder:text-ink-3 [&::-webkit-search-cancel-button]:hidden"
         {...props}
       />
       {shortcut && (
