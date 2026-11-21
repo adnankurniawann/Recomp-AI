@@ -34,6 +34,21 @@ export interface Outline {
   next: OutlineLesson | null;
 }
 
+/**
+ * Where "Mulai belajar" or "Lanjutkan" goes (F-LRN-02): the first open lesson not done yet. When
+ * every open lesson is done, the first locked one (the unlock card shows there), and when the whole
+ * course is done, the first lesson. Null only for a course without lessons.
+ */
+export function resumeLesson(input: Omit<OutlineInput, "currentLessonId">): OutlineLesson | null {
+  const { lessons } = buildOutline({ ...input, currentLessonId: null });
+  return (
+    lessons.find((l) => l.isOpen && l.status !== "done") ??
+    lessons.find((l) => !l.isOpen) ??
+    lessons[0] ??
+    null
+  );
+}
+
 export function buildOutline(input: OutlineInput): Outline {
   const chapters = [...input.chapters]
     .sort((a, b) => a.sort - b.sort)
