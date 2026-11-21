@@ -803,6 +803,9 @@ isOneToOne: false
 "mark_lesson_if_done":
 { Args: { "p_lesson": string,"p_profile": string }; Returns: boolean
                            },
+"mark_notifications_read":
+{ Args: { "p_ids": (string)[] }; Returns: number
+                           },
 "recompute_team_status":
 { Args: { "p_team": string }; Returns: Database["public"]['Enums']["team_status_t"]
                            },
