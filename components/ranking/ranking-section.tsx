@@ -201,7 +201,7 @@ export function RankingSection({
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as RankingSort)}
-            className="h-10 rounded-md border border-line bg-surface px-3 text-sm text-ink shadow-xs hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+            className="h-11 rounded-md border border-line bg-surface px-3 text-sm text-ink shadow-xs hover:border-line-strong focus-visible:ring-3 md:h-10 focus-visible:ring-primary-200 focus-visible:outline-none"
           >
             {RANKING_SORTS.map((s) => (
               <option key={s} value={s}>

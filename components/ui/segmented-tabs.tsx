@@ -68,7 +68,7 @@ export function SegmentedTabs<T extends string>({
             onClick={() => onChange(tab.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "inline-flex h-9 items-center gap-2 rounded-sm px-3 text-sm font-medium whitespace-nowrap transition-[color,background-color,box-shadow] duration-150 ease-out focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
+              "inline-flex h-11 items-center gap-2 md:h-9 rounded-sm px-3 text-sm font-medium whitespace-nowrap transition-[color,background-color,box-shadow] duration-150 ease-out focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
               active ? "bg-surface text-primary shadow-xs" : "text-ink-2 hover:text-ink",
             )}
           >

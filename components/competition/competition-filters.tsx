@@ -8,7 +8,7 @@ import { COMP_CATEGORIES, COMP_CATEGORY_LABELS } from "@/lib/constants";
 import { DEADLINE_FILTERS, DEADLINE_LABELS, TEAM_SIZES } from "@/lib/competitions/filter";
 
 const selectClass =
-  "h-10 rounded-md border border-line bg-surface px-3 text-sm text-ink shadow-xs hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none";
+  "h-11 w-full min-w-0 rounded-md border border-line bg-surface px-3 text-sm md:h-10 sm:w-auto text-ink shadow-xs hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none";
 
 /** Keyword, category chips, deadline and team size. State lives in the URL so links can be shared. */
 export function CompetitionFilters() {
@@ -43,7 +43,7 @@ export function CompetitionFilters() {
         onChange={(e) => setQ(e.target.value)}
         className="max-w-md"
       />
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-4 sm:gap-y-2">
         <Chip selected={!category} onClick={() => set("kategori", undefined)}>
           Semua
         </Chip>
@@ -56,7 +56,7 @@ export function CompetitionFilters() {
             {COMP_CATEGORY_LABELS[c]}
           </Chip>
         ))}
-        <div className="flex gap-2 sm:ml-auto">
+        <div className="grid w-full grid-cols-1 gap-2 min-[400px]:grid-cols-2 sm:ml-auto sm:flex sm:w-auto">
           <select
             aria-label="Status deadline"
             value={params.get("deadline") ?? ""}

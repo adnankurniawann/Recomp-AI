@@ -54,7 +54,7 @@ export function Logo({ size = "md", className }: { size?: "sm" | "md"; className
     <Link
       href="/"
       className={cn(
-        "inline-flex items-center rounded-md focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
+        "tap-target inline-flex items-center rounded-md focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
         className,
       )}
     >

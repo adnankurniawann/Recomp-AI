@@ -34,7 +34,7 @@ export function SkillChip({
     "inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-medium whitespace-nowrap",
     states[state],
     href &&
-      "transition-colors duration-150 ease-out hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
+      "tap-target transition-colors duration-150 ease-out hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none",
     className,
   );
   const content = (

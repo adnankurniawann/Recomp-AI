@@ -174,7 +174,7 @@ export default async function LandingPage() {
           </div>
           <Link
             href="/lomba"
-            className="inline-flex shrink-0 items-center gap-1 rounded-sm text-sm font-medium text-primary hover:text-primary-hover focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+            className="tap-target inline-flex shrink-0 items-center gap-1 rounded-sm text-sm font-medium text-primary hover:text-primary-hover focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
           >
             Lihat semua
             <ArrowRight aria-hidden size={16} strokeWidth={1.75} />
