@@ -9,13 +9,14 @@ import { Button } from "@/components/ui/button";
 
 interface RespondProps {
   inviteId: string;
-  teamName: string;
+  /** The team as named in a sentence, "Tim Ombak" (teamPhrase). */
+  team: string;
   /** The student already has a team for this competition (PRD §5.3). */
   hasTeam: boolean;
 }
 
 /** "Terima" and "Tolak" on an incoming invite. Declining asks once more, since it can't be undone. */
-export function RespondButtons({ inviteId, teamName, hasTeam }: RespondProps) {
+export function RespondButtons({ inviteId, team, hasTeam }: RespondProps) {
   const router = useRouter();
   const [confirming, setConfirming] = useState(false);
   const [pending, startTransition] = useTransition();
@@ -28,9 +29,7 @@ export function RespondButtons({ inviteId, teamName, hasTeam }: RespondProps) {
         router.refresh();
         return;
       }
-      toast.success(
-        action === "accept" ? `Kamu sekarang anggota tim ${teamName}` : "Undangan ditolak",
-      );
+      toast.success(action === "accept" ? `Kamu sekarang anggota ${team}` : "Undangan ditolak");
       router.refresh();
     });
   }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { INVITE_MESSAGE_MAX } from "@/lib/validation/invite";
-import { inviteTemplate } from "./template";
+import { inviteTemplate, teamPhrase } from "./template";
 
 const base = {
   candidateName: "Dinda Putri",
@@ -15,7 +15,7 @@ describe("inviteTemplate", () => {
     expect(
       inviteTemplate({ ...base, topReason: "Menutup semua skill wajib: Figma, User Research" }),
     ).toBe(
-      "Halo Dinda, aku Rani dari tim Ombak untuk Hackathon Kampus 2026. Kami lagi cari UI/UX Designer " +
+      "Halo Dinda, aku Rani dari Tim Ombak untuk Hackathon Kampus 2026. Kami lagi cari UI/UX Designer " +
         "dan profilmu cocok karena menutup semua skill wajib: Figma, User Research. Mau gabung?",
     );
   });
@@ -39,5 +39,17 @@ describe("inviteTemplate", () => {
 
     const huge = inviteTemplate({ ...base, teamName: "T".repeat(600) });
     expect(huge.length).toBe(INVITE_MESSAGE_MAX);
+  });
+});
+
+describe("teamPhrase", () => {
+  it.each([
+    ["Ombak", "Tim Ombak"],
+    ["Tim Ombak", "Tim Ombak"],
+    ["tim ombak", "tim ombak"],
+    ["  Timnas Muda ", "Tim Timnas Muda"],
+    ["TIM 7", "TIM 7"],
+  ])("%s → %s", (name, expected) => {
+    expect(teamPhrase(name)).toBe(expected);
   });
 });
