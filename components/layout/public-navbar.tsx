@@ -7,6 +7,8 @@ import { useState } from "react";
 import { Avatar } from "@/components/ui/avatar";
 import { buttonClasses } from "@/components/ui/button";
 import { IconButton } from "@/components/ui/icon-button";
+import { NotificationBell } from "@/components/notifications/notification-bell";
+import type { NotificationFeed } from "@/lib/notifications/queries";
 import type { Viewer } from "@/lib/profile/queries";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
@@ -15,8 +17,17 @@ import { isActive, PUBLIC_LINKS } from "./nav";
 const linkClasses =
   "rounded-sm px-1 text-[15px] font-medium transition-colors duration-150 ease-out focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none";
 
-/** Top bar of public pages (PRD §10.0, §10.1). Signed-in viewers get "Tim saya" and their avatar. */
-export function PublicNavbar({ viewer }: { viewer: Viewer | null }) {
+/**
+ * Top bar of public pages (PRD §10.0, §10.1). Signed-in viewers get "Tim saya", the notification
+ * bell and their avatar.
+ */
+export function PublicNavbar({
+  viewer,
+  feed = null,
+}: {
+  viewer: Viewer | null;
+  feed?: NotificationFeed | null;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -51,6 +62,7 @@ export function PublicNavbar({ viewer }: { viewer: Viewer | null }) {
               >
                 Tim saya
               </Link>
+              {feed && <NotificationBell items={feed.items} unreadCount={feed.unreadCount} />}
               <Link
                 href="/profil"
                 aria-label="Profil"
