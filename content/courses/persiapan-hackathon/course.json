@@ -15,6 +15,10 @@
     {
       "title": "Dari masalah ke solusi",
       "lessons": ["04-menulis-problem-statement.md"]
+    },
+    {
+      "title": "Demo dan pitching",
+      "lessons": ["07-struktur-pitch-deck.md", "08-demo-yang-aman.md"]
     }
   ]
 }
