@@ -2,7 +2,7 @@
 // to arrange rows and accounts; every assertion runs as a signed-in student with the anon key, so
 // RLS and the SQL functions decide what happens, as in the app.
 import { randomUUID } from "node:crypto";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createClient, type Session, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database, TablesUpdate } from "@/lib/supabase/types";
 
 export type Db = SupabaseClient<Database>;
@@ -32,14 +32,20 @@ export interface Student {
   profileId: string;
   username: string;
   db: Db;
+  /** The signed-in session, for putting the same student in a browser (tests/e2e). */
+  session: Session;
 }
 
 const created: string[] = [];
 
-/** A signed-in student with a finished profile and a WhatsApp number. */
+/**
+ * A signed-in student with a finished profile and a WhatsApp number. With `onboarded: false` the
+ * account is brand new instead: the profile the sign-up trigger made, nothing filled in.
+ */
 export async function createStudent(
   label: string,
   patch: TablesUpdate<"profiles"> = {},
+  { onboarded = true }: { onboarded?: boolean } = {},
 ): Promise<Student> {
   const suffix = randomUUID().slice(0, 8);
   const email = `${label}-${suffix}@test.local`;
@@ -57,31 +63,37 @@ export async function createStudent(
 
   const { data: profile, error: pErr } = await admin()
     .from("profiles")
-    .update({
-      username,
-      campus: "Kampus Tes",
-      major: "Informatika",
-      entry_year: 2024,
-      preferred_roles: ["uiux"],
-      hours_per_week: 8,
-      onboarding_done: true,
-      ...patch,
-    })
+    .update(
+      onboarded
+        ? {
+            username,
+            campus: "Kampus Tes",
+            major: "Informatika",
+            entry_year: 2024,
+            preferred_roles: ["uiux"],
+            hours_per_week: 8,
+            onboarding_done: true,
+            ...patch,
+          }
+        : { full_name: `Tes ${label}`, ...patch },
+    )
     .eq("user_id", data.user.id)
     .select("id")
     .single();
   if (pErr || !profile) throw new Error(`profile: ${pErr?.message}`);
 
-  const { error: cErr } = await admin()
-    .from("profile_contacts")
-    .insert({ profile_id: profile.id, whatsapp: `+628${Math.floor(1e9 + Math.random() * 9e9)}` });
-  if (cErr) throw new Error(`contact: ${cErr.message}`);
+  if (onboarded) {
+    const { error: cErr } = await admin()
+      .from("profile_contacts")
+      .insert({ profile_id: profile.id, whatsapp: `+628${Math.floor(1e9 + Math.random() * 9e9)}` });
+    if (cErr) throw new Error(`contact: ${cErr.message}`);
+  }
 
   const db = createClient<Database>(url, anonKey, noSession);
-  const { error: sErr } = await db.auth.signInWithPassword({ email, password });
-  if (sErr) throw new Error(`signIn: ${sErr.message}`);
+  const { data: signedIn, error: sErr } = await db.auth.signInWithPassword({ email, password });
+  if (sErr || !signedIn.session) throw new Error(`signIn: ${sErr?.message}`);
 
-  return { userId: data.user.id, profileId: profile.id, username, db };
+  return { userId: data.user.id, profileId: profile.id, username, db, session: signedIn.session };
 }
 
 /** Delete every account made by createStudent; profiles and their rows cascade. */
