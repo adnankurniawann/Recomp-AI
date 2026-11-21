@@ -1,0 +1,20 @@
+{
+  "slug": "persiapan-hackathon",
+  "title": "Persiapan Hackathon",
+  "subtitle": "Dari membaca guidebook sampai demo di depan juri",
+  "description": "Kursus singkat untuk tim yang mau ikut hackathon atau lomba IT: memahami guidebook, menyusun masalah dan solusi, lalu menyiapkan demo dan pitching.",
+  "category": "hackathon",
+  "level": "Pemula",
+  "price": 49000,
+  "chapters": [
+    {
+      "title": "Memahami lomba",
+      "free": true,
+      "lessons": ["01-membaca-guidebook.md"]
+    },
+    {
+      "title": "Dari masalah ke solusi",
+      "lessons": ["04-menulis-problem-statement.md"]
+    }
+  ]
+}
