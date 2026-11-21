@@ -762,6 +762,11 @@ isOneToOne: false
             "accept_invite":
 { Args: { "p_invite": string }; Returns: string
                            },
+"answered_question_keys":
+{ Args: { "p_lesson": string }; Returns: {
+              "answer_key": string,"explanation_md": string,"question_id": string
+            }[]
+                           },
 "are_teammates":
 { Args: { "a": string,"b": string }; Returns: boolean
                            },
@@ -771,11 +776,20 @@ isOneToOne: false
 "complete_onboarding":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
+"complete_reading_lesson":
+{ Args: { "p_lesson": string }; Returns: undefined
+                           },
+"course_progress":
+{ Args: { "p_course": string }; Returns: Json
+                           },
 "current_profile_id":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
 "decline_invite":
 { Args: { "p_invite": string }; Returns: string
+                           },
+"has_course_access":
+{ Args: { "p_course": string }; Returns: boolean
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
@@ -783,8 +797,17 @@ isOneToOne: false
 "is_team_member":
 { Args: { "p_team": string }; Returns: boolean
                            },
+"lesson_is_open":
+{ Args: { "p_lesson": string }; Returns: boolean
+                           },
+"mark_lesson_if_done":
+{ Args: { "p_lesson": string,"p_profile": string }; Returns: boolean
+                           },
 "recompute_team_status":
 { Args: { "p_team": string }; Returns: Database["public"]['Enums']["team_status_t"]
+                           },
+"redeem_promo":
+{ Args: { "p_code": string,"p_course": string }; Returns: undefined
                            },
 "save_profile_contact":
 { Args: { "p_contact_email": string,"p_goal": Database["public"]['Enums']["goal_t"],"p_hours_per_week": number,"p_open_to_invite": boolean,"p_whatsapp": string,"p_work_time": Database["public"]['Enums']["work_time_t"] }; Returns: undefined
@@ -797,6 +820,12 @@ isOneToOne: false
                            },
 "send_invite":
 { Args: { "p_agent_action"?: string,"p_ai_drafted"?: boolean,"p_candidate": string,"p_message": string,"p_team_role": string }; Returns: string
+                           },
+"simulate_course_purchase":
+{ Args: { "p_course": string }; Returns: undefined
+                           },
+"submit_mcq":
+{ Args: { "p_choice": string,"p_question": string }; Returns: Json
                            }
           }
           Enums: {

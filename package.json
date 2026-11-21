@@ -18,7 +18,8 @@
     "format": "prettier --write .",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > lib/supabase/types.ts",
-    "seed:profiles": "tsx scripts/seed-profiles.ts"
+    "seed:profiles": "tsx scripts/seed-profiles.ts",
+    "seed:content": "tsx scripts/seed-content.ts"
   },
   "dependencies": {
     "@google/genai": "^3.6.1",
@@ -50,6 +51,7 @@
     "tailwindcss": "^4.3.5",
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
-    "vitest": "^5.1.1"
+    "vitest": "^5.1.1",
+    "yaml": "^2.9.1"
   }
 }
