@@ -31,3 +31,19 @@ export function formatDate(iso: string, { year = true } = {}): string {
     timeZone: "UTC",
   }).format(new Date(iso));
 }
+
+/** A mentor slot in Jakarta time, "Sab 28 Nov 19.00" (PRD §10.9). */
+export function formatSlot(iso: string): string {
+  const parts = new Intl.DateTimeFormat("id-ID", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: TZ,
+  }).formatToParts(new Date(iso));
+  const get = (type: Intl.DateTimeFormatPartTypes) =>
+    parts.find((p) => p.type === type)?.value ?? "";
+  return `${get("weekday")} ${get("day")} ${get("month")} ${get("hour")}.${get("minute")}`;
+}
