@@ -67,6 +67,28 @@ body {
   @apply bg-bg font-sans text-ink antialiased;
 }
 
+/* Code in lessons (rehype-highlight classes), tokens only. */
+.hljs-comment,
+.hljs-quote {
+  color: var(--color-ink-3);
+}
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-literal {
+  color: var(--color-primary-hover);
+}
+.hljs-string,
+.hljs-attr,
+.hljs-template-variable {
+  color: var(--color-success-ink);
+}
+.hljs-number,
+.hljs-title,
+.hljs-type {
+  color: var(--color-role-data-ink);
+}
+
 /* Brand intro (components/layout/intro.tsx). Brand motion, so it is outside the 150 ms UI rule. */
 .intro {
   animation: intro-out 320ms ease-out 1500ms forwards;

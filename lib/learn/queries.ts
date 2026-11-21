@@ -42,6 +42,8 @@ export interface LessonPlayerData {
     slug: string;
     title: string;
     isOpen: boolean;
+    /** In `lesson_progress`: every question answered, or read to the end. */
+    isDone: boolean;
     /** Null when the lesson is locked. */
     contentMd: string | null;
     videoUrl: string | null;
@@ -107,6 +109,7 @@ export async function loadLessonPlayer(
     hasAccess: p.has_access,
   };
 
+  const doneIds = new Set((doneRes.data ?? []).map((r) => r.lesson_id));
   const outline = buildOutline({
     chapters: course.chapters.map((c) => ({
       id: c.id,
@@ -120,7 +123,7 @@ export async function loadLessonPlayer(
         isFreePreview: l.is_free_preview,
       })),
     })),
-    doneLessonIds: new Set((doneRes.data ?? []).map((r) => r.lesson_id)),
+    doneLessonIds: doneIds,
     hasAccess: progress.hasAccess,
     currentLessonId: current.id,
   });
@@ -190,6 +193,7 @@ export async function loadLessonPlayer(
       slug: current.slug,
       title: current.title,
       isOpen,
+      isDone: doneIds.has(current.id),
       contentMd,
       videoUrl: isOpen ? current.video_url : null,
       estMinutes: current.est_minutes,
