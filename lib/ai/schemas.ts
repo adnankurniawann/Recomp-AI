@@ -138,3 +138,12 @@ export const CaseFeedback = z.object({
 export type CaseFeedback = z.infer<typeof CaseFeedback>;
 
 export const CASE_FEEDBACK_JSON_SCHEMA = stripLimits(z.toJSONSchema(CaseFeedback, { io: "input" }));
+// Output of the recruiter agent (PRD §8.2): one draft per candidate. Length 80–500 is checked in
+// lib/ai/recruiter.ts so one bad draft falls back to the template without failing the others.
+export const RecruiterDrafts = z
+  .array(z.object({ candidateId: z.string(), message: z.string() }))
+  .max(5);
+
+export type RecruiterDrafts = z.infer<typeof RecruiterDrafts>;
+
+export const RECRUITER_JSON_SCHEMA = stripLimits(z.toJSONSchema(RecruiterDrafts, { io: "input" }));

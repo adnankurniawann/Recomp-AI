@@ -2,10 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { fail, failFromDb, failValidation, ok, type ActionResult } from "@/lib/action-result";
+import { approvalFor, type RecruitDecision } from "@/lib/ai/recruit-decisions";
 import { teamPhrase } from "@/lib/invites/template";
 import { createClient } from "@/lib/supabase/server";
 import { submitFeedbackSchema, type SubmitFeedbackInput } from "@/lib/validation/feedback";
 import { username as usernameSchema } from "@/lib/validation/profile";
+import {
+  recruitDecisionSchema,
+  teamRoleIdSchema,
+  type RecruitDecisionInput,
+} from "@/lib/validation/recruit";
 import {
   assignMemberRoleSchema,
   createTeamSchema,
@@ -232,4 +238,82 @@ export async function submitFeedback(
     return failFromDb(error);
   }
   return ok({});
+}
+
+async function signedInProfile() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data: me } = await supabase.from("profiles").select("id").eq("user_id", user.id).single();
+  return me ? { supabase, profileId: me.id } : null;
+}
+
+/**
+ * Records "Kirim" or "Lewati" on one recruiter draft and updates the run's approval (F-RCR-03).
+ * The invite itself is sent by `sendInvite` with the same agentActionId, on the leader's click.
+ */
+export async function recordRecruitDecision(
+  input: RecruitDecisionInput,
+): Promise<ActionResult<{ approval: string }>> {
+  const parsed = recruitDecisionSchema.safeParse(input);
+  if (!parsed.success) return failValidation(parsed.error.issues);
+  const session = await signedInProfile();
+  if (!session) return fail("AUTH_REQUIRED");
+  const { supabase, profileId } = session;
+  const d = parsed.data;
+
+  // actor_id in the filter: only the leader who ran the agent can answer its drafts.
+  const { data: row } = await supabase
+    .from("agent_actions")
+    .select("input, output")
+    .eq("id", d.agentActionId)
+    .eq("actor_id", profileId)
+    .eq("agent", "recruiter")
+    .maybeSingle();
+  if (!row) return fail("NOT_FOUND");
+
+  const candidateIds = (row.input as { candidateIds?: string[] } | null)?.candidateIds ?? [];
+  if (!candidateIds.includes(d.candidateId)) return fail("NOT_FOUND");
+  const output = (row.output ?? {}) as { decisions?: Record<string, RecruitDecision> };
+  const decisions = { ...output.decisions, [d.candidateId]: d.decision };
+  const approval = approvalFor(candidateIds, decisions);
+
+  const { error } = await supabase
+    .from("agent_actions")
+    .update({ output: { ...output, decisions }, approval })
+    .eq("id", d.agentActionId)
+    .eq("actor_id", profileId);
+  if (error) {
+    console.error("[recruit]", error.code, error.message);
+    return failFromDb(error);
+  }
+  return ok({ approval });
+}
+
+/**
+ * F-RCR-02: when the newest AI-drafted invite for this role was declined, the first name of that
+ * candidate, so the tab can offer drafts for the next ones. Null otherwise.
+ */
+export async function loadRecruitHint(
+  teamRoleId: string,
+): Promise<ActionResult<{ declinedName: string } | null>> {
+  const parsed = teamRoleIdSchema.safeParse({ teamRoleId });
+  if (!parsed.success) return failValidation(parsed.error.issues);
+  const session = await signedInProfile();
+  if (!session) return fail("AUTH_REQUIRED");
+
+  const { data } = await session.supabase
+    .from("invites")
+    .select("status, profiles!invites_candidate_id_fkey(full_name)")
+    .eq("team_role_id", teamRoleId)
+    .eq("created_by", session.profileId)
+    .eq("ai_drafted", true)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (data?.status !== "declined") return ok(null);
+  const name = data.profiles?.full_name.trim().split(/\s+/)[0] || "Kandidat";
+  return ok({ declinedName: name });
 }

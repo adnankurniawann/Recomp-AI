@@ -1,8 +1,10 @@
 "use client";
 
+import type { RecruitApi } from "@/components/ranking/recruit-panel";
 import { RankingSection } from "@/components/ranking/ranking-section";
 import { KpiStrip } from "@/components/ui/kpi-strip";
 import { ok, fail } from "@/lib/action-result";
+import { templateDraft } from "@/lib/ai/recruiter";
 import { fixtureProfiles, fixtureRanking, fixtureTeam } from "@/lib/fixtures";
 import type { PublicProfile } from "@/lib/profile/public";
 import { RANKING_PAGE_SIZE, type RankingPage } from "@/lib/ranking/types";
@@ -54,6 +56,39 @@ async function loadProfile(username: string) {
   });
 }
 
+// "Bantu rekrut" on fixtures: template drafts for the top 3, nothing written anywhere.
+const recruitApi: RecruitApi = {
+  request: async (teamRoleId) => {
+    await wait();
+    const role = fixtureTeam.roles.find((r) => r.id === teamRoleId)!;
+    const facts = {
+      teamName: fixtureTeam.name,
+      competitionName: fixtureTeam.competition.name,
+      roleName: role.name,
+      leaderFirstName: leader.fullName,
+    };
+    const drafts = fixtureRanking(teamRoleId)
+      .candidates.slice(0, 3)
+      .map((c) =>
+        templateDraft(facts, {
+          candidateId: c.profile.id,
+          fullName: c.profile.fullName,
+          firstName: c.profile.fullName,
+          score: c.score,
+          matchedSkills: c.matchedRequired.map((s) => s.name),
+          reasons: c.reasons.map((r) => r.text),
+        }),
+      );
+    return { agentActionId: "preview", drafts, aiUsed: false };
+  },
+  send: async () => {
+    await wait();
+    return ok({ inviteId: "preview" });
+  },
+  decide: async () => ok({ approval: "pending" }),
+  hint: async () => ok(null),
+};
+
 export function RankingPreview() {
   return (
     <RankingSection
@@ -70,6 +105,8 @@ export function RankingPreview() {
         await wait();
         return ok({});
       }}
+      canRecruit
+      recruitApi={recruitApi}
     />
   );
 }
