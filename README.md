@@ -68,8 +68,9 @@ These commands work once the app is scaffolded (issue #2, H0).
 
 ## Environment variables
 
-See `.env.example`. Secrets never go in the repository. Without `GEMINI_API_KEY`, or with
-`DEMO_MODE=true`, the app still runs and the AI features fall back to saved results and templates
+See `.env.example`. Secrets never go in the repository. To call Gemini through OpenRouter instead
+of Google, set `OPENROUTER_API_KEY`; it wins over `GEMINI_API_KEY`, and a bare `GEMINI_MODEL` gets
+the `google/` prefix. Without either key, or with `DEMO_MODE=true`, the app still runs and the AI features fall back to saved results and templates
 ([ADR 0006](docs/adr/0006-ai-features-degrade-without-a-key.md)).
 
 ## Tests
