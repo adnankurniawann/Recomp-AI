@@ -115,3 +115,26 @@ export function describeIssues(error: z.ZodError): string {
     .map((i) => `- ${i.path.length ? i.path.join(".") : "(root)"}: ${i.message}`)
     .join("\n");
 }
+
+// Output contract of the case-study feedback (PRD §8.3). `max_score` is overwritten with the
+// rubric's value after the check in lib/ai/case-feedback.ts, so the model can't raise it.
+export const CaseFeedback = z.object({
+  scores: z
+    .array(
+      z.object({
+        criterion: z.string(),
+        score: z.number().min(0),
+        max_score: z.number().positive(),
+        quote: z.string().max(200).nullable(),
+        comment: z.string().max(400),
+        suggestion: z.string().max(400),
+      }),
+    )
+    .min(1)
+    .max(10),
+  overall: z.string().max(500),
+});
+
+export type CaseFeedback = z.infer<typeof CaseFeedback>;
+
+export const CASE_FEEDBACK_JSON_SCHEMA = stripLimits(z.toJSONSchema(CaseFeedback, { io: "input" }));
