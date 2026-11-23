@@ -100,7 +100,7 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] Vercel: `main` to production, a preview URL for every PR
 - [x] #34 Contacts on the team dashboard (F-INV-04)
 - [x] #26 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04)
-- [ ] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
+- [x] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
 
 **@dhanesmd3**
 - [x] #31 Invite dialog and `sendInvite` (F-INV-01)

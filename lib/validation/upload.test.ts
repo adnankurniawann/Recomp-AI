@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { checkImage, MAX_IMAGE_BYTES } from "./upload";
+import { checkImage, checkPdf, MAX_IMAGE_BYTES, MAX_PDF_BYTES } from "./upload";
 
 describe("checkImage", () => {
   it.each([
@@ -28,6 +28,20 @@ describe("checkImage", () => {
     expect(checkImage({ size: 0, type: "image/png" })).toMatchObject({
       ok: false,
       code: "VALIDATION",
+    });
+  });
+});
+
+describe("checkPdf", () => {
+  it("accepts a PDF up to 20 MB", () => {
+    expect(checkPdf({ type: "application/pdf", size: MAX_PDF_BYTES })).toEqual({ ok: true });
+  });
+
+  it("refuses another type, an empty file and a file over 20 MB", () => {
+    expect(checkPdf({ type: "image/png", size: 10 })).toMatchObject({ code: "VALIDATION" });
+    expect(checkPdf({ type: "application/pdf", size: 0 })).toMatchObject({ code: "VALIDATION" });
+    expect(checkPdf({ type: "application/pdf", size: MAX_PDF_BYTES + 1 })).toMatchObject({
+      code: "FILE_TOO_LARGE",
     });
   });
 });
