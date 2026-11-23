@@ -770,6 +770,9 @@ isOneToOne: false
 "are_teammates":
 { Args: { "a": string,"b": string }; Returns: boolean
                            },
+"assign_member_role":
+{ Args: { "p_profile": string,"p_role": string,"p_team": string }; Returns: undefined
+                           },
 "cancel_invite":
 { Args: { "p_invite": string }; Returns: undefined
                            },

@@ -6,6 +6,7 @@ import { teamPhrase } from "@/lib/invites/template";
 import { createClient } from "@/lib/supabase/server";
 import { username as usernameSchema } from "@/lib/validation/profile";
 import {
+  assignMemberRoleSchema,
   createTeamSchema,
   saveRolesSchema,
   type CreateTeamInput,
@@ -88,6 +89,30 @@ export async function saveRoles(
 
   revalidatePath(`/tim/${parsed.data.teamId}`, "layout");
   return ok({ roles: data });
+}
+
+/** The leader moves a member to another role (`assign_member_role`, F-TEM-03). */
+export async function assignMemberRole(
+  teamId: string,
+  profileId: string,
+  roleId: string,
+): Promise<ActionResult<Record<string, never>>> {
+  const parsed = assignMemberRoleSchema.safeParse({ teamId, profileId, roleId });
+  if (!parsed.success) return failValidation(parsed.error.issues);
+
+  const supabase = await createClient();
+  const { error } = await supabase.rpc("assign_member_role", {
+    p_team: parsed.data.teamId,
+    p_profile: parsed.data.profileId,
+    p_role: parsed.data.roleId,
+  });
+  if (error) {
+    if (error.code !== "P0001") console.error("[team member role]", error.code, error.message);
+    return failFromDb(error);
+  }
+
+  revalidatePath(`/tim/${parsed.data.teamId}`, "layout");
+  return ok({});
 }
 
 /**
