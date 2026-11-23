@@ -159,3 +159,74 @@ test("the leader edits roles and confirms a change to a filled role", async ({
   ]);
   await context.close();
 });
+
+test("teammates see each other's WhatsApp, outsiders don't", async ({ browser, baseURL }) => {
+  const [leader, friend, outsider] = await Promise.all([
+    createStudent("ketua"),
+    createStudent("teman"),
+    createStudent("luar"),
+  ]);
+  const competitionId = await createCompetition();
+  competitions.push(competitionId);
+  const role = (name: string) => ({
+    name,
+    color_key: "backend",
+    source: "manual",
+    source_page: null,
+    source_criterion: null,
+    edited: false,
+    required_skills: [{ skill_id: 1, min_level: 2 }],
+    optional_skill_ids: [],
+    hours_per_week: 8,
+    slots: 1,
+  });
+  const { data: teamId, error } = await leader.db.rpc("create_team", {
+    p_competition: competitionId,
+    p_name: "Tim Kontak",
+    p_goal: "win",
+    p_work_time: "night",
+    p_roles: [role("Role A"), role("Role B"), role("Role C")] as never,
+    p_leader_role_index: 0,
+  });
+  if (error) throw new Error(error.message);
+
+  // The friend joins through an accepted invite, as in the app.
+  const { data: roles } = await admin()
+    .from("team_roles")
+    .select("id")
+    .eq("team_id", teamId!)
+    .order("sort");
+  const { data: inviteId, error: sendErr } = await leader.db.rpc("send_invite", {
+    p_team_role: roles![1]!.id,
+    p_candidate: friend.profileId,
+    p_message: "Halo, gabung yuk.",
+  });
+  if (sendErr) throw new Error(sendErr.message);
+  const { error: acceptErr } = await friend.db.rpc("accept_invite", { p_invite: inviteId! });
+  if (acceptErr) throw new Error(acceptErr.message);
+  const { data: leaderContact } = await admin()
+    .from("profile_contacts")
+    .select("whatsapp")
+    .eq("profile_id", leader.profileId)
+    .single();
+  const waLink = `https://wa.me/${leaderContact!.whatsapp!.slice(1)}`;
+
+  const friendContext = await browser.newContext();
+  await signIn(friendContext, friend, baseURL!);
+  const page = await friendContext.newPage();
+  await page.goto(`/tim/${teamId}`);
+  await expect(page.getByRole("link", { name: "Chat di WhatsApp" })).toHaveAttribute(
+    "href",
+    waLink,
+  );
+  await friendContext.close();
+
+  // Forming teams are public, but contacts stay closed to outsiders.
+  const outsiderContext = await browser.newContext();
+  await signIn(outsiderContext, outsider, baseURL!);
+  const other = await outsiderContext.newPage();
+  await other.goto(`/tim/${teamId}`);
+  await expect(other.getByRole("heading", { level: 1, name: "Tim Kontak" })).toBeVisible();
+  await expect(other.getByRole("link", { name: "Chat di WhatsApp" })).toHaveCount(0);
+  await outsiderContext.close();
+});

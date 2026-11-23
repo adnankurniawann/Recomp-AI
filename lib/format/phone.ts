@@ -18,3 +18,8 @@ export function normalizePhone(input: string): string | null {
 
   return NORMALIZED_PHONE.test(normalized) ? normalized : null;
 }
+
+/** The "Chat di WhatsApp" link for a normalised `+62…` number: `https://wa.me/62…`. */
+export function whatsappUrl(phone: string): string {
+  return `https://wa.me/${phone.replace(/^\+/, "")}`;
+}

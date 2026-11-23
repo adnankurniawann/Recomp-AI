@@ -1,4 +1,4 @@
-import { GraduationCap, Send, UserRound } from "lucide-react";
+import { GraduationCap, Mail, MessageCircle, Send, UserRound } from "lucide-react";
 import Link from "next/link";
 import { CourseCard } from "@/components/learn/course-card";
 import { Avatar } from "@/components/ui/avatar";
@@ -10,6 +10,7 @@ import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { ROLE_COLORS } from "@/lib/constants";
 import { INVITE_STATUS } from "@/lib/invites/status";
+import { whatsappUrl } from "@/lib/format/phone";
 import { roleSourceLabel } from "@/lib/format/role-source";
 import type { DashboardRole, TeamDashboard } from "@/lib/team/queries";
 import { cn } from "@/lib/utils";
@@ -85,7 +86,7 @@ export function RoleRow({
 
 /**
  * Everyone in the team, leader first. With `canAssign` the leader moves members between roles.
- * Contacts come in F-INV-04.
+ * Teammates see each other's WhatsApp and email (F-INV-04); `contact` is null for anyone else.
  */
 export function MemberList({ team, canAssign }: { team: TeamDashboard; canAssign: boolean }) {
   const members = team.roles
@@ -121,6 +122,30 @@ export function MemberList({ team, canAssign }: { team: TeamDashboard; canAssign
               />
             ) : (
               <span className="text-[13px] text-ink-3">{m.role.name}</span>
+            )}
+            {m.contact && (m.contact.whatsapp || m.contact.email) && (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                {m.contact.whatsapp && (
+                  <a
+                    href={whatsappUrl(m.contact.whatsapp)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonClasses("secondary", "sm")}
+                  >
+                    <MessageCircle aria-hidden size={14} strokeWidth={1.75} />
+                    Chat di WhatsApp
+                  </a>
+                )}
+                {m.contact.email && (
+                  <a
+                    href={`mailto:${m.contact.email}`}
+                    className="flex min-w-0 items-center gap-1 text-[13px] text-primary hover:underline"
+                  >
+                    <Mail aria-hidden size={14} strokeWidth={1.75} className="shrink-0" />
+                    <span className="truncate">{m.contact.email}</span>
+                  </a>
+                )}
+              </div>
             )}
           </div>
         </li>
