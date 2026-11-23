@@ -850,6 +850,9 @@ isOneToOne: false
                            },
 "submit_mcq":
 { Args: { "p_choice": string,"p_question": string }; Returns: Json
+                           },
+"submit_recommendation_feedback":
+{ Args: { "p_candidate": string,"p_factors": Json,"p_feedback": Database["public"]['Enums']["feedback_t"],"p_score": number,"p_team_role": string }; Returns: undefined
                            }
           }
           Enums: {

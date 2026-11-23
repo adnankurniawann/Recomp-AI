@@ -4,6 +4,7 @@ import { ReasonList } from "./reason-list";
 import { ScoreBadge } from "./score-badge";
 import {
   CandidateActions,
+  CandidateFeedback,
   CandidateIdentity,
   CandidateSkills,
   type CandidateItemProps,
@@ -25,7 +26,10 @@ export function CandidateRow(props: CandidateItemProps) {
       className={`${CANDIDATE_GRID} hidden cursor-pointer px-4 py-4 transition-colors duration-150 ease-out hover:bg-surface-2/50`}
     >
       <CandidateIdentity candidate={c} onOpenProfile={onOpenProfile} />
-      <ReasonList reasons={c.reasons} limit={3} />
+      <div className="flex flex-col gap-2.5">
+        <ReasonList reasons={c.reasons} limit={3} />
+        <CandidateFeedback candidate={c} onFeedback={props.onFeedback} />
+      </div>
       <CandidateSkills candidate={c} />
       <ScoreBadge score={c.score} factors={c.factors} weights={c.weights} />
       <CandidateActions {...props} className="justify-end" />

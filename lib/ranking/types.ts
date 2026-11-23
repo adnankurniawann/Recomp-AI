@@ -31,7 +31,11 @@ export interface RankingCandidate {
   missingRequired: { skillId: number; name: string; minLevel: Level }[];
   reasons: Reason[];
   inviteStatus: "pending" | "accepted" | "declined" | null;
+  /** "Cocok" or "Kurang cocok" from this team (F-RNK-05), null when nobody rated yet. */
+  feedback: RecommendationFeedback | null;
 }
+
+export type RecommendationFeedback = "fit" | "not_fit";
 
 export interface RankingPage {
   role: RankingRole;

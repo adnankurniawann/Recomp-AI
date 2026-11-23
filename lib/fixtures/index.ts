@@ -397,6 +397,7 @@ export function fixtureRanking(teamRoleId: string) {
         })),
         reasons: r.reasons,
         inviteStatus: null as "pending" | "accepted" | "declined" | null,
+        feedback: null as "fit" | "not_fit" | null,
       };
     }),
   };

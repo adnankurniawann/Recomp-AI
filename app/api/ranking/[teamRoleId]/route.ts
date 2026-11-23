@@ -57,7 +57,14 @@ export async function GET(req: Request, { params }: { params: Promise<{ teamRole
     return fail("UNKNOWN");
   }
 
-  return NextResponse.json(buildRankingPage(source.data, parsed.data), {
+  // Earlier "Cocok" / "Kurang cocok" from this team (F-RNK-05); RLS shows them to members only.
+  const { data: rated } = await supabase
+    .from("recommendation_feedback")
+    .select("candidate_id, feedback")
+    .eq("team_role_id", teamRoleId);
+  const feedback = new Map((rated ?? []).map((r) => [r.candidate_id, r.feedback]));
+
+  return NextResponse.json(buildRankingPage(source.data, parsed.data, feedback), {
     headers: { "Cache-Control": "no-store" },
   });
 }

@@ -66,6 +66,10 @@ export function RankingPreview() {
       }}
       fetchPage={fetchPage}
       loadProfile={loadProfile}
+      submitFeedback={async () => {
+        await wait();
+        return ok({});
+      }}
     />
   );
 }

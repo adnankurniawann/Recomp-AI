@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { fail, failFromDb, failValidation, ok, type ActionResult } from "@/lib/action-result";
 import { teamPhrase } from "@/lib/invites/template";
 import { createClient } from "@/lib/supabase/server";
+import { submitFeedbackSchema, type SubmitFeedbackInput } from "@/lib/validation/feedback";
 import { username as usernameSchema } from "@/lib/validation/profile";
 import {
   assignMemberRoleSchema,
@@ -203,4 +204,32 @@ export async function findStudent(
   if (!p?.username) return fail("NOT_FOUND", "Username ini belum terdaftar di Recomp AI.");
   if (p.id === me) return fail("FORBIDDEN", "Kamu sudah otomatis masuk tim sebagai ketua.");
   return ok({ profileId: p.id, fullName: p.full_name, username: p.username });
+}
+
+/** "Cocok" or "Kurang cocok" on a ranked candidate (F-RNK-05). Team members only. */
+export async function submitFeedback(
+  input: SubmitFeedbackInput,
+): Promise<ActionResult<Record<string, never>>> {
+  const parsed = submitFeedbackSchema.safeParse(input);
+  if (!parsed.success) return failValidation(parsed.error.issues);
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return fail("AUTH_REQUIRED");
+
+  const d = parsed.data;
+  const { error } = await supabase.rpc("submit_recommendation_feedback", {
+    p_team_role: d.teamRoleId,
+    p_candidate: d.candidateId,
+    p_score: d.score,
+    p_factors: d.factors,
+    p_feedback: d.feedback,
+  });
+  if (error) {
+    if (error.code !== "P0001") console.error("[feedback]", error.code, error.message);
+    return failFromDb(error);
+  }
+  return ok({});
 }
