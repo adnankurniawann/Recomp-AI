@@ -1,7 +1,13 @@
 import { randomUUID } from "node:crypto";
 import { expect, test } from "@playwright/test";
-import { admin } from "../integration/supabase";
-import { hasLocalDb } from "./helpers";
+import {
+  admin,
+  createCompetition,
+  createStudent,
+  deleteCompetition,
+  deleteStudents,
+} from "../integration/supabase";
+import { hasLocalDb, signIn } from "./helpers";
 
 // F-MNT-01: the mentor grid /mentor, its role filter and price sort.
 test.skip(!hasLocalDb, "needs local Supabase (see CONTRIBUTING.md)");
@@ -31,9 +37,31 @@ test.beforeAll(async () => {
       mentors.map((m) => ({ mentor_id: m.id, name: "Sesi uji", duration_min: 30, price: m.price })),
     );
   if (sErr) throw new Error(sErr.message);
+  const { error: cErr } = await db
+    .from("mentor_contacts")
+    .insert({ mentor_id: mentors[0]!.id, whatsapp: "+6281299990000" });
+  if (cErr) throw new Error(cErr.message);
+  const { error: slotErr } = await db
+    .from("mentor_slots")
+    .insert({
+      mentor_id: mentors[0]!.id,
+      starts_at: new Date(Date.now() + 2 * 864e5).toISOString(),
+    });
+  if (slotErr) throw new Error(slotErr.message);
 });
 
+const competitions: string[] = [];
+
 test.afterAll(async () => {
+  await admin()
+    .from("bookings")
+    .delete()
+    .in(
+      "mentor_id",
+      mentors.map((m) => m.id),
+    );
+  for (const id of competitions) await deleteCompetition(id);
+  await deleteStudents();
   await admin()
     .from("mentors")
     .delete()
@@ -68,4 +96,57 @@ test("price sort puts the cheapest first", async ({ page }) => {
   await page.goto("/mentor?urut=harga");
   const names = await page.getByRole("heading", { level: 2 }).allTextContents();
   expect(names.indexOf(mentors[1]!.name)).toBeLessThan(names.indexOf(mentors[0]!.name));
+});
+
+test("a team member books, pays (simulated) and sees the session on the team page", async ({
+  browser,
+  baseURL,
+}) => {
+  const member = await createStudent("anggota");
+  const competitionId = await createCompetition();
+  competitions.push(competitionId);
+  const { data: teamId, error } = await member.db.rpc("create_team", {
+    p_competition: competitionId,
+    p_name: "Tim Mentor",
+    p_goal: "win",
+    p_work_time: "night",
+    p_roles: [
+      {
+        name: "Backend",
+        color_key: "backend",
+        source: "manual",
+        source_page: null,
+        source_criterion: null,
+        edited: false,
+        required_skills: [{ skill_id: 1, min_level: 2 }],
+        optional_skill_ids: [],
+        hours_per_week: 8,
+        slots: 1,
+      },
+    ] as never,
+    p_leader_role_index: 0,
+  });
+  if (error) throw new Error(error.message);
+
+  const context = await browser.newContext();
+  await signIn(context, member, baseURL!);
+  const page = await context.newPage();
+  await page.goto(`/mentor/${mentors[0]!.id}`);
+  await page.getByRole("button", { name: "Hubungkan dengan mentor" }).click();
+
+  await expect(page).toHaveURL(/\/checkout\?booking=/);
+  await expect(
+    page.getByText("Ini pembayaran simulasi. Tidak ada uang yang ditarik."),
+  ).toBeVisible();
+  await expect(page.getByText("Rp18.000")).toBeVisible(); // 20% of Rp90.000
+  await expect(page.getByText("Rp72.000")).toBeVisible();
+  await page.getByRole("button", { name: "Bayar (Simulasi)" }).click();
+
+  await expect(page).toHaveURL(new RegExp(`/tim/${teamId}$`));
+  await expect(page.getByText("Dibayar (Simulasi)")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Chat mentor di WhatsApp" })).toHaveAttribute(
+    "href",
+    "https://wa.me/6281299990000",
+  );
+  await context.close();
 });

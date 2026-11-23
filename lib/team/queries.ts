@@ -64,11 +64,27 @@ export interface TeamDashboard {
     roleName: string;
     roleColor: RoleKey;
   }[];
+  /** Mentor sessions and their payments, members only (F-MNT-03..04); newest first. */
+  bookings: TeamBooking[];
   /** Only when the team is complete (F-TEM-03). */
   suggestions: {
     courses: CourseCard[];
     mentors: { id: string; name: string; headline: string; photoUrl: string | null }[];
   } | null;
+}
+
+export interface TeamBooking {
+  id: string;
+  status: Enums<"booking_status_t">;
+  mentorId: string;
+  mentorName: string;
+  serviceName: string;
+  startsAt: string | null;
+  price: number;
+  platformFee: number;
+  mentorShare: number;
+  /** Opens once the booking is paid: RLS on mentor_contacts (ADR 0003). */
+  contact: { whatsapp: string | null; email: string | null } | null;
 }
 
 const SUGGESTION_COUNT = 3;
@@ -145,7 +161,7 @@ export async function loadTeamDashboard(id: string): Promise<TeamDashboard | nul
   );
   const allSkillIds = [...new Set(rawRoles.flatMap((x) => x.skillIds))];
 
-  const [skills, interests, invites, suggestions] = await Promise.all([
+  const [skills, interests, invites, suggestions, bookings] = await Promise.all([
     allSkillIds.length
       ? supabase.from("skills").select("id, name").in("id", allSkillIds)
       : Promise.resolve({ data: [] as { id: number; name: string }[] }),
@@ -165,6 +181,7 @@ export async function loadTeamDashboard(id: string): Promise<TeamDashboard | nul
           .limit(50)
       : Promise.resolve({ data: [] }),
     t.status === "complete" ? loadSuggestions(t.competition.category) : Promise.resolve(null),
+    isMember ? loadBookings(t.id) : Promise.resolve([]),
   ]);
   const skillName = new Map((skills.data ?? []).map((s) => [s.id, s.name]));
 
@@ -205,6 +222,7 @@ export async function loadTeamDashboard(id: string): Promise<TeamDashboard | nul
       roleName: i.role?.name ?? "Role dihapus",
       roleColor: isRoleKey(i.role?.color_key) ? i.role.color_key : "other",
     })),
+    bookings,
     suggestions,
   };
 }
@@ -230,4 +248,50 @@ async function loadSuggestions(category: CompCategory): Promise<TeamDashboard["s
       photoUrl: publicStorageUrl("mentors", m.photo_path),
     })),
   };
+}
+
+async function loadBookings(teamId: string): Promise<TeamBooking[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("bookings")
+    .select(
+      `id, status, mentor_id, price, platform_fee, mentor_share, created_at,
+       mentor:mentors(display_name), service:mentor_services(name), slot:mentor_slots(starts_at)`,
+    )
+    .eq("team_id", teamId)
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(`bookings: ${error.message}`);
+  const rows = data ?? [];
+
+  const paidMentors = [
+    ...new Set(
+      rows.filter((b) => b.status === "paid" || b.status === "done").map((b) => b.mentor_id),
+    ),
+  ];
+  const { data: contacts } = paidMentors.length
+    ? await supabase
+        .from("mentor_contacts")
+        .select("mentor_id, whatsapp, contact_email")
+        .in("mentor_id", paidMentors)
+    : { data: [] };
+  const contact = new Map((contacts ?? []).map((c) => [c.mentor_id, c]));
+
+  return rows.map((b) => {
+    const c = contact.get(b.mentor_id);
+    return {
+      id: b.id,
+      status: b.status,
+      mentorId: b.mentor_id,
+      mentorName: b.mentor?.display_name ?? "Mentor",
+      serviceName: b.service?.name ?? "Sesi mentor",
+      startsAt: b.slot?.starts_at ?? null,
+      price: b.price,
+      platformFee: b.platform_fee,
+      mentorShare: b.mentor_share,
+      contact:
+        c && (b.status === "paid" || b.status === "done")
+          ? { whatsapp: c.whatsapp, email: c.contact_email }
+          : null,
+    };
+  });
 }
