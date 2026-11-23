@@ -37,10 +37,10 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #3 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
 
 **@dhanesmd3**
-- [ ] #5 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
-- [ ] Zod schemas in `lib/validation` for profile, team and invite inputs (PRD §13.1)
-- [ ] `ActionResult<T>` type and error codes
-- [ ] `lib/format/phone.ts` with tests (`08…` and `+62 …` become `+62…`)
+- [x] #5 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
+- [x] Zod schemas in `lib/validation` for profile, team and invite inputs (PRD §13.1)
+- [x] `ActionResult<T>` type and error codes
+- [x] `lib/format/phone.ts` with tests (`08…` and `+62 …` become `+62…`)
 
 **@angseleong**
 - [x] #4 v2 tokens in `app/globals.css`, `Button`, `IconButton`, `Card`, `Chip`, `StatusBadge`, `SimulatedBadge`, `SectionLabel` (F-FND-03)
@@ -59,9 +59,9 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #18 "Tertarik" button and `toggleInterest` (F-CMP-03)
 
 **@dhanesmd3**
-- [ ] #10 Four-step onboarding wizard, UI and server actions (F-PRF-01)
-- [ ] #14 `/profil` edit page (F-PRF-07)
-- [ ] RLS on profiles and the tables under it
+- [x] #10 Four-step onboarding wizard, UI and server actions (F-PRF-01)
+- [x] #14 `/profil` edit page (F-PRF-07)
+- [x] RLS on profiles and the tables under it
 
 **@angseleong**
 - [x] #15 Landing page (PRD §10.1)
@@ -80,9 +80,9 @@ Contracts first, so everyone can work in parallel from H1.
 - [x] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
 
 **@dhanesmd3**
-- [ ] #13 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
-- [ ] #11 Skill, history, portfolio and contact actions, portfolio image upload (F-PRF-02..05)
-- [ ] #12 `profile_contacts` RLS and its integration tests (F-PRF-05)
+- [x] #13 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
+- [x] #11 Skill, history, portfolio and contact actions, portfolio image upload (F-PRF-02..05)
+- [x] #12 `profile_contacts` RLS and its integration tests (F-PRF-05)
 
 **@angseleong**
 - [x] #30 `ProfileSheet` without the match panel (F-RNK-03)
@@ -103,9 +103,9 @@ Contracts first, so everyone can work in parallel from H1.
 - [ ] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
 
 **@dhanesmd3**
-- [ ] #31 Invite dialog and `sendInvite` (F-INV-01)
-- [ ] #33 Atomic `accept_invite` and the concurrency test, `decline_invite`, `cancel_invite` (F-INV-03)
-- [ ] #32 `/undangan` (F-INV-02)
+- [x] #31 Invite dialog and `sendInvite` (F-INV-01)
+- [x] #33 Atomic `accept_invite` and the concurrency test, `decline_invite`, `cancel_invite` (F-INV-03)
+- [x] #32 `/undangan` (F-INV-02)
 
 **@angseleong**
 - [ ] #46 Notifications, the bell and the pending-invite count (F-NTF-01)
@@ -127,10 +127,10 @@ waits and everyone helps fix P0.
 - [ ] #45 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04)
 
 **@dhanesmd3**
-- [ ] #44 `/mentor/[id]` (F-MNT-02)
-- [ ] #39 `submit_mcq` and progress (F-LRN-03)
-- [ ] #41 `redeem_promo`, `simulate_course_purchase` (F-LRN-05)
-- [ ] `seed-content.ts` for the course
+- [x] #44 `/mentor/[id]` (F-MNT-02)
+- [x] #39 `submit_mcq` and progress (F-LRN-03)
+- [x] #41 `redeem_promo`, `simulate_course_purchase` (F-LRN-05)
+- [x] `seed-content.ts` for the course
 
 **@angseleong**
 - [ ] #37 `/belajar` and `/belajar/[kursus]` (F-LRN-01..02)
@@ -151,8 +151,8 @@ waits and everyone helps fix P0.
 
 **@dhanesmd3**
 - [ ] #48 Playwright core flow (PRD §16.3)
-- [ ] All database integration tests in PRD §16.2
-- [ ] Bug fixes in profiles and invites
+- [x] All database integration tests in PRD §16.2
+- [x] Bug fixes in profiles and invites
 
 **@angseleong**
 - [ ] #49 Every page at 360 px; loading, empty and error states; Lighthouse Accessibility ≥ 90
