@@ -77,7 +77,7 @@ Contracts first, so everyone can work in parallel from H1.
 
 **@malikarsya**
 - [x] #24 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
-- [ ] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
+- [x] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
 
 **@dhanesmd3**
 - [ ] #13 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
@@ -91,7 +91,7 @@ Contracts first, so everyone can work in parallel from H1.
 
 **@adnankurniawann**
 - [x] #21 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
-- [ ] #22 Skill mapping, cache per competition, manual fallback form (F-GBA-02..04)
+- [x] #22 Skill mapping, cache per competition, manual fallback form (F-GBA-02..04)
 - [x] #23 Data for the guidebook summary tab (F-CMP-02)
 
 ## H3 Sun Nov 22

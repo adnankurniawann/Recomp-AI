@@ -78,3 +78,63 @@ test("the leader creates a team from the template roles", async ({ browser, base
   await expect(page).toHaveURL(new RegExp(`/tim/${teamId}$`));
   await context.close();
 });
+
+test("the leader edits roles and confirms a change to a filled role", async ({
+  browser,
+  baseURL,
+}) => {
+  const leader = await createStudent("ketua");
+  const competitionId = await createCompetition();
+  competitions.push(competitionId);
+  const role = (name: string) => ({
+    name,
+    color_key: "frontend",
+    source: "template",
+    source_page: null,
+    source_criterion: null,
+    edited: false,
+    required_skills: [{ skill_id: 1, min_level: 2 }],
+    optional_skill_ids: [],
+    hours_per_week: 8,
+    slots: 1,
+  });
+  const { data: teamId, error } = await leader.db.rpc("create_team", {
+    p_competition: competitionId,
+    p_name: "Tim Edit",
+    p_goal: "win",
+    p_work_time: "night",
+    p_roles: [role("Frontend Developer")] as never,
+    p_leader_role_index: 0,
+  });
+  if (error) throw new Error(error.message);
+
+  const context = await browser.newContext();
+  await signIn(context, leader, baseURL!);
+  const page = await context.newPage();
+  await page.goto(`/tim/${teamId}/role`);
+
+  // The leader's role has a member, so it can't be deleted.
+  await expect(page.getByRole("button", { name: "Hapus role Frontend Developer" })).toBeDisabled();
+
+  await page.getByRole("button", { name: "Tambah role" }).click();
+  await page.getByRole("button", { name: "Kosong", exact: true }).click();
+  await page.locator("#role-1-name").fill("Backend Developer");
+  await page.locator("#role-1-add-required").selectOption({ label: "Node.js" });
+  await page.locator("#role-0-name").fill("Frontend Engineer");
+
+  await page.getByRole("button", { name: "Simpan role" }).click();
+  await expect(page.getByText("Role Frontend Engineer sudah punya anggota")).toBeVisible();
+  await page.getByRole("button", { name: "Ya, simpan" }).click();
+  await expect(page).toHaveURL(new RegExp(`/tim/${teamId}$`));
+
+  const { data: roles } = await admin()
+    .from("team_roles")
+    .select("name, source, edited")
+    .eq("team_id", teamId!)
+    .order("sort");
+  expect(roles).toEqual([
+    { name: "Frontend Engineer", source: "template", edited: true },
+    { name: "Backend Developer", source: "manual", edited: false },
+  ]);
+  await context.close();
+});

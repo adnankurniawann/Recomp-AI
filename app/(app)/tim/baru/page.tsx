@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { CreateTeamWizard } from "@/components/team/create-team-wizard";
-import { getRoleSuggestions } from "@/lib/ai/role-suggestions";
+import { getRoleSuggestions, getRoleTemplates } from "@/lib/ai/role-suggestions";
 import { loadCompetition } from "@/lib/competitions/queries";
 import { loadSkillCatalog } from "@/lib/profile/queries";
 import { createClient } from "@/lib/supabase/server";
@@ -20,8 +20,10 @@ export default async function NewTeamPage({ searchParams }: Props) {
   if (!c.viewer) redirect(`/masuk?next=${encodeURIComponent(`/tim/baru?lomba=${slug}`)}`);
   if (c.viewer.teamId) redirect(`/tim/${c.viewer.teamId}`);
 
-  const [suggestions, catalog] = await Promise.all([
-    getRoleSuggestions(await createClient(), c.id),
+  const supabase = await createClient();
+  const [suggestions, templates, catalog] = await Promise.all([
+    getRoleSuggestions(supabase, c.id),
+    getRoleTemplates(supabase, c.category),
     loadSkillCatalog(),
   ]);
 
@@ -40,6 +42,7 @@ export default async function NewTeamPage({ searchParams }: Props) {
       <CreateTeamWizard
         competition={{ id: c.id, category: c.category, teamMax: c.teamMax }}
         suggestions={suggestions}
+        templates={templates}
         skills={catalog.skills}
       />
     </main>

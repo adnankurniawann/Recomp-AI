@@ -53,18 +53,26 @@ export async function getRoleSuggestions(
     }
   }
 
-  const { data: templates } = await supabase
-    .from("role_templates")
-    .select(
-      "name, description, color_key, required_skills, optional_skill_ids, hours_per_week, slots",
-    )
-    .eq("category", competition.category)
-    .order("sort");
   return {
     source: "template",
     extractionId: null,
     extractionStatus: null,
     notice: TEMPLATE_FALLBACK_MESSAGE,
-    roles: (templates ?? []).map(templateToSuggestion),
+    roles: await getRoleTemplates(supabase, competition.category),
   };
+}
+
+/** The role templates of a category, for the fallback and "Tambah role" › "Dari template". */
+export async function getRoleTemplates(
+  supabase: SupabaseClient<Database>,
+  category: Database["public"]["Enums"]["comp_category_t"],
+): Promise<RoleSuggestion[]> {
+  const { data } = await supabase
+    .from("role_templates")
+    .select(
+      "name, description, color_key, required_skills, optional_skill_ids, hours_per_week, slots",
+    )
+    .eq("category", category)
+    .order("sort");
+  return (data ?? []).map(templateToSuggestion);
 }

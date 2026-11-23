@@ -111,3 +111,115 @@ describe.skipIf(!hasLocalDb)("create_team", () => {
     expect(error).not.toBeNull();
   });
 });
+
+// F-TEM-02: save_roles (migration 0009) replaces the roles of a team in one transaction.
+describe.skipIf(!hasLocalDb)("save_roles", () => {
+  let leader: Student;
+  let other: Student;
+  const competitions: string[] = [];
+
+  beforeAll(async () => {
+    [leader, other] = await Promise.all([createStudent("ketua"), createStudent("lain")]);
+  });
+
+  afterAll(async () => {
+    for (const id of competitions) await deleteCompetition(id);
+    await deleteStudents();
+  });
+
+  const role = (name: string, slots: number, id?: string) => ({
+    ...(id && { id }),
+    name,
+    color_key: "backend",
+    source: "manual",
+    source_page: null,
+    source_criterion: null,
+    edited: false,
+    required_skills: [{ skill_id: 1, min_level: 2 }],
+    optional_skill_ids: [2],
+    hours_per_week: 8,
+    slots,
+  });
+
+  /** A team with roles A (leader's, 1 slot) and B (2 slots). */
+  async function team() {
+    const competitionId = await createCompetition();
+    competitions.push(competitionId);
+    const { data: teamId, error } = await leader.db.rpc("create_team", {
+      p_competition: competitionId,
+      p_name: "Tim Edit",
+      p_goal: "win",
+      p_work_time: "night",
+      p_roles: [role("Role A", 1), role("Role B", 2)] as never,
+      p_leader_role_index: 0,
+    });
+    if (error) throw new Error(error.message);
+    const { data: roles } = await admin()
+      .from("team_roles")
+      .select("id, name")
+      .eq("team_id", teamId!)
+      .order("sort");
+    return { teamId: teamId!, a: roles![0]!.id, b: roles![1]!.id };
+  }
+
+  const save = (who: Student, teamId: string, roles: unknown[]) =>
+    who.db.rpc("save_roles", { p_team: teamId, p_roles: roles as never });
+
+  it("updates, adds, deletes and reorders roles", async () => {
+    const t = await team();
+    const { data: ids, error } = await save(leader, t.teamId, [
+      role("Role Baru", 1),
+      role("Role A diubah", 1, t.a),
+    ]);
+    expect(error).toBeNull();
+
+    const { data: roles } = await admin()
+      .from("team_roles")
+      .select("id, name")
+      .eq("team_id", t.teamId)
+      .order("sort");
+    expect(roles?.map((r) => r.name)).toEqual(["Role Baru", "Role A diubah"]);
+    expect(roles?.[1]?.id).toBe(t.a);
+    expect(ids).toEqual(roles?.map((r) => r.id));
+  });
+
+  it("recomputes the team status", async () => {
+    const t = await team();
+    await save(leader, t.teamId, [role("Role A", 1, t.a)]);
+    const status = async () =>
+      (await admin().from("teams").select("status").eq("id", t.teamId).single()).data?.status;
+    expect(await status()).toBe("complete");
+    await save(leader, t.teamId, [role("Role A", 1, t.a), role("Role C", 1)]);
+    expect(await status()).toBe("forming");
+  });
+
+  it("refuses anyone but the leader", async () => {
+    const t = await team();
+    expect((await save(other, t.teamId, [role("Role A", 1, t.a)])).error?.message).toBe(
+      "NOT_LEADER",
+    );
+  });
+
+  it("refuses more slots than team_max", async () => {
+    const t = await team();
+    const { error } = await save(leader, t.teamId, [
+      role("Role A", 1, t.a),
+      role("Role B", 3, t.b),
+      role("Role C", 1),
+    ]);
+    expect(error?.message).toBe("SLOTS_EXCEED_MAX");
+  });
+
+  it("refuses to delete a role that has members or cut its slots below them", async () => {
+    const t = await team();
+    expect((await save(leader, t.teamId, [role("Role B", 2, t.b)])).error?.message).toBe(
+      "ROLE_HAS_MEMBERS",
+    );
+  });
+
+  it("refuses a role id from another team", async () => {
+    const [t1, t2] = [await team(), await team()];
+    const { error } = await save(leader, t1.teamId, [role("Role A", 1, t1.a), role("X", 1, t2.b)]);
+    expect(error?.message).toBe("ROLE_NOT_FOUND");
+  });
+});
