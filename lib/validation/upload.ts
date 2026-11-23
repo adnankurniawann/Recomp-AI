@@ -29,3 +29,20 @@ export function checkImage(file: { size: number; type: string }): ImageCheck {
   const type = file.type as ImageType;
   return { ok: true, type, ext: IMAGE_TYPES[type] };
 }
+
+// Guidebooks (PRD F-CMP-04): PDF only, at most 20 MB, the same limits as the `guidebooks` bucket.
+export const MAX_PDF_BYTES = 20 * 1024 * 1024;
+
+export function checkPdf(file: {
+  size: number;
+  type: string;
+}): { ok: true } | { ok: false; code: "FILE_TOO_LARGE" | "VALIDATION"; message: string } {
+  if (file.type !== "application/pdf") {
+    return { ok: false, code: "VALIDATION", message: "Guidebook harus file PDF." };
+  }
+  if (file.size === 0) return { ok: false, code: "VALIDATION", message: "File PDF kosong." };
+  if (file.size > MAX_PDF_BYTES) {
+    return { ok: false, code: "FILE_TOO_LARGE", message: "Ukuran guidebook maksimal 20 MB." };
+  }
+  return { ok: true };
+}
