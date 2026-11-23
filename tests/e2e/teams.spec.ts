@@ -18,7 +18,7 @@ test.afterAll(async () => {
 });
 
 test("the leader creates a team from the template roles", async ({ browser, baseURL }) => {
-  const leader = await createStudent("ketua");
+  const [leader, friend] = await Promise.all([createStudent("ketua"), createStudent("teman")]);
   const competitionId = await createCompetition();
   competitions.push(competitionId);
   const { data: c } = await admin()
@@ -42,7 +42,16 @@ test("the leader creates a team from the template roles", async ({ browser, base
   await page.getByRole("button", { name: "Hapus role Product dan Pitching" }).click();
   await page.getByRole("button", { name: "Lanjut" }).click();
 
-  await page.getByRole("main").getByText("UI/UX Designer", { exact: true }).click();
+  await page.getByRole("group", { name: "Role kamu" }).getByText("UI/UX Designer").click();
+  // Step 3 invites: an unknown username is refused, a real one is listed.
+  await page.getByLabel("Username").fill("belum_ada_orangnya");
+  await page.getByRole("button", { name: "Tambah" }).click();
+  await expect(page.getByText("Username ini belum terdaftar di Recomp AI.")).toBeVisible();
+  await page.getByLabel("Username").fill(friend.username);
+  await page.getByLabel("Role untuk teman ini").selectOption({ label: "Backend Developer" });
+  await page.getByRole("button", { name: "Tambah" }).click();
+  await expect(page.getByText(`@${friend.username}`)).toBeVisible();
+
   await page.getByRole("button", { name: "Buat tim" }).click();
   await expect(page).toHaveURL(/\/tim\/[0-9a-f-]{36}$/);
   const teamId = page.url().split("/").pop()!;
@@ -56,6 +65,14 @@ test("the leader creates a team from the template roles", async ({ browser, base
     .eq("team_id", teamId)
     .single();
   expect(member?.team_roles?.name).toBe("UI/UX Designer");
+
+  const { data: invite } = await db
+    .from("invites")
+    .select("status, team_roles(name)")
+    .eq("team_id", teamId)
+    .eq("candidate_id", friend.profileId)
+    .single();
+  expect(invite).toEqual({ status: "pending", team_roles: { name: "Backend Developer" } });
 
   await page.goto(`/tim/baru?lomba=${c!.slug}`);
   await expect(page).toHaveURL(new RegExp(`/tim/${teamId}$`));

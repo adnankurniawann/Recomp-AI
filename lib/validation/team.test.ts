@@ -79,6 +79,28 @@ describe("createTeamSchema", () => {
   });
 });
 
+describe("createTeamSchema invites", () => {
+  const id = "9a8b7c6d-5e4f-4a3b-8c2d-1e0f9a8b7c6d";
+
+  it("defaults to no invites and accepts one per student", () => {
+    expect(createTeamSchema.parse(team).invites).toEqual([]);
+    expect(
+      createTeamSchema.safeParse({ ...team, invites: [{ profileId: id, roleIndex: 0 }] }).success,
+    ).toBe(true);
+  });
+
+  it("rejects a duplicate student or a role outside the list", () => {
+    const twice = [
+      { profileId: id, roleIndex: 0 },
+      { profileId: id, roleIndex: 1 },
+    ];
+    expect(createTeamSchema.safeParse({ ...team, invites: twice }).success).toBe(false);
+    expect(
+      createTeamSchema.safeParse({ ...team, invites: [{ profileId: id, roleIndex: 2 }] }).success,
+    ).toBe(false);
+  });
+});
+
 describe("saveRolesSchema and totalSlots", () => {
   it("validates roles for an existing team", () => {
     expect(

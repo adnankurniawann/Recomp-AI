@@ -14,6 +14,7 @@ import { Field, fieldDescribedBy } from "@/components/ui/field";
 import { IconButton } from "@/components/ui/icon-button";
 import { Input } from "@/components/ui/input";
 import { Stepper } from "@/components/ui/stepper";
+import { StartingInvites, type StartingInvite } from "./starting-invites";
 import { issuesToFields } from "@/lib/action-result";
 import type { RoleSuggestions } from "@/lib/ai/role-suggestions";
 import {
@@ -51,6 +52,7 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
   const [workTime, setWorkTime] = useState<WorkTime>("flexible");
   const [roles, setRoles] = useState(suggestions?.roles ?? []);
   const [leaderRoleIndex, setLeaderRoleIndex] = useState(0);
+  const [invites, setInvites] = useState<StartingInvite[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
 
@@ -72,6 +74,7 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
     workTime,
     roles,
     leaderRoleIndex: Math.min(leaderRoleIndex, roles.length - 1),
+    invites: invites.map(({ profileId, roleIndex }) => ({ profileId, roleIndex })),
   };
 
   function goTo(next: number) {
@@ -99,6 +102,10 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
         return;
       }
       toast.success("Tim kamu sudah dibuat. Sekarang cari anggota untuk role yang kosong.");
+      if (res.data.invitesFailed > 0)
+        toast.error(
+          `${res.data.invitesFailed} undangan belum terkirim. Coba undang lagi dari dashboard tim.`,
+        );
       router.push(`/tim/${res.data.teamId}`);
     });
   }
@@ -181,7 +188,10 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
                         <IconButton
                           label={`Hapus role ${r.name}`}
                           icon={<Trash2 aria-hidden size={16} strokeWidth={1.75} />}
-                          onClick={() => setRoles(roles.filter((_, j) => j !== i))}
+                          onClick={() => {
+                            setRoles(roles.filter((_, j) => j !== i));
+                            setInvites([]); // role indexes shift
+                          }}
                         />
                       </div>
                       {r.description && <p className="text-sm text-ink-2">{r.description}</p>}
@@ -235,12 +245,21 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
               legend="Role kamu"
               options={roles.map((r, i) => ({ value: String(i), label: r.name }))}
               value={String(input.leaderRoleIndex)}
-              onChange={(v) => setLeaderRoleIndex(Number(v))}
+              onChange={(v) => {
+                const index = Number(v);
+                setLeaderRoleIndex(index);
+                // The leader now fills a one-slot role: invites to it would come back ROLE_FULL.
+                if (roles[index]?.slots === 1)
+                  setInvites(invites.filter((x) => x.roleIndex !== index));
+              }}
               error={errors.leaderRoleIndex}
             />
-            <p className="text-sm text-ink-3">
-              Anggota lain bisa kamu undang dari dashboard tim setelah tim dibuat.
-            </p>
+            <StartingInvites
+              roles={roles}
+              leaderRoleIndex={input.leaderRoleIndex}
+              value={invites}
+              onChange={setInvites}
+            />
           </div>
         )}
 
