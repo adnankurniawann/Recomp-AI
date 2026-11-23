@@ -56,6 +56,19 @@ test("the leader creates a team from the template roles", async ({ browser, base
   await expect(page).toHaveURL(/\/tim\/[0-9a-f-]{36}$/);
   const teamId = page.url().split("/").pop()!;
 
+  // F-TEM-03: the dashboard the wizard lands on.
+  await expect(page.getByRole("heading", { level: 1, name: "Tim Uji" })).toBeVisible();
+  await expect(page.getByText("Sedang mencari")).toBeVisible();
+  await expect(page.getByText("Skill wajib yang belum tertutup:")).toBeVisible();
+  await expect(page.getByText("Menunggu respon", { exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Lihat kandidat" })).toHaveCount(3);
+
+  // assignMemberRole: the leader moves themself to Frontend Developer.
+  await page
+    .getByRole("combobox", { name: /^Role / })
+    .selectOption({ label: "Frontend Developer" });
+  await expect(page.getByText(/dipindah ke Frontend Developer/)).toBeVisible();
+
   const db = admin();
   const { data: team } = await db.from("teams").select("name, goal").eq("id", teamId).single();
   expect(team).toEqual({ name: "Tim Uji", goal: "learn" });
@@ -64,7 +77,7 @@ test("the leader creates a team from the template roles", async ({ browser, base
     .select("team_roles(name)")
     .eq("team_id", teamId)
     .single();
-  expect(member?.team_roles?.name).toBe("UI/UX Designer");
+  expect(member?.team_roles?.name).toBe("Frontend Developer");
 
   const { data: invite } = await db
     .from("invites")
@@ -111,7 +124,14 @@ test("the leader edits roles and confirms a change to a filled role", async ({
   const context = await browser.newContext();
   await signIn(context, leader, baseURL!);
   const page = await context.newPage();
-  await page.goto(`/tim/${teamId}/role`);
+
+  // One role, one slot, filled by the leader: the dashboard shows the complete card.
+  await page.goto(`/tim/${teamId}`);
+  await expect(page.getByText("Semua role sudah terisi")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Lihat kandidat" })).toHaveCount(0);
+
+  await page.getByRole("link", { name: "Edit role" }).click();
+  await expect(page).toHaveURL(new RegExp(`/tim/${teamId}/role$`));
 
   // The leader's role has a member, so it can't be deleted.
   await expect(page.getByRole("button", { name: "Hapus role Frontend Developer" })).toBeDisabled();
@@ -126,6 +146,7 @@ test("the leader edits roles and confirms a change to a filled role", async ({
   await expect(page.getByText("Role Frontend Engineer sudah punya anggota")).toBeVisible();
   await page.getByRole("button", { name: "Ya, simpan" }).click();
   await expect(page).toHaveURL(new RegExp(`/tim/${teamId}$`));
+  await expect(page.getByText("Skill wajib yang belum tertutup:")).toContainText("Node.js");
 
   const { data: roles } = await admin()
     .from("team_roles")

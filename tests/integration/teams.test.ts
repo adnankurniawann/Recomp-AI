@@ -223,3 +223,97 @@ describe.skipIf(!hasLocalDb)("save_roles", () => {
     expect(error?.message).toBe("ROLE_NOT_FOUND");
   });
 });
+
+// F-TEM-03: assign_member_role (migration 0010) moves a member to another role of the team.
+describe.skipIf(!hasLocalDb)("assign_member_role", () => {
+  let leader: Student;
+  let other: Student;
+  const competitions: string[] = [];
+
+  beforeAll(async () => {
+    [leader, other] = await Promise.all([createStudent("ketua"), createStudent("lain")]);
+  });
+
+  afterAll(async () => {
+    for (const id of competitions) await deleteCompetition(id);
+    await deleteStudents();
+  });
+
+  const role = (name: string, slots: number) => ({
+    name,
+    color_key: "backend",
+    source: "manual",
+    source_page: null,
+    source_criterion: null,
+    edited: false,
+    required_skills: [{ skill_id: 1, min_level: 2 }],
+    optional_skill_ids: [],
+    hours_per_week: 8,
+    slots,
+  });
+
+  /** Leader in role A (1 slot); role B has 1 slot and role C has 2, both empty. */
+  async function team() {
+    const competitionId = await createCompetition();
+    competitions.push(competitionId);
+    const { data: teamId, error } = await leader.db.rpc("create_team", {
+      p_competition: competitionId,
+      p_name: "Tim Pindah",
+      p_goal: "win",
+      p_work_time: "night",
+      p_roles: [role("Role A", 1), role("Role B", 1), role("Role C", 2)] as never,
+      p_leader_role_index: 0,
+    });
+    if (error) throw new Error(error.message);
+    const { data: roles } = await admin()
+      .from("team_roles")
+      .select("id")
+      .eq("team_id", teamId!)
+      .order("sort");
+    return { teamId: teamId!, a: roles![0]!.id, b: roles![1]!.id, c: roles![2]!.id };
+  }
+
+  const assign = (who: Student, teamId: string, profileId: string, roleId: string) =>
+    who.db.rpc("assign_member_role", { p_team: teamId, p_profile: profileId, p_role: roleId });
+
+  it("moves the leader to another role", async () => {
+    const t = await team();
+    expect((await assign(leader, t.teamId, leader.profileId, t.c)).error).toBeNull();
+    const { data } = await admin()
+      .from("team_members")
+      .select("team_role_id")
+      .eq("team_id", t.teamId)
+      .eq("profile_id", leader.profileId)
+      .single();
+    expect(data?.team_role_id).toBe(t.c);
+  });
+
+  it("refuses a full role, a non-member, a role of another team and anyone but the leader", async () => {
+    const t = await team();
+    const t2 = await team();
+    expect((await assign(leader, t.teamId, other.profileId, t.b)).error?.message).toBe(
+      "NOT_MEMBER",
+    );
+    expect((await assign(other, t.teamId, leader.profileId, t.b)).error?.message).toBe(
+      "NOT_LEADER",
+    );
+    expect((await assign(leader, t.teamId, leader.profileId, t2.b)).error?.message).toBe(
+      "ROLE_NOT_FOUND",
+    );
+    // Fill B through the admin client, then try to move the leader into it.
+    const { data: c } = await admin()
+      .from("teams")
+      .select("competition_id")
+      .eq("id", t.teamId)
+      .single();
+    await admin().from("team_members").insert({
+      team_id: t.teamId,
+      profile_id: other.profileId,
+      competition_id: c!.competition_id,
+      team_role_id: t.b,
+    });
+    expect((await assign(leader, t.teamId, leader.profileId, t.b)).error?.message).toBe(
+      "ROLE_FULL",
+    );
+  });
+});

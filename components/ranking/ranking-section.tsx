@@ -47,6 +47,8 @@ interface RankingSectionProps {
   /** Defaults to GET /api/ranking; screens on fixtures pass their own. */
   fetchPage?: (teamRoleId: string, offset: number) => Promise<RankingPage>;
   loadProfile?: ProfileLoader;
+  /** The tab to open first, from "Lihat kandidat" on a role card. */
+  initialRoleId?: string;
 }
 
 /**
@@ -59,8 +61,11 @@ export function RankingSection({
   invite,
   fetchPage = fetchRankingPage,
   loadProfile,
+  initialRoleId,
 }: RankingSectionProps) {
-  const [activeId, setActiveId] = useState(roles[0]?.id ?? "");
+  const [activeId, setActiveId] = useState(
+    roles.find((r) => r.id === initialRoleId)?.id ?? roles[0]?.id ?? "",
+  );
   const [byRole, setByRole] = useState<Record<string, RoleState>>({});
   const [sort, setSort] = useState<RankingSort>("score");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -201,7 +206,7 @@ export function RankingSection({
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as RankingSort)}
-            className="h-11 rounded-md border border-line bg-surface px-3 text-sm text-ink shadow-xs hover:border-line-strong focus-visible:ring-3 md:h-10 focus-visible:ring-primary-200 focus-visible:outline-none"
+            className="h-11 rounded-md border border-line bg-surface px-3 text-sm text-ink shadow-xs hover:border-line-strong focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none md:h-10"
           >
             {RANKING_SORTS.map((s) => (
               <option key={s} value={s}>
