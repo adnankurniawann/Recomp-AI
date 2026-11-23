@@ -265,6 +265,32 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"events": {
+                  Row: {
+                    "created_at": string,"id": string,"profile_id": string,"team_id": string | null,"type": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"profile_id": string,"team_id"?: string | null,"type": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"profile_id"?: string,"team_id"?: string | null,"type"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "events_profile_id_fkey"
+      columns: ["profile_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "events_team_id_fkey"
+      columns: ["team_id"]
+isOneToOne: false
+      referencedRelation: "teams"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"invites": {
                   Row: {
                     "agent_action_id": string | null,"ai_drafted": boolean,"candidate_id": string,"created_at": string,"created_by": string,"direction": Database["public"]['Enums']["invite_dir_t"],"id": string,"message": string | null,"responded_at": string | null,"status": Database["public"]['Enums']["invite_status_t"],"team_id": string,"team_role_id": string
@@ -856,6 +882,9 @@ isOneToOne: false
                            },
 "submit_recommendation_feedback":
 { Args: { "p_candidate": string,"p_factors": Json,"p_feedback": Database["public"]['Enums']["feedback_t"],"p_score": number,"p_team_role": string }; Returns: undefined
+                           },
+"trial_metrics":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            }
           }
           Enums: {

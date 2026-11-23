@@ -1,5 +1,6 @@
 import {
   BookOpen,
+  ChartColumn,
   GraduationCap,
   Mail,
   Settings,
@@ -48,7 +49,10 @@ export const APP_NAV: NavGroup[] = [
   {
     label: "Admin",
     adminOnly: true,
-    items: [{ href: "/admin", label: "Lomba dan mentor", icon: ShieldCheck }],
+    items: [
+      { href: "/admin", label: "Lomba dan mentor", icon: ShieldCheck },
+      { href: "/admin/metrik", label: "Metrik uji coba", icon: ChartColumn },
+    ],
   },
 ];
 
@@ -62,4 +66,12 @@ export const PUBLIC_LINKS = [
 /** True when `pathname` is `href` or a page under it: `/tim/abc` is under `/tim`, `/timnas` isn't. */
 export function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/**
+ * The one nav link to highlight: the longest href that `pathname` is on or under, so /admin/metrik
+ * lights up "Metrik uji coba" and not also "/admin".
+ */
+export function activeHref(pathname: string, hrefs: readonly string[]): string | null {
+  return hrefs.filter((h) => isActive(pathname, h)).sort((a, b) => b.length - a.length)[0] ?? null;
 }
