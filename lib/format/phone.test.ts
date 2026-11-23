@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizePhone } from "./phone";
+import { normalizePhone, whatsappUrl } from "./phone";
 
 describe("normalizePhone", () => {
   it.each([
@@ -24,5 +24,11 @@ describe("normalizePhone", () => {
     ["plus in the middle", "0812+3456789"],
   ])("rejects %s", (_label, input) => {
     expect(normalizePhone(input)).toBeNull();
+  });
+});
+
+describe("whatsappUrl", () => {
+  it("drops the plus for wa.me", () => {
+    expect(whatsappUrl("+6281234567890")).toBe("https://wa.me/6281234567890");
   });
 });

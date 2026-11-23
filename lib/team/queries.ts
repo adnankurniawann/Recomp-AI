@@ -19,6 +19,11 @@ export interface DashboardMember {
   avatarUrl: string | null;
   isSimulated: boolean;
   isLeader: boolean;
+  /**
+   * WhatsApp and email of another member, only when the viewer is on the team (F-INV-04). Read
+   * from profile_contacts on their own so RLS decides (ADR 0003); null for everyone else.
+   */
+  contact: { whatsapp: string | null; email: string | null } | null;
 }
 
 export interface DashboardRole {
@@ -90,6 +95,19 @@ export async function loadTeamDashboard(id: string): Promise<TeamDashboard | nul
   if (!t?.competition) return null;
 
   const isLeader = !!me && t.leader_id === me;
+  const isMember = !!me && t.team_members.some((m) => m.profile?.id === me);
+  const otherIds = t.team_members.flatMap((m) =>
+    m.profile && m.profile.id !== me ? [m.profile.id] : [],
+  );
+  const { data: contactRows } =
+    isMember && otherIds.length
+      ? await supabase
+          .from("profile_contacts")
+          .select("profile_id, whatsapp, contact_email")
+          .in("profile_id", otherIds)
+      : { data: [] };
+  const contacts = new Map((contactRows ?? []).map((c) => [c.profile_id, c]));
+
   const members = t.team_members
     .filter((m) => m.profile)
     .sort(
@@ -103,6 +121,12 @@ export async function loadTeamDashboard(id: string): Promise<TeamDashboard | nul
       avatarUrl: m.profile!.avatar_url,
       isSimulated: m.profile!.is_simulated,
       isLeader: m.is_leader,
+      contact: contacts.has(m.profile!.id)
+        ? {
+            whatsapp: contacts.get(m.profile!.id)!.whatsapp,
+            email: contacts.get(m.profile!.id)!.contact_email,
+          }
+        : null,
     }));
 
   const rawRoles = [...t.team_roles]
@@ -171,7 +195,7 @@ export async function loadTeamDashboard(id: string): Promise<TeamDashboard | nul
     interestCount: interests.count ?? 0,
     viewer: {
       isLeader,
-      isMember: members.some((m) => m.profileId === me),
+      isMember,
       leaderName: members.find((m) => m.isLeader)?.fullName ?? "",
     },
     invites: (invites.data ?? []).map((i) => ({
