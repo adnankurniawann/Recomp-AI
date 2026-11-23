@@ -112,10 +112,10 @@ Every member adds a row or a line here when an AI tool materially helps with the
 
 | Member | GitHub | Role | Main contributions |
 | --- | --- | --- | --- |
-| Malik Arsyafiandra Madani | [@malikarsya](https://github.com/malikarsya) | Leader, backend | Planned: repo and CI, Supabase and auth, teams, mentor list and booking, deploy and releases |
+| Malik Arsyafiandra Madani | [@malikarsya](https://github.com/malikarsya) | Leader, backend | Planned: repo and CI, Supabase and auth, deploy and releases. Since Nov 23 (swapped with Adnan): ranking API, recommendation feedback, recruiter agent, case-study feedback, admin metrics and guidebook evaluation |
 | Dhanesworo Muhammad Datiputro | [@dhanesmd3](https://github.com/dhanesmd3) | Backend | Planned: base components, profiles, contact privacy (RLS), invitations, quiz and course access, mentor detail, end-to-end tests |
 | Axeleon Justin Algianto | [@angseleong](https://github.com/angseleong) | Frontend | Planned: design system and components, landing, competitions, ranking UI and profile sheet, notifications, course player, responsive pass |
-| Muhammad Adnan Kurniawan | [@adnankurniawann](https://github.com/adnankurniawann) | AI and data | Planned: matching algorithm, guidebook and recruiter agents, case-study feedback, seed data, metrics and evaluation |
+| Muhammad Adnan Kurniawan | [@adnankurniawann](https://github.com/adnankurniawann) | AI and data | Planned: matching algorithm, guidebook agent, seed data. Since Nov 23 (swapped with Malik): teams, competition admin, mentor list and booking |
 
 "Planned" becomes a list of merged work as features land.
 
