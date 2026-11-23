@@ -818,6 +818,9 @@ isOneToOne: false
 "mark_notifications_read":
 { Args: { "p_ids": (string)[] }; Returns: number
                            },
+"ranking_candidates":
+{ Args: { "p_team_role": string }; Returns: Json
+                           },
 "recompute_team_status":
 { Args: { "p_team": string }; Returns: Database["public"]['Enums']["team_status_t"]
                            },
