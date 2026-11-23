@@ -3,6 +3,7 @@ import { cache } from "react";
 import { COMP_CATEGORIES, isRoleKey, type CompCategory, type RoleKey } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import { publicStorageUrl } from "@/lib/supabase/storage";
+import type { MentorCardData } from "./list";
 
 // The mentor detail page /mentor/[id] (PRD F-MNT-02, §10.9). Public: mentor contacts live in
 // mentor_contacts and are never selected here; they open only after a paid booking (ADR 0003).
@@ -122,3 +123,33 @@ export const loadMentor = cache(async function loadMentor(
     signedIn: Boolean(user),
   };
 });
+
+/** Every active mentor for the grid /mentor (PRD F-MNT-01), with their cheapest service. */
+export async function loadMentorList(): Promise<MentorCardData[]> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("mentors")
+    .select(
+      "id, display_name, photo_path, roles, headline, achievements, competition_categories, verified, is_simulated, mentor_services(price)",
+    )
+    .eq("is_active", true);
+  if (error) throw new Error(`mentors: ${error.message}`);
+  return (data ?? []).map((m) => {
+    const prices = m.mentor_services.map((s) => s.price);
+    return {
+      id: m.id,
+      name: m.display_name,
+      photoUrl: publicStorageUrl("mentors", m.photo_path),
+      roles: m.roles.filter(isRoleKey),
+      headline: m.headline,
+      categories: m.competition_categories.filter((c): c is CompCategory =>
+        (COMP_CATEGORIES as readonly string[]).includes(c),
+      ),
+      minPrice: prices.length ? Math.min(...prices) : null,
+      verified: m.verified,
+      isSimulated: m.is_simulated,
+      achievementCount: Array.isArray(m.achievements) ? m.achievements.length : 0,
+    };
+  });
+}

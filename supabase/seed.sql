@@ -178,3 +178,77 @@ values
 
 -- The file is uploaded from supabase/seed/guidebooks (config.toml, [storage.buckets.guidebooks]).
 update competitions set guidebook_path = 'stack-2026/guidebook.pdf' where slug = 'stack-2026';
+
+-- MENTORS (PRD §15: 10 fictional mentors, 2 to 3 services, 6 slots next week) -------------------
+-- All are made up, so they carry is_simulated and initials instead of photos (PRD F-MNT, ADR 0005).
+-- Slots are relative to `pnpm db:reset`: next Monday to Saturday at 19.00 Jakarta time.
+insert into mentors
+  (id, display_name, roles, headline, bio, achievements, competition_categories, is_simulated)
+values
+  ('00000000-0000-4000-8000-000000000101', 'Raka Pratama', '{backend}',
+    'Juara 1 hackathon nasional 2024, kategori layanan publik',
+    'Backend engineer yang suka merapikan arsitektur prototipe hackathon supaya demo tidak gagal di depan juri.',
+    '[{"year":2024,"title":"Juara 1 hackathon nasional, kategori layanan publik"},{"year":2023,"title":"Finalis kompetisi aplikasi mahasiswa"}]',
+    '{hackathon,it_competition}', true),
+  ('00000000-0000-4000-8000-000000000102', 'Nadia Kusuma', '{uiux}',
+    'Juara 1 design sprint nasional 2024, kategori UX',
+    'Product designer yang membimbing riset pengguna singkat dan prototipe yang bisa diuji dalam sehari.',
+    '[{"year":2024,"title":"Juara 1 design sprint nasional, kategori UX"}]',
+    '{ui_ux,hackathon}', true),
+  ('00000000-0000-4000-8000-000000000103', 'Dimas Saputra', '{frontend}',
+    'Juara 2 hackathon kampus 2023, frontend lead',
+    'Frontend developer yang fokus ke antarmuka cepat, aksesibel, dan siap didemokan.',
+    '[{"year":2023,"title":"Juara 2 hackathon kampus"}]',
+    '{hackathon,it_competition}', true),
+  ('00000000-0000-4000-8000-000000000104', 'Salsa Maharani', '{data}',
+    'Juara 1 data science challenge 2024',
+    'Data scientist yang membantu tim memilih model sederhana dan menyajikan temuan lewat dasbor.',
+    '[{"year":2024,"title":"Juara 1 data science challenge mahasiswa"},{"year":2022,"title":"Juara 3 lomba analisis data"}]',
+    '{data,hackathon}', true),
+  ('00000000-0000-4000-8000-000000000105', 'Bagas Wicaksono', '{product}',
+    'Best pitch di hackathon nasional 2023',
+    'Product manager yang melatih alur pitch tiga menit, dari masalah sampai demo.',
+    '[{"year":2023,"title":"Best pitch, hackathon nasional"}]',
+    '{hackathon,business_case}', true),
+  ('00000000-0000-4000-8000-000000000106', 'Intan Permatasari', '{business}',
+    'Juara 1 business case competition 2024',
+    'Konsultan strategi yang membimbing analisis kasus, struktur slide, dan sesi tanya jawab juri.',
+    '[{"year":2024,"title":"Juara 1 business case competition"}]',
+    '{business_case}', true),
+  ('00000000-0000-4000-8000-000000000107', 'Fajar Nugroho', '{backend,data}',
+    'Finalis hackathon AI 2024, backend dan machine learning',
+    'Engineer yang menyambungkan model machine learning ke API yang stabil untuk demo.',
+    '[{"year":2024,"title":"Finalis hackathon AI"}]',
+    '{hackathon,data}', true),
+  ('00000000-0000-4000-8000-000000000108', 'Ayu Lestari', '{uiux,frontend}',
+    'Juara 2 lomba UI/UX nasional 2023',
+    'Designer yang juga menulis kode, membantu tim menjaga desain tetap bisa dibangun.',
+    '[{"year":2023,"title":"Juara 2 lomba UI/UX nasional"}]',
+    '{ui_ux,it_competition}', true),
+  ('00000000-0000-4000-8000-000000000109', 'Yoga Firmansyah', '{product,business}',
+    'Juara 1 lomba rencana bisnis 2022',
+    'Pendiri startup kecil yang membimbing validasi ide dan model bisnis untuk lomba.',
+    '[{"year":2022,"title":"Juara 1 lomba rencana bisnis"}]',
+    '{business_case,hackathon}', true),
+  ('00000000-0000-4000-8000-000000000110', 'Putri Anggraini', '{data}',
+    'Juara 1 karya tulis ilmiah teknologi 2023',
+    'Peneliti yang membimbing penulisan karya ilmiah dan analisis data pendukungnya.',
+    '[{"year":2023,"title":"Juara 1 karya tulis ilmiah teknologi"}]',
+    '{paper,data}', true);
+
+insert into mentor_services (mentor_id, name, description, duration_min, price)
+select m.id, s.name, s.description, s.duration_min, s.price
+from mentors m
+join (values
+  ('Review ide dan rencana tim', 'Sesi tanya jawab untuk mengecek ide, pembagian role, dan rencana kerja.', 30, 75000),
+  ('Mentoring teknis atau desain', 'Bedah prototipe sesuai bidang mentor dan daftar perbaikan prioritas.', 60, 150000),
+  ('Latihan pitch dan demo', 'Simulasi presentasi di depan juri dengan masukan langsung.', 45, 120000)
+) as s(name, description, duration_min, price)
+  on s.name <> 'Latihan pitch dan demo' or m.roles && '{product,business}'
+where m.id::text like '00000000-0000-4000-8000-0000000001%';
+
+insert into mentor_slots (mentor_id, starts_at)
+select m.id, (date_trunc('week', now() at time zone 'Asia/Jakarta') + interval '7 days'
+  + d * interval '1 day' + interval '19 hours') at time zone 'Asia/Jakarta'
+from mentors m, generate_series(0, 5) d
+where m.id::text like '00000000-0000-4000-8000-0000000001%';
