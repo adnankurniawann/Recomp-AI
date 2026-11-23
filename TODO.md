@@ -76,7 +76,7 @@ Contracts first, so everyone can work in parallel from H1.
 ## H2 Sat Nov 21
 
 **@malikarsya**
-- [ ] #24 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
+- [x] #24 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
 - [ ] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
 
 **@dhanesmd3**
