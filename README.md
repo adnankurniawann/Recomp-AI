@@ -23,15 +23,15 @@ Teams then prepare through short courses and paid mentor sessions (simulated).
 
 | Feature | PRD | Status |
 | --- | --- | --- |
-| Google sign-in and profile onboarding | F-FND-02, F-PRF-01 | Planned |
+| Google sign-in and profile onboarding | F-FND-02, F-PRF-01 | Done: `/masuk`, four-step onboarding, `/profil` with portfolio covers, public profile `/u/[username]` without contacts |
 | Competition list, detail and "Tertarik" | F-CMP-01..03 | Done: `/lomba`, `/lomba/[slug]` with the guidebook summary tab, "Tertarik" |
 | Guidebook extraction and suggested roles | F-GBA-01..04 | In progress: agent, skill mapping and cache work; no screen yet |
 | Team creation and role editor | F-TEM-01..04 | In progress: `/tim/baru` wizard, role editor and `/tim/[id]/role` done |
 | Explainable candidate ranking per role | F-RNK-01..04 | In progress: scoring, reasons and the ranking UI with the profile sheet; waits for `GET /api/ranking` (#28) and the team page (#26) |
-| Invitations and contacts that open on accept | F-INV-01..04 | Planned |
+| Invitations and contacts that open on accept | F-INV-01..04 | In progress: invite dialog, `/undangan` (accept, decline, cancel), atomic accept and contacts that open between teammates; contacts on the team page wait for #26 and #34 |
 | Recruiter agent drafts (sent only on click) | F-RCR-01..03 | Planned |
-| Course player, quizzes and case-study feedback | F-LRN-01..06 | Planned |
-| Mentors and simulated booking | F-MNT-01..04 | Planned |
+| Course player, quizzes and case-study feedback | F-LRN-01..06 | In progress: catalog, course page, lesson player, quizzes with points and progress, promo code and simulated purchase, 4 lessons; case-study feedback waits for #40 |
+| Mentors and simulated booking | F-MNT-01..04 | In progress: `/mentor/[id]` and mentor contact privacy; the mentor list, booking and checkout wait for #43 and #45 |
 | Notifications and admin | F-NTF-01, F-ADM-01 | Planned |
 
 ### Planned for Final Day
