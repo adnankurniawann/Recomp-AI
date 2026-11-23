@@ -6,6 +6,7 @@ import { uuid } from "./common";
 // lives in the database, so `create_team` and `saveRoles` check it with `totalSlots`.
 
 export const MAX_ROLES = 6;
+export const MAX_STARTING_INVITES = 5;
 
 export const roleInputSchema = z.object({
   id: uuid.optional(),
@@ -68,10 +69,23 @@ export const createTeamSchema = z
     workTime: z.enum(WORK_TIMES, "Pilih jam kerja tim"),
     roles,
     leaderRoleIndex: z.number().int().min(0),
+    /** Existing students the leader adds in step 3; each gets a normal invite (F-TEM-01). */
+    invites: z
+      .array(z.object({ profileId: uuid, roleIndex: z.number().int().min(0) }))
+      .max(MAX_STARTING_INVITES, "Maksimal 5 undangan di awal")
+      .refine(
+        (items) => new Set(items.map((i) => i.profileId)).size === items.length,
+        "Ada username yang dobel",
+      )
+      .default([]),
   })
   .refine((v) => v.leaderRoleIndex < v.roles.length, {
     message: "Pilih role untuk ketua",
     path: ["leaderRoleIndex"],
+  })
+  .refine((v) => v.invites.every((i) => i.roleIndex < v.roles.length), {
+    message: "Pilih role untuk tiap undangan",
+    path: ["invites"],
   });
 export type CreateTeamInput = z.input<typeof createTeamSchema>;
 

@@ -782,6 +782,9 @@ isOneToOne: false
 "course_progress":
 { Args: { "p_course": string }; Returns: Json
                            },
+"create_team":
+{ Args: { "p_competition": string,"p_extraction"?: string,"p_goal": Database["public"]['Enums']["goal_t"],"p_leader_role_index": number,"p_name": string,"p_roles": Json,"p_work_time": Database["public"]['Enums']["work_time_t"] }; Returns: string
+                           },
 "current_profile_id":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
