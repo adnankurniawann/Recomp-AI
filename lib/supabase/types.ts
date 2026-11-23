@@ -824,6 +824,9 @@ isOneToOne: false
 "save_profile_skills":
 { Args: { "p_preferred_roles": (string)[],"p_skills": Json }; Returns: number
                            },
+"save_roles":
+{ Args: { "p_roles": Json,"p_team": string }; Returns: (string)[]
+                           },
 "send_invite":
 { Args: { "p_agent_action"?: string,"p_ai_drafted"?: boolean,"p_candidate": string,"p_message": string,"p_team_role": string }; Returns: string
                            },

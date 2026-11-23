@@ -5,7 +5,12 @@ import { fail, failFromDb, failValidation, ok, type ActionResult } from "@/lib/a
 import { teamPhrase } from "@/lib/invites/template";
 import { createClient } from "@/lib/supabase/server";
 import { username as usernameSchema } from "@/lib/validation/profile";
-import { createTeamSchema, type CreateTeamInput } from "@/lib/validation/team";
+import {
+  createTeamSchema,
+  saveRolesSchema,
+  type CreateTeamInput,
+  type SaveRolesInput,
+} from "@/lib/validation/team";
 
 // Team actions (PRD §13.1, F-TEM-01). The rules live in the SQL functions (migration 0008);
 // these validate input, call them as the signed-in student and map the error.
@@ -30,22 +35,7 @@ export async function createTeam(
     p_goal: d.goal,
     p_work_time: d.workTime,
     p_leader_role_index: d.leaderRoleIndex,
-    p_roles: d.roles.map((r) => ({
-      name: r.name,
-      description: r.description ?? null,
-      color_key: r.colorKey,
-      source: r.source,
-      source_page: r.sourcePage,
-      source_criterion: r.sourceCriterion,
-      edited: r.edited,
-      required_skills: r.requiredSkills.map((s) => ({
-        skill_id: s.skillId,
-        min_level: s.minLevel,
-      })),
-      optional_skill_ids: r.optionalSkillIds,
-      hours_per_week: r.hoursPerWeek,
-      slots: r.slots,
-    })),
+    p_roles: d.roles.map(toDbRole),
     ...(input.extractionId && { p_extraction: input.extractionId }),
   });
   if (error) {
@@ -59,6 +49,46 @@ export async function createTeam(
 }
 
 type Client = Awaited<ReturnType<typeof createClient>>;
+
+/** RoleInput as the snake_case JSON that create_team and save_roles read. */
+function toDbRole(r: ReturnType<typeof saveRolesSchema.parse>["roles"][number]) {
+  return {
+    id: r.id ?? null,
+    name: r.name,
+    description: r.description ?? null,
+    color_key: r.colorKey,
+    source: r.source,
+    source_page: r.sourcePage,
+    source_criterion: r.sourceCriterion,
+    edited: r.edited,
+    required_skills: r.requiredSkills.map((s) => ({ skill_id: s.skillId, min_level: s.minLevel })),
+    optional_skill_ids: r.optionalSkillIds,
+    hours_per_week: r.hoursPerWeek,
+    slots: r.slots,
+  };
+}
+
+/** The leader replaces the team's roles (`save_roles`, F-TEM-02). */
+export async function saveRoles(
+  teamId: SaveRolesInput["teamId"],
+  roles: SaveRolesInput["roles"],
+): Promise<ActionResult<{ roles: string[] }>> {
+  const parsed = saveRolesSchema.safeParse({ teamId, roles });
+  if (!parsed.success) return failValidation(parsed.error.issues);
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("save_roles", {
+    p_team: parsed.data.teamId,
+    p_roles: parsed.data.roles.map(toDbRole),
+  });
+  if (error) {
+    if (error.code !== "P0001") console.error("[team roles]", error.code, error.message);
+    return failFromDb(error);
+  }
+
+  revalidatePath(`/tim/${parsed.data.teamId}`, "layout");
+  return ok({ roles: data });
+}
 
 /**
  * Step 3 invites, sent after the team exists as normal `send_invite` calls. A failed invite (the

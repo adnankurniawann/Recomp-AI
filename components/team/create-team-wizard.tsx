@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, ArrowRight, Check, Clock, Trash2, Users } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
@@ -8,15 +8,12 @@ import { createTeam } from "@/app/(app)/tim/actions";
 import { ChoiceGroup } from "@/components/profile/choice-group";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Chip } from "@/components/ui/chip";
-import { EmptyState } from "@/components/ui/empty-state";
 import { Field, fieldDescribedBy } from "@/components/ui/field";
-import { IconButton } from "@/components/ui/icon-button";
 import { Input } from "@/components/ui/input";
 import { Stepper } from "@/components/ui/stepper";
-import { StartingInvites, type StartingInvite } from "./starting-invites";
-import { issuesToFields } from "@/lib/action-result";
+import { ERROR_MESSAGES, issuesToFields } from "@/lib/action-result";
 import type { RoleSuggestions } from "@/lib/ai/role-suggestions";
+import type { RoleSuggestion } from "@/lib/ai/skill-map";
 import {
   GOAL_LABELS,
   GOALS,
@@ -26,9 +23,10 @@ import {
   type Goal,
   type WorkTime,
 } from "@/lib/constants";
-import { roleSourceLabel } from "@/lib/format/role-source";
 import type { SkillOption } from "@/lib/profile/form";
 import { createTeamSchema, totalSlots } from "@/lib/validation/team";
+import { RoleEditor, type EditorRole } from "./role-editor";
+import { StartingInvites, type StartingInvite } from "./starting-invites";
 
 const STEPS = ["Tujuan tim", "Role yang dibutuhkan", "Role kamu"] as const;
 const GOAL_OPTIONS = GOALS.map((value) => ({ value, label: GOAL_LABELS[value] }));
@@ -37,26 +35,28 @@ const WORK_TIME_OPTIONS = WORK_TIMES.map((value) => ({ value, label: WORK_TIME_L
 interface CreateTeamWizardProps {
   competition: { id: string; category: CompCategory; teamMax: number };
   suggestions: RoleSuggestions | null;
+  templates: RoleSuggestion[];
   skills: SkillOption[];
 }
 
-/**
- * The three-step team wizard (PRD F-TEM-01). Step 2 lets the leader drop a role or change its
- * slots; the full role editor (F-TEM-02) replaces that list.
- */
-export function CreateTeamWizard({ competition, suggestions, skills }: CreateTeamWizardProps) {
+/** The three-step team wizard (PRD F-TEM-01); step 2 is the role editor (F-TEM-02). */
+export function CreateTeamWizard({
+  competition,
+  suggestions,
+  templates,
+  skills,
+}: CreateTeamWizardProps) {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [name, setName] = useState("");
   const [goal, setGoal] = useState<Goal>("win");
   const [workTime, setWorkTime] = useState<WorkTime>("flexible");
-  const [roles, setRoles] = useState(suggestions?.roles ?? []);
+  const [roles, setRoles] = useState<EditorRole[]>(suggestions?.roles ?? []);
   const [leaderRoleIndex, setLeaderRoleIndex] = useState(0);
   const [invites, setInvites] = useState<StartingInvite[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [pending, startTransition] = useTransition();
 
-  const skillName = new Map(skills.map((s) => [s.id, s.name]));
   const slots = totalSlots(roles);
   const blocker =
     step === 2
@@ -84,11 +84,16 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
   }
 
   function next() {
-    if (step === 1) {
-      const parsed = createTeamSchema.safeParse(input);
-      const fields = parsed.success ? {} : issuesToFields(parsed.error.issues);
-      if (fields.name) {
-        setErrors({ name: fields.name });
+    const parsed = createTeamSchema.safeParse(input);
+    const fields = parsed.success ? {} : issuesToFields(parsed.error.issues);
+    if (step === 1 && fields.name) return setErrors({ name: fields.name });
+    if (step === 2) {
+      const roleErrors = Object.fromEntries(
+        Object.entries(fields).filter(([key]) => key.startsWith("roles.")),
+      );
+      if (Object.keys(roleErrors).length > 0) {
+        setErrors(roleErrors);
+        toast.error(ERROR_MESSAGES.VALIDATION);
         return;
       }
     }
@@ -108,10 +113,6 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
         );
       router.push(`/tim/${res.data.teamId}`);
     });
-  }
-
-  function setSlots(index: number, value: number) {
-    setRoles(roles.map((r, i) => (i === index ? { ...r, slots: value } : r)));
   }
 
   return (
@@ -167,71 +168,18 @@ export function CreateTeamWizard({ competition, suggestions, skills }: CreateTea
             {suggestions?.extractionStatus === "draft" && (
               <p className="text-sm text-ink-3">Ringkasan dibuat AI dan belum diperiksa admin.</p>
             )}
-            {roles.length === 0 ? (
-              <EmptyState
-                icon={Users}
-                title="Belum ada role usulan"
-                body="Lomba ini belum punya template role. Kamu bisa menambah role setelah tim dibuat."
-              />
-            ) : (
-              <ul className="flex flex-col gap-3">
-                {roles.map((r, i) => (
-                  <li key={`${r.name}-${i}`}>
-                    <Card padding="md" className="flex flex-col gap-3">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex flex-col gap-1">
-                          <h3 className="font-semibold text-ink-strong">{r.name}</h3>
-                          <p className="text-xs text-ink-3">
-                            {roleSourceLabel(r, { category: competition.category })}
-                          </p>
-                        </div>
-                        <IconButton
-                          label={`Hapus role ${r.name}`}
-                          icon={<Trash2 aria-hidden size={16} strokeWidth={1.75} />}
-                          onClick={() => {
-                            setRoles(roles.filter((_, j) => j !== i));
-                            setInvites([]); // role indexes shift
-                          }}
-                        />
-                      </div>
-                      {r.description && <p className="text-sm text-ink-2">{r.description}</p>}
-                      <div className="flex flex-wrap gap-1.5">
-                        {r.requiredSkills.map((s) => (
-                          <Chip key={s.skillId} color={r.colorKey}>
-                            {skillName.get(s.skillId) ?? `Skill ${s.skillId}`}
-                          </Chip>
-                        ))}
-                      </div>
-                      <div className="flex flex-wrap items-end gap-4">
-                        <p className="inline-flex items-center gap-1.5 text-sm text-ink-2">
-                          <Clock aria-hidden size={14} strokeWidth={1.75} />
-                          <span className="font-mono tabular-nums">{r.hoursPerWeek}</span> jam per
-                          minggu
-                        </p>
-                        <Field id={`slots-${i}`} label="Jumlah slot" className="w-28">
-                          <Input
-                            id={`slots-${i}`}
-                            type="number"
-                            inputMode="numeric"
-                            min={1}
-                            max={3}
-                            value={r.slots}
-                            onChange={(e) =>
-                              setSlots(i, Math.min(3, Math.max(1, Number(e.target.value) || 1)))
-                            }
-                            className="font-mono"
-                          />
-                        </Field>
-                      </div>
-                    </Card>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <p className="text-sm text-ink-2">
-              Total slot <span className="font-mono tabular-nums">{slots}</span> dari maks.{" "}
-              <span className="font-mono tabular-nums">{competition.teamMax}</span>
-            </p>
+            <RoleEditor
+              roles={roles}
+              onChange={(next) => {
+                if (next.length !== roles.length) setInvites([]); // role indexes shift
+                setRoles(next);
+              }}
+              skills={skills}
+              templates={templates}
+              category={competition.category}
+              teamMax={competition.teamMax}
+              errors={errors}
+            />
           </div>
         )}
 
