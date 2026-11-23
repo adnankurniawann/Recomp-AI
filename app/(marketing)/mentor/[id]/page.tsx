@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BookingPanel } from "@/components/mentor/booking-panel";
+import { createBooking } from "../actions";
 import { Chip } from "@/components/ui/chip";
 import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
@@ -141,7 +142,7 @@ export default async function MentorPage({ params }: Props) {
         </div>
 
         <aside className="lg:sticky lg:top-6">
-          <BookingPanel mentor={mentor} />
+          <BookingPanel mentor={mentor} bookAction={createBooking} />
         </aside>
       </div>
     </main>

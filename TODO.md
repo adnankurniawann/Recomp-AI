@@ -124,7 +124,7 @@ waits and everyone helps fix P0.
 
 **@malikarsya**
 - [x] #43 `/mentor` with `MentorCard` and role filter (F-MNT-01)
-- [ ] #45 Checkout, `create_booking`, `simulate_booking_payment` (F-MNT-03..04); mentor seed done in #43
+- [x] #45 Checkout, `create_booking`, `simulate_booking_payment` (F-MNT-03..04); mentor seed done in #43
 
 **@dhanesmd3**
 - [x] #44 `/mentor/[id]` (F-MNT-02)

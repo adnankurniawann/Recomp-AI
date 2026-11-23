@@ -3,7 +3,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { RankingSection } from "@/components/ranking/ranking-section";
-import { CompleteCard, MemberList, RoleRow, SentInvites } from "@/components/team/team-dashboard";
+import {
+  CompleteCard,
+  MemberList,
+  MentorSessions,
+  RoleRow,
+  SentInvites,
+} from "@/components/team/team-dashboard";
 import { buttonClasses } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { KpiStrip, type KpiItem } from "@/components/ui/kpi-strip";
@@ -119,6 +125,12 @@ export default async function TeamPage({ params, searchParams }: Props) {
             <Card padding="lg" className="flex flex-col gap-4 max-sm:px-4">
               <SectionLabel>Undangan terkirim</SectionLabel>
               <SentInvites invites={team.invites} />
+            </Card>
+          )}
+          {viewer.isMember && (
+            <Card padding="lg" className="flex flex-col gap-4 max-sm:px-4">
+              <SectionLabel>Sesi mentor</SectionLabel>
+              <MentorSessions bookings={team.bookings} />
             </Card>
           )}
         </div>

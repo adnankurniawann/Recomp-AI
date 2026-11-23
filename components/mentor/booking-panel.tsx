@@ -23,10 +23,7 @@ export type BookAction = (input: {
 
 interface BookingPanelProps {
   mentor: Pick<MentorDetail, "id" | "services" | "slots" | "viewerTeams" | "signedIn">;
-  /**
-   * `createBooking` from F-MNT-03 (#45). Until it is passed, the button stays off and says so,
-   * because a half-made booking must not look finished (STACK rule 6).
-   */
+  /** `createBooking` (F-MNT-03). Without it the button stays off and says so (STACK rule 6). */
   bookAction?: BookAction;
 }
 

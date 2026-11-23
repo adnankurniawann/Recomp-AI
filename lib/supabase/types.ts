@@ -773,6 +773,9 @@ isOneToOne: false
 "assign_member_role":
 { Args: { "p_profile": string,"p_role": string,"p_team": string }; Returns: undefined
                            },
+"booking_hold":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "cancel_invite":
 { Args: { "p_invite": string }; Returns: undefined
                            },
@@ -784,6 +787,9 @@ isOneToOne: false
                            },
 "course_progress":
 { Args: { "p_course": string }; Returns: Json
+                           },
+"create_booking":
+{ Args: { "p_service": string,"p_slot": string,"p_team": string }; Returns: string
                            },
 "create_team":
 { Args: { "p_competition": string,"p_extraction"?: string,"p_goal": Database["public"]['Enums']["goal_t"],"p_leader_role_index": number,"p_name": string,"p_roles": Json,"p_work_time": Database["public"]['Enums']["work_time_t"] }; Returns: string
@@ -832,6 +838,9 @@ isOneToOne: false
                            },
 "send_invite":
 { Args: { "p_agent_action"?: string,"p_ai_drafted"?: boolean,"p_candidate": string,"p_message": string,"p_team_role": string }; Returns: string
+                           },
+"simulate_booking_payment":
+{ Args: { "p_booking": string }; Returns: Database["public"]['Enums']["booking_status_t"]
                            },
 "simulate_course_purchase":
 { Args: { "p_course": string }; Returns: undefined

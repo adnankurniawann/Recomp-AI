@@ -10,6 +10,9 @@ import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { ROLE_COLORS } from "@/lib/constants";
 import { INVITE_STATUS } from "@/lib/invites/status";
+import { BOOKING_STATUS } from "@/lib/mentors/booking";
+import { formatRupiah } from "@/lib/format/currency";
+import { formatSlot } from "@/lib/format/date";
 import { whatsappUrl } from "@/lib/format/phone";
 import { roleSourceLabel } from "@/lib/format/role-source";
 import type { DashboardRole, TeamDashboard } from "@/lib/team/queries";
@@ -238,5 +241,94 @@ export function CompleteCard({
         </p>
       )}
     </Card>
+  );
+}
+
+/** "Sesi mentor" (PRD §10.4, F-MNT-03..04): sessions, the mentor's contact once paid, payments. */
+export function MentorSessions({ bookings }: { bookings: TeamDashboard["bookings"] }) {
+  if (bookings.length === 0) {
+    return (
+      <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-3">
+        Belum ada sesi mentor.
+        <Link href="/mentor" className="text-primary hover:underline">
+          Cari mentor
+        </Link>
+      </p>
+    );
+  }
+  return (
+    <ul className="flex flex-col">
+      {bookings.map((b) => {
+        const status = BOOKING_STATUS[b.status];
+        return (
+          <li
+            key={b.id}
+            className="flex flex-col gap-2 border-t border-line py-3 first:border-t-0 first:pt-0 last:pb-0"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="flex min-w-0 flex-col">
+                <span className="text-sm font-medium text-ink-strong">{b.serviceName}</span>
+                <span className="text-[13px] text-ink-3">
+                  <Link href={`/mentor/${b.mentorId}`} className="hover:underline">
+                    {b.mentorName}
+                  </Link>
+                  {b.startsAt && <> · {formatSlot(b.startsAt)}</>}
+                </span>
+              </div>
+              <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
+            </div>
+
+            {b.contact && (b.contact.whatsapp || b.contact.email) && (
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                {b.contact.whatsapp && (
+                  <a
+                    href={whatsappUrl(b.contact.whatsapp)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonClasses("secondary", "sm")}
+                  >
+                    <MessageCircle aria-hidden size={14} strokeWidth={1.75} />
+                    Chat mentor di WhatsApp
+                  </a>
+                )}
+                {b.contact.email && (
+                  <a
+                    href={`mailto:${b.contact.email}`}
+                    className="flex min-w-0 items-center gap-1 text-[13px] text-primary hover:underline"
+                  >
+                    <Mail aria-hidden size={14} strokeWidth={1.75} className="shrink-0" />
+                    <span className="truncate">{b.contact.email}</span>
+                  </a>
+                )}
+              </div>
+            )}
+
+            <dl className="grid grid-cols-[1fr_auto] gap-x-3 gap-y-0.5 text-[13px]">
+              <dt className="text-ink-3">Total</dt>
+              <dd className="text-right font-mono text-ink tabular-nums">
+                {formatRupiah(b.price)}
+              </dd>
+              <dt className="text-ink-3">Biaya platform</dt>
+              <dd className="text-right font-mono text-ink tabular-nums">
+                {formatRupiah(b.platformFee)}
+              </dd>
+              <dt className="text-ink-3">Diterima mentor</dt>
+              <dd className="text-right font-mono text-ink tabular-nums">
+                {formatRupiah(b.mentorShare)}
+              </dd>
+            </dl>
+
+            {b.status === "pending_payment" && (
+              <Link
+                href={`/mentor/${b.mentorId}/checkout?booking=${b.id}`}
+                className={cn(buttonClasses("secondary", "sm"), "self-start")}
+              >
+                Lanjutkan pembayaran
+              </Link>
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
