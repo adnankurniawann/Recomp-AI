@@ -105,8 +105,8 @@ Contracts first, so everyone can work in parallel from H1.
 
 **@malikarsya**
 - [ ] Vercel: `main` to production, a preview URL for every PR
-- [ ] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01), from Adnan
-- [ ] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05), from Adnan
+- [x] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01), from Adnan
+- [x] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05), from Adnan
 
 **@dhanesmd3**
 - [x] #31 Invite dialog and `sendInvite` (F-INV-01)
@@ -114,8 +114,8 @@ Contracts first, so everyone can work in parallel from H1.
 - [x] #32 `/undangan` (F-INV-02)
 
 **@angseleong**
-- [ ] #46 Notifications, the bell and the pending-invite count (F-NTF-01)
-- [ ] #29 Ranking tab on the real API: load more, sort, empty state (F-RNK-01)
+- [x] #46 Notifications, the bell and the pending-invite count (F-NTF-01)
+- [x] #29 Ranking tab on the real API: load more, sort, empty state (F-RNK-01)
 - [x] #23 Wire the guidebook summary tab
 
 **@adnankurniawann**
@@ -130,8 +130,8 @@ waits and everyone helps fix P0.
 ## H4 Mon Nov 23
 
 **@malikarsya**
-- [ ] #36 Recruiter agent: API and draft cards (F-RCR-01..03), from Adnan
-- [ ] #40 Case-study feedback API and `QuestionCase` (F-LRN-04), from Adnan
+- [x] #36 Recruiter agent: API and draft cards (F-RCR-01..03), from Adnan
+- [x] #40 Case-study feedback API and `QuestionCase` (F-LRN-04), from Adnan
 
 **@dhanesmd3**
 - [x] #44 `/mentor/[id]` (F-MNT-02)
@@ -140,8 +140,8 @@ waits and everyone helps fix P0.
 - [x] `seed-content.ts` for the course
 
 **@angseleong**
-- [ ] #37 `/belajar` and `/belajar/[kursus]` (F-LRN-01..02)
-- [ ] #38 `LessonShell`, lesson player, `QuestionMCQ`, points and progress (F-LRN-03)
+- [x] #37 `/belajar` and `/belajar/[kursus]` (F-LRN-01..02)
+- [x] #38 `LessonShell`, lesson player, `QuestionMCQ`, points and progress (F-LRN-03)
 
 **@adnankurniawann**
 - [x] #43 `/mentor` with `MentorCard` and role filter (F-MNT-01), from Malik
