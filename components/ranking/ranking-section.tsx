@@ -30,6 +30,7 @@ import { CandidateCard } from "./candidate-card";
 import type { InviteContext } from "./candidate-parts";
 import { CANDIDATE_GRID, CandidateRow } from "./candidate-row";
 import { ProfileSheet, type ProfileLoader } from "./profile-sheet";
+import { RecruitPanel, type RecruitApi } from "./recruit-panel";
 import { ALGORITHM_NOTE } from "./score-badge";
 
 export const EMPTY_RANKING_TEXT =
@@ -57,6 +58,10 @@ interface RankingSectionProps {
   loadProfile?: ProfileLoader;
   /** The tab to open first, from "Lihat kandidat" on a role card. */
   initialRoleId?: string;
+  /** Shows "Bantu rekrut" (F-RCR-01). Only for the team leader. */
+  canRecruit?: boolean;
+  /** Overrides the recruiter calls; screens on fixtures pass their own. */
+  recruitApi?: RecruitApi;
   /** Defaults to the `submitFeedback` server action (F-RNK-05). */
   submitFeedback?: (input: SubmitFeedbackInput) => Promise<ActionResult<Record<string, never>>>;
 }
@@ -73,6 +78,8 @@ export function RankingSection({
   loadProfile,
   initialRoleId,
   submitFeedback = submitFeedbackAction,
+  canRecruit = false,
+  recruitApi,
 }: RankingSectionProps) {
   const [activeId, setActiveId] = useState(
     roles.find((r) => r.id === initialRoleId)?.id ?? roles[0]?.id ?? "",
@@ -271,6 +278,15 @@ export function RankingSection({
           />
         ) : (
           <>
+            {canRecruit && (
+              <RecruitPanel
+                key={role.id}
+                teamRoleId={role.id}
+                roleName={role.name}
+                onInvited={markInvited}
+                api={recruitApi}
+              />
+            )}
             <div className="overflow-visible md:rounded-xl md:border md:border-line md:bg-surface md:shadow-xs">
               <div
                 aria-hidden
