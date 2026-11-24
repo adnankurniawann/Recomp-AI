@@ -1,5 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { admin, createStudent, deleteStudents } from "../integration/supabase";
+import {
+  admin,
+  createCompetition,
+  createStudent,
+  createTeam,
+  deleteCompetition,
+  deleteStudents,
+} from "../integration/supabase";
 import { hasLocalDb, signIn } from "./helpers";
 
 // F-PRF-01, F-PRF-06, F-PRF-07: onboarding, editing and the public profile in a real browser.
@@ -98,5 +105,43 @@ test("a student edits their bio and the public profile shows it without contacts
 
 test("an unknown username shows the Indonesian not-found page", async ({ page }) => {
   await page.goto("/u/tidak_ada_orangnya");
-  await expect(page.getByText("Profil tidak ditemukan")).toBeVisible();
+  await expect(page.getByRole("main").getByText("Profil tidak ditemukan")).toBeVisible();
+});
+
+// F-PRF-06: opened from the team page with ?team=&role=, the profile shows the match panel to
+// members of that team and the "Undang" button to its leader. Anyone else sees the plain profile.
+test("the leader sees the match panel on a candidate's public profile", async ({
+  page,
+  context,
+  baseURL,
+}) => {
+  const competitionId = await createCompetition();
+  try {
+    const leader = await createStudent("ketuapanel");
+    const outsider = await createStudent("luarpanel");
+    const candidate = await createStudent("kandidatpanel");
+    const team = await createTeam(leader, competitionId, [{ name: "UI/UX Designer", slots: 1 }]);
+    await admin()
+      .from("competition_interests")
+      .insert({ profile_id: candidate.profileId, competition_id: competitionId });
+    await admin()
+      .from("profile_skills")
+      .insert({ profile_id: candidate.profileId, skill_id: 16, level: 3 });
+    const url = `/u/${candidate.username}?team=${team.teamId}&role=${team.roleIds[0]}`;
+
+    await signIn(context, leader, baseURL!);
+    await page.goto(url);
+    const panel = page.getByRole("region", { name: "Kecocokan untuk UI/UX Designer" });
+    await expect(panel).toBeVisible();
+    await expect(panel.getByText(/^\d{1,3}$/).first()).toBeVisible();
+    await expect(panel.getByRole("button", { name: /^Undang/ })).toBeVisible();
+
+    await context.clearCookies();
+    await signIn(context, outsider, baseURL!);
+    await page.goto(url);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByText("Kecocokan untuk")).toHaveCount(0);
+  } finally {
+    await deleteCompetition(competitionId);
+  }
 });
