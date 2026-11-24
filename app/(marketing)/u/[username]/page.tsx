@@ -5,6 +5,8 @@ import { notFound } from "next/navigation";
 import { HistoryTimeline } from "@/components/profile/history-timeline";
 import { PortfolioGrid } from "@/components/profile/portfolio-grid";
 import { ProfileSummary } from "@/components/profile/profile-summary";
+import { CandidateInvite } from "@/components/ranking/candidate-parts";
+import { MatchPanel } from "@/components/ranking/match-panel";
 import { buttonClasses } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -12,22 +14,31 @@ import { SkillChip } from "@/components/ui/skill-chip";
 import { COMP_CATEGORY_LABELS } from "@/lib/constants";
 import { formatDate } from "@/lib/format/date";
 import { loadPublicProfile } from "@/lib/profile/public";
+import { loadRoleMatch } from "@/lib/ranking/role-match";
 
 // SectionLabel's look on a real heading, so the sections show up in the heading outline.
 const SECTION_LABEL =
   "font-mono text-[11px] leading-[1.4] font-medium tracking-[0.18em] text-ink-3 uppercase";
 
-type Props = { params: Promise<{ username: string }> };
+type Props = {
+  params: Promise<{ username: string }>;
+  searchParams: Promise<{ team?: string; role?: string }>;
+};
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const profile = await loadPublicProfile((await params).username);
   return { title: profile ? profile.fullName : "Profil tidak ditemukan" };
 }
 
-/** Public profile (PRD F-PRF-06, §10.6): no contacts, ever. */
-export default async function PublicProfilePage({ params }: Props) {
+/**
+ * Public profile (PRD F-PRF-06, §10.6): no contacts, ever. Opened from the team page with
+ * `?team=...&role=...`, members of that team also see the match panel for the role.
+ */
+export default async function PublicProfilePage({ params, searchParams }: Props) {
   const profile = await loadPublicProfile((await params).username);
   if (!profile) notFound();
+  const { team, role } = await searchParams;
+  const match = profile.isOwn ? null : await loadRoleMatch(team, role, profile.id);
 
   return (
     <main className="mx-auto grid w-full max-w-6xl gap-6 px-4 py-8 sm:px-6 sm:py-12 lg:grid-cols-[340px_1fr] lg:items-start">
@@ -56,6 +67,25 @@ export default async function PublicProfilePage({ params }: Props) {
       </aside>
 
       <div className="flex min-w-0 flex-col gap-8">
+        {match &&
+          (match.candidate ? (
+            <MatchPanel candidate={match.candidate} roleName={match.role.name} headingAs="h2">
+              {match.invite && (
+                <CandidateInvite
+                  candidate={match.candidate}
+                  role={match.role}
+                  invite={match.invite}
+                  className="self-start"
+                />
+              )}
+            </MatchPanel>
+          ) : (
+            <p className="rounded-xl border border-line bg-surface-2/40 p-4 text-sm text-ink-2">
+              {profile.fullName} tidak ada di daftar kandidat {match.role.name}. Bisa jadi sudah
+              diundang, sudah punya tim di lomba ini, belum menandai lomba ini, atau belum punya
+              skill wajib role ini.
+            </p>
+          ))}
         <section className="flex flex-col gap-3" aria-labelledby="history-label">
           <h2 id="history-label" className={SECTION_LABEL}>
             Riwayat lomba

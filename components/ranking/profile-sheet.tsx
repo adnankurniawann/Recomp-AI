@@ -13,18 +13,12 @@ import { IconButton } from "@/components/ui/icon-button";
 import { SectionLabel } from "@/components/ui/section-label";
 import { SkillChip } from "@/components/ui/skill-chip";
 import type { ActionResult } from "@/lib/action-result";
-import { scoreTone } from "@/lib/format/score";
 import type { PublicProfile } from "@/lib/profile/public";
 import type { RankingCandidate, RankingRole } from "@/lib/ranking/types";
-import { cn } from "@/lib/utils";
 import { CandidateInvite, type InviteContext } from "./candidate-parts";
-import { FactorBars } from "./factor-bars";
-import { ReasonList } from "./reason-list";
-import { ALGORITHM_NOTE } from "./score-badge";
+import { MatchPanel } from "./match-panel";
 
 export type ProfileLoader = (username: string) => Promise<ActionResult<PublicProfile>>;
-
-const SCORE_DOTS = { success: "bg-success", primary: "bg-primary", warning: "bg-warning" };
 
 interface ProfileSheetProps {
   /** The candidate to show; null keeps the sheet closed. */
@@ -34,6 +28,8 @@ interface ProfileSheetProps {
   onClose: () => void;
   /** Defaults to the server action; screens on fixtures pass their own. */
   loadProfile?: ProfileLoader;
+  /** Adds `?team=&role=` to the profile links, so the full profile shows the match panel. */
+  teamId?: string;
 }
 
 type State =
@@ -51,6 +47,7 @@ export function ProfileSheet({
   invite,
   onClose,
   loadProfile = loadProfileForSheet,
+  teamId,
 }: ProfileSheetProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -80,6 +77,8 @@ export function ProfileSheet({
   }, [load]);
 
   const c = candidate;
+  const profileHref = (username: string) =>
+    teamId ? `/u/${username}?team=${teamId}&role=${role.id}` : `/u/${username}`;
   const matched = new Set(c?.matchedRequired.map((s) => s.skillId));
 
   return (
@@ -113,24 +112,7 @@ export function ProfileSheet({
               <SummarySkeleton />
             ) : null}
 
-            <section
-              aria-label={`Kecocokan untuk ${role.name}`}
-              className="flex flex-col gap-3 rounded-xl border border-line bg-surface-2/40 p-4"
-            >
-              <div className="flex items-center justify-between gap-3">
-                <h3 className="font-semibold text-ink-strong">Kecocokan untuk {role.name}</h3>
-                <span className="inline-flex items-center gap-1.5">
-                  <span
-                    aria-hidden
-                    className={cn("size-2 rounded-full", SCORE_DOTS[scoreTone(c.score)])}
-                  />
-                  <span className="font-mono text-xl text-ink-strong tabular-nums">{c.score}</span>
-                </span>
-              </div>
-              <FactorBars factors={c.factors} weights={c.weights} />
-              <ReasonList reasons={c.reasons} className="border-t border-line pt-3" />
-              <p className="text-xs text-ink-2">{ALGORITHM_NOTE}</p>
-            </section>
+            <MatchPanel candidate={c} roleName={role.name} />
 
             {state.status === "error" && (
               <ErrorState title="Profil belum bisa dimuat" body={state.message} onRetry={load} />
@@ -164,7 +146,7 @@ export function ProfileSheet({
                     <HistoryTimeline
                       items={state.profile.history}
                       limit={5}
-                      moreHref={`/u/${state.profile.username}`}
+                      moreHref={profileHref(state.profile.username)}
                     />
                   ) : (
                     <p className="text-sm text-ink-2">Belum ada riwayat lomba.</p>
@@ -185,7 +167,7 @@ export function ProfileSheet({
 
           <footer className="flex items-center justify-between gap-3 border-t border-line px-5 py-3 sm:px-6">
             <Link
-              href={`/u/${c.profile.username}`}
+              href={profileHref(c.profile.username)}
               className={buttonClasses("secondary", "md", "h-11 md:h-10")}
             >
               Buka profil lengkap

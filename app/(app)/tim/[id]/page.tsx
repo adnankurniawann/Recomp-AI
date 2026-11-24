@@ -144,6 +144,7 @@ export default async function TeamPage({ params, searchParams }: Props) {
             key={activeRole}
             roles={emptyRoles}
             initialRoleId={activeRole}
+            teamId={team.id}
             canRecruit
             competition={{ slug: c.slug }}
             invite={{

@@ -58,6 +58,8 @@ interface RankingSectionProps {
   loadProfile?: ProfileLoader;
   /** The tab to open first, from "Lihat kandidat" on a role card. */
   initialRoleId?: string;
+  /** Lets the ProfileSheet link to the full profile with the match panel (F-PRF-06). */
+  teamId?: string;
   /** Shows "Bantu rekrut" (F-RCR-01). Only for the team leader. */
   canRecruit?: boolean;
   /** Overrides the recruiter calls; screens on fixtures pass their own. */
@@ -77,6 +79,7 @@ export function RankingSection({
   fetchPage = fetchRankingPage,
   loadProfile,
   initialRoleId,
+  teamId,
   submitFeedback = submitFeedbackAction,
   canRecruit = false,
   recruitApi,
@@ -343,6 +346,7 @@ export function RankingSection({
         invite={inviteCtx}
         onClose={() => setOpenId(null)}
         loadProfile={loadProfile}
+        teamId={teamId}
       />
     </section>
   );
