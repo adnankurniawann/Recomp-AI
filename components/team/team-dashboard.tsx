@@ -250,7 +250,7 @@ export function MentorSessions({ bookings }: { bookings: TeamDashboard["bookings
     return (
       <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-3">
         Belum ada sesi mentor.
-        <Link href="/mentor" className="text-primary hover:underline">
+        <Link href="/mentor" className="tap-target text-primary hover:underline">
           Cari mentor
         </Link>
       </p>

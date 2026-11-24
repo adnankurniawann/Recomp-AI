@@ -101,7 +101,7 @@ export function CompetitionForm({ initial = EMPTY_COMPETITION }: { initial?: Val
     </Field>
   );
   const flag = (key: "isPublished" | "isFeatured" | "isSimulated", label: string) => (
-    <label className="flex items-center gap-2 text-sm text-ink">
+    <label className="flex min-h-11 items-center gap-2 text-sm text-ink md:min-h-0">
       <input
         type="checkbox"
         checked={v[key]}

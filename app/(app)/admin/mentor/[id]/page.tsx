@@ -29,7 +29,7 @@ export default async function EditMentorPage({ params }: Props) {
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <Link
         href="/admin/mentor"
-        className="inline-flex items-center gap-1.5 self-start text-sm font-medium text-ink-2 hover:text-ink"
+        className="tap-target inline-flex items-center gap-1.5 self-start text-sm font-medium text-ink-2 hover:text-ink"
       >
         <ArrowLeft aria-hidden size={16} strokeWidth={1.75} />
         Semua mentor

@@ -64,7 +64,7 @@ export default async function AdminCompetitionsPage() {
                       <div className="flex flex-wrap items-center gap-2">
                         <Link
                           href={`/admin/lomba/${c.id}`}
-                          className="font-medium text-ink-strong hover:underline"
+                          className="tap-target font-medium text-ink-strong hover:underline"
                         >
                           {c.name}
                         </Link>

@@ -63,7 +63,7 @@ export default async function AdminMentorsPage() {
                       <div className="flex flex-wrap items-center gap-2">
                         <Link
                           href={`/admin/mentor/${m.id}`}
-                          className="font-medium text-ink-strong hover:underline"
+                          className="tap-target font-medium text-ink-strong hover:underline"
                         >
                           {m.display_name}
                         </Link>
