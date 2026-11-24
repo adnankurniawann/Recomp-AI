@@ -1,14 +1,16 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { fail, failValidation, ok, type ActionResult } from "@/lib/action-result";
+import { fail, failFromDb, failValidation, ok, type ActionResult } from "@/lib/action-result";
 import type { StoredExtraction } from "@/lib/ai/skill-map";
 import { createClient } from "@/lib/supabase/server";
 import type { Json } from "@/lib/supabase/types";
 import {
   competitionSchema,
+  mentorSchema,
   reviewExtractionSchema,
   type CompetitionInput,
+  type MentorInput,
   type ReviewExtractionInput,
 } from "@/lib/validation/admin";
 import { uuid } from "@/lib/validation/common";
@@ -170,4 +172,40 @@ export async function reviewExtraction(
   revalidatePath("/lomba", "layout");
   revalidatePath("/admin/lomba", "layout");
   return ok({ id: row.id });
+}
+
+/** Adds or edits a mentor and their services in one go (`save_mentor`, F-ADM-01). */
+export async function saveMentor(input: MentorInput): Promise<ActionResult<{ id: string }>> {
+  const parsed = mentorSchema.safeParse(input);
+  if (!parsed.success) return failValidation(parsed.error.issues);
+  const m = parsed.data;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("save_mentor", {
+    p_mentor: {
+      display_name: m.displayName,
+      roles: m.roles,
+      headline: m.headline,
+      bio: m.bio,
+      competition_categories: m.categories,
+      verified: m.verified,
+      is_simulated: m.isSimulated,
+      is_active: m.isActive,
+    },
+    p_services: m.services.map((s) => ({
+      ...(s.id && { id: s.id }),
+      name: s.name,
+      description: s.description,
+      duration_min: s.durationMin,
+      price: s.price,
+    })),
+    p_id: m.id,
+  });
+  if (error || !data) {
+    console.error("[admin mentor]", error?.code, error?.message);
+    return error ? failFromDb(error) : fail("UNKNOWN");
+  }
+  revalidatePath("/mentor", "layout");
+  revalidatePath("/admin/mentor", "layout");
+  return ok({ id: data });
 }

@@ -40,6 +40,8 @@ export const ERROR_MESSAGES = {
   NOT_MEMBER: "Kamu bukan anggota tim ini.",
   ROLE_FULL: "Role ini sudah penuh.",
   ROLE_NOT_FOUND: "Role tidak ditemukan.",
+  SERVICE_IN_USE:
+    "Layanan yang sudah pernah dipesan tidak bisa dihapus. Ubah saja nama atau harganya.",
   ROLE_HAS_MEMBERS:
     "Role ini masih punya anggota. Pindahkan anggotanya dulu sebelum menghapus role atau mengurangi slot.",
 

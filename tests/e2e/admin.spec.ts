@@ -3,10 +3,12 @@ import { expect, test } from "@playwright/test";
 import { admin, createStudent, deleteStudents } from "../integration/supabase";
 import { hasLocalDb, signIn } from "./helpers";
 
-// F-CMP-04: the admin adds a competition, uploads its guidebook and approves an extraction.
+// F-CMP-04, F-ADM-01: the admin adds a competition, uploads its guidebook, approves an extraction
+// and manages mentors.
 test.skip(!hasLocalDb, "needs local Supabase (see CONTRIBUTING.md)");
 
 const slug = `admin-e2e-${randomUUID().slice(0, 8)}`;
+const mentorName = `Mentor E2E ${randomUUID().slice(0, 6)}`;
 
 test.afterAll(async () => {
   const { data: c } = await admin()
@@ -16,6 +18,7 @@ test.afterAll(async () => {
     .maybeSingle();
   if (c?.guidebook_path) await admin().storage.from("guidebooks").remove([c.guidebook_path]);
   if (c) await admin().from("competitions").delete().eq("id", c.id);
+  await admin().from("mentors").delete().eq("display_name", mentorName);
   await deleteStudents();
 });
 
@@ -117,5 +120,42 @@ test("the admin adds a competition, uploads a guidebook and approves the extract
   expect(reviewed?.status).toBe("reviewed");
   expect(reviewed?.reviewed_by).toBe(boss.profileId);
   expect((reviewed?.data as { summary: string }).summary).toBe("Ringkasan yang sudah dicek admin.");
+  await context.close();
+});
+
+test("the admin adds a mentor with a service and hides them again", async ({
+  browser,
+  baseURL,
+}) => {
+  const boss = await createStudent("adminmentor");
+  await admin().from("profiles").update({ app_role: "admin" }).eq("id", boss.profileId);
+  const context = await browser.newContext();
+  await signIn(context, boss, baseURL!);
+  const page = await context.newPage();
+
+  await page.goto("/admin/mentor");
+  await page.getByRole("link", { name: "Tambah mentor" }).click();
+  await page.getByRole("button", { name: "Tambah mentor" }).click();
+  await expect(page.getByText("Pilih minimal 1 role")).toBeVisible();
+
+  await page.getByLabel("Nama", { exact: true }).fill(mentorName);
+  await page.getByLabel("Kredensial").fill("Juara 1 hackathon uji 2025");
+  await page.getByRole("group", { name: "Role" }).getByLabel("UI/UX").check();
+  await page.getByLabel("Nama layanan").fill("Review pitch deck");
+  await page.getByLabel("Harga (Rp)").fill("90000");
+  await page.getByRole("button", { name: "Tambah mentor" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: mentorName })).toBeVisible();
+
+  await page.goto("/mentor");
+  await expect(page.getByText(mentorName)).toBeVisible();
+
+  await page.goto("/admin/mentor");
+  await page.getByRole("link", { name: mentorName }).click();
+  await page.getByLabel("Tampilkan di /mentor").uncheck();
+  await page.getByRole("button", { name: "Simpan mentor" }).click();
+  await expect(page.getByText("Mentor sudah disimpan.")).toBeVisible();
+  await page.goto("/mentor");
+  await expect(page.getByRole("main")).toBeVisible();
+  await expect(page.getByText(mentorName)).toHaveCount(0);
   await context.close();
 });

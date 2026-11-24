@@ -1,9 +1,10 @@
 import { z } from "zod";
-import { COMP_CATEGORIES } from "@/lib/constants";
+import { COMP_CATEGORIES, PREFERRED_ROLE_KEYS } from "@/lib/constants";
 import { optionalHttpsUrl, optionalText, uuid } from "./common";
 import { MAX_ROLES, roleInputSchema, totalSlots } from "./team";
 
-// Admin inputs (PRD F-CMP-04): the competition form and the extraction review.
+// Admin inputs (PRD F-CMP-04, F-ADM-01): the competition form, the extraction review and the
+// mentor form.
 
 const isoDate = z
   .string()
@@ -113,3 +114,49 @@ export const reviewExtractionSchema = z
     message: "Total slot role melebihi ukuran tim maksimal",
   });
 export type ReviewExtractionInput = z.input<typeof reviewExtractionSchema>;
+
+export const mentorServiceSchema = z.object({
+  id: uuid.optional(),
+  name: z
+    .string()
+    .trim()
+    .min(3, "Nama layanan 3 sampai 80 karakter")
+    .max(80, "Nama layanan 3 sampai 80 karakter"),
+  description: optionalText(300, "Deskripsi layanan maksimal 300 karakter"),
+  durationMin: z
+    .number("Wajib diisi")
+    .int()
+    .min(15, "Durasi 15 sampai 240 menit")
+    .max(240, "Durasi 15 sampai 240 menit"),
+  price: z
+    .number("Wajib diisi")
+    .int()
+    .min(0, "Harga 0 sampai Rp10.000.000")
+    .max(10_000_000, "Harga 0 sampai Rp10.000.000"),
+});
+
+export const mentorSchema = z.object({
+  id: uuid.optional(),
+  displayName: z
+    .string()
+    .trim()
+    .min(2, "Nama 2 sampai 80 karakter")
+    .max(80, "Nama 2 sampai 80 karakter"),
+  roles: z.array(z.enum(PREFERRED_ROLE_KEYS)).min(1, "Pilih minimal 1 role"),
+  headline: z
+    .string()
+    .trim()
+    .min(3, "Kredensial 3 sampai 160 karakter")
+    .max(160, "Kredensial 3 sampai 160 karakter"),
+  bio: optionalText(1000, "Bio maksimal 1.000 karakter"),
+  categories: z.array(z.enum(COMP_CATEGORIES)),
+  verified: z.boolean(),
+  isSimulated: z.boolean(),
+  isActive: z.boolean(),
+  services: z
+    .array(mentorServiceSchema)
+    .min(1, "Tambahkan minimal 1 layanan")
+    .max(5, "Maksimal 5 layanan"),
+});
+
+export type MentorInput = z.input<typeof mentorSchema>;
