@@ -856,6 +856,9 @@ isOneToOne: false
 "redeem_promo":
 { Args: { "p_code": string,"p_course": string }; Returns: undefined
                            },
+"save_mentor":
+{ Args: { "p_id"?: string,"p_mentor": Json,"p_services": Json }; Returns: string
+                           },
 "save_profile_contact":
 { Args: { "p_contact_email": string,"p_goal": Database["public"]['Enums']["goal_t"],"p_hours_per_week": number,"p_open_to_invite": boolean,"p_whatsapp": string,"p_work_time": Database["public"]['Enums']["work_time_t"] }; Returns: undefined
                            },

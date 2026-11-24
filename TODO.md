@@ -156,7 +156,7 @@ waits and everyone helps fix P0.
 - [ ] Local backup with `DEMO_MODE=true`, screen recording of the core flow
 - [ ] **Tag `v0.1.0` on `main` at 21.00**
 - [ ] #51 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1), from Adnan
-- [ ] #47 Admin metrics page (F-ADM-01, PRD §17), from Adnan
+- [x] #47 Admin metrics page and mentor management (F-ADM-01, PRD §17), from Adnan
 - [ ] #50 AI disclosure in the README, from Adnan
 - [ ] Ranking bug fixes, from Adnan
 

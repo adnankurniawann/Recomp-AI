@@ -36,7 +36,7 @@ export const APP_NAV: NavGroup[] = [
     label: "Persiapan",
     items: [
       { href: "/belajar", label: "Belajar", icon: BookOpen },
-      { href: "/mentor", label: "Mentor", icon: GraduationCap },
+      { href: "/mentor", label: "Kelola mentor", icon: GraduationCap },
     ],
   },
   {
@@ -50,7 +50,8 @@ export const APP_NAV: NavGroup[] = [
     label: "Admin",
     adminOnly: true,
     items: [
-      { href: "/admin", label: "Lomba dan mentor", icon: ShieldCheck },
+      { href: "/admin/lomba", label: "Kelola lomba", icon: ShieldCheck },
+      { href: "/admin/mentor", label: "Kelola mentor", icon: GraduationCap },
       { href: "/admin/metrik", label: "Metrik uji coba", icon: ChartColumn },
     ],
   },
