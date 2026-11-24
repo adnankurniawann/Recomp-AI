@@ -148,7 +148,7 @@ waits and everyone helps fix P0.
 - [x] #45 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04), from Malik
 
 **Everyone:**
-- [ ] #42 Write two lessons each for "Persiapan Hackathon" (F-LRN-06)
+- [x] #42 Write two lessons each for "Persiapan Hackathon" (F-LRN-06)
 
 ## H5 Tue Nov 24
 

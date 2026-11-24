@@ -10,15 +10,27 @@
     {
       "title": "Memahami lomba",
       "free": true,
-      "lessons": ["01-membaca-guidebook.md"]
+      "lessons": [
+        "01-membaca-guidebook.md",
+        "02-menentukan-role-tim.md",
+        "03-menyusun-timeline-kerja.md"
+      ]
     },
     {
       "title": "Dari masalah ke solusi",
-      "lessons": ["04-menulis-problem-statement.md"]
+      "lessons": [
+        "04-menulis-problem-statement.md",
+        "05-validasi-pengguna.md",
+        "06-menentukan-scope-mvp.md"
+      ]
     },
     {
       "title": "Demo dan pitching",
-      "lessons": ["07-struktur-pitch-deck.md", "08-demo-yang-aman.md"]
+      "lessons": [
+        "07-struktur-pitch-deck.md",
+        "08-demo-yang-aman.md",
+        "09-menjawab-pertanyaan-juri.md"
+      ]
     }
   ]
 }
