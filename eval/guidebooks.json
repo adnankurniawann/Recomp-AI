@@ -1,0 +1,96 @@
+[
+  {
+    "id": "stack-2026",
+    "name": "STACK 2026",
+    "pdf": "supabase/seed/guidebooks/stack-2026/guidebook.pdf",
+    "category": "hackathon",
+    "source": "Guidebook STACK 2026, section Evaluation Criteria (PDF pages 17-18, printed pages 16-17)",
+    "criteria": [
+      {
+        "name": "Problem Clarity",
+        "pages": [17],
+        "weight_percent": 30
+      },
+      {
+        "name": "Fit to the Selected Case",
+        "pages": [17],
+        "weight_percent": 20
+      },
+      {
+        "name": "Value and Originality",
+        "pages": [17],
+        "weight_percent": 25
+      },
+      {
+        "name": "Feasibility",
+        "pages": [17],
+        "weight_percent": 15
+      },
+      {
+        "name": "Abstract Clarity",
+        "pages": [17],
+        "weight_percent": 10
+      },
+      {
+        "name": "Problem Understanding",
+        "pages": [17],
+        "weight_percent": 25
+      },
+      {
+        "name": "Solution Design",
+        "pages": [17],
+        "weight_percent": 25
+      },
+      {
+        "name": "Technical Feasibility",
+        "pages": [17],
+        "weight_percent": 20
+      },
+      {
+        "name": "Execution and Validation",
+        "pages": [17],
+        "weight_percent": 20
+      },
+      {
+        "name": "Communication",
+        "pages": [17, 18],
+        "weight_percent": 10
+      },
+      {
+        "name": "Functionality and Reliability",
+        "pages": [18],
+        "weight_percent": 30
+      },
+      {
+        "name": "Problem Fit and Usefulness",
+        "pages": [18],
+        "weight_percent": 20
+      },
+      {
+        "name": "Technical Quality",
+        "pages": [18],
+        "weight_percent": 15
+      },
+      {
+        "name": "Usability and Accessibility",
+        "pages": [18],
+        "weight_percent": 10
+      },
+      {
+        "name": "Validation and Impact",
+        "pages": [18],
+        "weight_percent": 10
+      },
+      {
+        "name": "Final Day Execution",
+        "pages": [18],
+        "weight_percent": 10
+      },
+      {
+        "name": "Pitch and Technical Understanding",
+        "pages": [18],
+        "weight_percent": 5
+      }
+    ]
+  }
+]

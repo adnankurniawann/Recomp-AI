@@ -20,7 +20,8 @@
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > lib/supabase/types.ts",
     "seed:profiles": "tsx scripts/seed-profiles.ts",
-    "seed:content": "tsx scripts/seed-content.ts"
+    "seed:content": "tsx scripts/seed-content.ts",
+    "eval:guidebook": "tsx --conditions=react-server scripts/eval-guidebook.ts"
   },
   "dependencies": {
     "@google/genai": "^3.6.1",
