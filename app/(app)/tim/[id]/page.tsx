@@ -77,7 +77,7 @@ export default async function TeamPage({ params, searchParams }: Props) {
             <StatusBadge tone={status.tone}>{status.label}</StatusBadge>
           </div>
           <p className="text-sm text-ink-2">
-            <Link href={`/lomba/${c.slug}`} className="text-primary hover:underline">
+            <Link href={`/lomba/${c.slug}`} className="tap-target text-primary hover:underline">
               {c.name}
             </Link>
             {c.deadline && <> · deadline {formatDate(c.deadline, { year: false })}</>} · maks.{" "}

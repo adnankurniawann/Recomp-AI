@@ -34,7 +34,7 @@ export default async function MentorPage({ params }: Props) {
     <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-8 sm:px-6 sm:py-12">
       <Link
         href="/mentor"
-        className="inline-flex items-center gap-1.5 self-start text-sm font-medium text-ink-2 hover:text-ink focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+        className="tap-target inline-flex items-center gap-1.5 self-start text-sm font-medium text-ink-2 hover:text-ink focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
       >
         <ArrowLeft aria-hidden size={16} strokeWidth={1.75} />
         Semua mentor

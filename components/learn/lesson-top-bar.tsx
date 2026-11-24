@@ -112,7 +112,7 @@ export function LessonTopBar({
           <button
             type="button"
             {...props}
-            className="flex h-10 min-w-0 items-center gap-1.5 rounded-full bg-wash px-3 text-sm font-medium text-primary-hover transition-colors duration-150 ease-out hover:bg-primary-200 focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none"
+            className="flex h-11 min-w-0 items-center gap-1.5 rounded-full bg-wash px-3 text-sm font-medium text-primary-hover transition-colors duration-150 ease-out hover:bg-primary-200 focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none md:h-10"
           >
             <span className="hidden truncate xl:inline">{course.title} ›</span>
             <span className="hidden truncate xl:inline">{chapterTitle} ›</span>

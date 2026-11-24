@@ -41,7 +41,7 @@ export default async function EditCompetitionPage({ params }: Props) {
     <main className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <Link
         href="/admin/lomba"
-        className="inline-flex items-center gap-1.5 self-start text-sm font-medium text-ink-2 hover:text-ink"
+        className="tap-target inline-flex items-center gap-1.5 self-start text-sm font-medium text-ink-2 hover:text-ink"
       >
         <ArrowLeft aria-hidden size={16} strokeWidth={1.75} />
         Semua lomba
@@ -49,7 +49,10 @@ export default async function EditCompetitionPage({ params }: Props) {
       <header className="flex flex-col gap-1">
         <SectionLabel>Admin</SectionLabel>
         <h1 className="text-2xl font-semibold tracking-[-0.02em] text-ink-strong">{c.name}</h1>
-        <Link href={`/lomba/${c.slug}`} className="self-start text-sm text-primary hover:underline">
+        <Link
+          href={`/lomba/${c.slug}`}
+          className="tap-target self-start text-sm text-primary hover:underline"
+        >
           Lihat halaman lomba
         </Link>
       </header>
