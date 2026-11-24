@@ -161,7 +161,7 @@ waits and everyone helps fix P0.
 - [ ] Ranking bug fixes, from Adnan
 
 **@dhanesmd3**
-- [ ] #48 Playwright core flow (PRD §16.3)
+- [x] #48 Playwright core flow (PRD §16.3)
 - [x] All database integration tests in PRD §16.2
 - [x] Bug fixes in profiles and invites
 

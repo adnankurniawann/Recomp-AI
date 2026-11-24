@@ -2,18 +2,19 @@ import { expect, test } from "@playwright/test";
 import { admin, createStudent, deleteStudents, type Student } from "../integration/supabase";
 import { hasLocalDb, signIn } from "./helpers";
 
-// The core flow of PRD §16.3, on seed data with DEMO_MODE=true (issue #48). Steps whose pages are not
-// on main yet are marked fixme with the issue they wait for; remove the mark as each one lands.
-// Steps 6 and 7 already run in invites.spec.ts on real invites.
+// The core flow of PRD §16.3, on seed data with DEMO_MODE=true (issue #48). The ranking shows the
+// seeded simulated students; one real student ("kandidat") is added so steps 6 and 7 can sign in.
 test.skip(!hasLocalDb, "needs local Supabase (see CONTRIBUTING.md)");
 
-// A seeded competition whose registration is still open; supabase/seed.sql dates the simulated ones
-// from the day of `pnpm db:reset`. STACK 2026 itself closed on 7 Nov, so it has no "Buat tim".
+// A seeded hackathon whose registration is still open; hackathons have the most interested
+// simulated students. supabase/seed.sql dates the simulated competitions from the day of
+// `pnpm db:reset`. STACK 2026 itself closed on 7 Nov, so it has no "Buat tim".
 async function openSeededCompetition() {
   const { data, error } = await admin()
     .from("competitions")
-    .select("slug, name")
+    .select("id, slug, name")
     .eq("is_published", true)
+    .eq("category", "hackathon")
     .gte("registration_deadline", new Date().toISOString().slice(0, 10))
     .order("registration_deadline")
     .limit(1)
@@ -24,11 +25,17 @@ async function openSeededCompetition() {
 
 test.describe.serial("core flow (PRD §16.3)", () => {
   let leader: Student;
+  let candidate: Student;
   let teamId: string;
-  let competition: { slug: string; name: string };
+  let roleName: string;
+  let competition: { slug: string; name: string; id: string };
+  const candidateName = "Tes kandidatalur";
 
   test.beforeAll(async () => {
-    leader = await createStudent("ketuaalur");
+    [leader, candidate] = await Promise.all([
+      createStudent("ketuaalur"),
+      createStudent("kandidatalur", { goal: "win", work_time: "night", hours_per_week: 20 }),
+    ]);
     competition = await openSeededCompetition();
   });
   test.afterAll(async () => {
@@ -87,8 +94,105 @@ test.describe.serial("core flow (PRD §16.3)", () => {
     expect(team?.team_members).toEqual([{ profile_id: leader.profileId, is_leader: true }]);
   });
 
-  test.fixme("3. opens an empty role tab and sees at least 3 candidates, scores falling (#26, #28, #29)", async () => {});
-  test.fixme("4. opens the first candidate's profile sheet with history and portfolio (#30)", async () => {});
-  test.fixme("5. invites the candidate from the ranking (#29 places InviteButton)", async () => {});
-  test.fixme("6–7. the candidate accepts; the leader sees the contact and the role Terisi (#26, #34)", async () => {});
+  test("3. opens an empty role tab and sees at least 3 candidates, scores falling", async ({
+    page,
+  }) => {
+    // The real candidate wants this competition and has every required skill of the empty roles.
+    const { data: roles } = await admin()
+      .from("team_roles")
+      .select("required_skills, team_members(profile_id)")
+      .eq("team_id", teamId);
+    const skills = new Set(
+      (roles ?? [])
+        .filter((r) => r.team_members.length === 0)
+        .flatMap((r) => (r.required_skills as { skill_id: number }[]).map((x) => x.skill_id)),
+    );
+    await admin()
+      .from("competition_interests")
+      .insert({ profile_id: candidate.profileId, competition_id: competition.id });
+    await admin()
+      .from("profile_skills")
+      .insert(
+        [...skills].map((skill_id) => ({
+          profile_id: candidate.profileId,
+          skill_id,
+          level: 4,
+          evidence_url: "https://example.com/bukti",
+        })),
+      );
+
+    await page.goto(`/tim/${teamId}`);
+    const tabs = page.getByRole("tablist", { name: "Role kosong" }).getByRole("tab");
+    const panel = page.getByRole("tabpanel");
+    const badges = panel.getByRole("button", { name: /^Skor \d+ dari 100/ });
+    let scores: number[] = [];
+    for (let i = 0; i < (await tabs.count()); i++) {
+      await tabs.nth(i).click();
+      await expect(badges.first().or(panel.getByText("Belum ada kandidat"))).toBeVisible();
+      const labels = await badges.evaluateAll((els) => els.map((e) => e.ariaLabel ?? ""));
+      scores = labels.map((l) => Number(l.match(/\d+/)![0]));
+      if (scores.length >= 3) {
+        roleName = (await tabs.nth(i).innerText()).replace(/\d+$/, "").trim();
+        break;
+      }
+    }
+    expect(scores.length).toBeGreaterThanOrEqual(3);
+    expect(scores).toEqual([...scores].sort((a, b) => b - a));
+  });
+
+  test("4. opens the first candidate's profile sheet with history and portfolio", async ({
+    page,
+  }) => {
+    await page.goto(`/tim/${teamId}`);
+    await page.getByRole("tab", { name: new RegExp(roleName) }).click();
+    const first = page.getByRole("tabpanel").getByRole("button", { name: /^Lihat profil / });
+    const name = ((await first.first().getAttribute("aria-label")) ?? "").replace(
+      "Lihat profil ",
+      "",
+    );
+    await first.first().click();
+
+    const sheet = page.getByRole("dialog", { name: `Profil ${name}` });
+    await expect(sheet.getByRole("region", { name: `Kecocokan untuk ${roleName}` })).toBeVisible();
+    await expect(sheet.getByText("Riwayat lomba", { exact: true })).toBeVisible();
+    await expect(sheet.getByText("Portofolio", { exact: true })).toBeVisible();
+  });
+
+  test("5. invites the candidate from the ranking", async ({ page }) => {
+    await page.goto(`/tim/${teamId}`);
+    await page.getByRole("tab", { name: new RegExp(roleName) }).click();
+    const panel = page.getByRole("tabpanel");
+    const open = panel.getByRole("button", { name: `Lihat profil ${candidateName}` });
+    await expect(panel.getByRole("button", { name: /^Lihat profil / }).first()).toBeVisible();
+    while (!(await open.isVisible()))
+      await panel.getByRole("button", { name: "Muat lagi" }).click();
+    await open.click();
+
+    const sheet = page.getByRole("dialog", { name: `Profil ${candidateName}` });
+    await sheet.getByRole("button", { name: `Undang ${candidateName}` }).click();
+    await page.getByRole("button", { name: "Kirim undangan" }).click();
+    await expect(sheet.getByText("Menunggu respon")).toBeVisible();
+  });
+
+  test("6–7. the candidate accepts; the leader sees the contact and the role Terisi", async ({
+    browser,
+    baseURL,
+    page,
+  }) => {
+    const asCandidate = await browser.newContext();
+    await signIn(asCandidate, candidate, baseURL!);
+    const candidatePage = await asCandidate.newPage();
+    await candidatePage.goto("/undangan");
+    const card = candidatePage
+      .getByRole("listitem")
+      .filter({ hasText: `mengajakmu jadi ${roleName}` });
+    await card.getByRole("button", { name: "Terima" }).click();
+    await expect(card.getByText("Diterima")).toBeVisible();
+    await asCandidate.close();
+
+    await page.goto(`/tim/${teamId}`);
+    const role = page.getByRole("listitem").filter({ hasText: roleName }).first();
+    await expect(role.getByText("Terisi")).toBeVisible();
+    await expect(page.getByRole("link", { name: /Chat di WhatsApp/ }).first()).toBeVisible();
+  });
 });
