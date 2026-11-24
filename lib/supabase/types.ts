@@ -824,6 +824,9 @@ isOneToOne: false
 "recompute_team_status":
 { Args: { "p_team": string }; Returns: Database["public"]['Enums']["team_status_t"]
                            },
+"record_case_attempt":
+{ Args: { "p_feedback": Json,"p_question": string,"p_score": number,"p_text": string }; Returns: Json
+                           },
 "redeem_promo":
 { Args: { "p_code": string,"p_course": string }; Returns: undefined
                            },
