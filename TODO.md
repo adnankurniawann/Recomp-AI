@@ -18,7 +18,13 @@ Everything before the semifinal submission, day by day, one list per person. Eve
 
 Load per person, weighted by size (S = 1, M = 2, L = 3 points, PRD §21.7): Malik 27, Dhanes 27,
 Alek 28, Adnan 29 (three of Adnan's are shared with Alek). On top of that: Malik's leader work, the video (Malik, Dhanes) and the proposal
-(Alek, Adnan). Leads review
+(Alek, Adnan).
+
+**Swap on Mon Nov 23:** Malik and Adnan swapped their unfinished feature work. Malik now does
+Adnan's open items (#28, #35, #36, #40, #47, #50 AI disclosure, #51, ranking bug fixes, the M3
+metrics). Adnan now does Malik's open features (#19, #24, #25, #26, #34, #43, #45). Malik keeps
+his leader and infra items: protecting `main`, Supabase cloud, Vercel, the local backup and the
+`v0.1.0` tag. Points left after the swap: Malik 15, Adnan 17. Leads and reviewers don't change. Leads review
 their area: backend `@malikarsya` / `@dhanesmd3`, frontend `@angseleong`, AI and data
 `@adnankurniawann`.
 
@@ -32,7 +38,7 @@ their area: backend `@malikarsya` / `@dhanesmd3`, frontend `@angseleong`, AI and
 Contracts first, so everyone can work in parallel from H1.
 
 **@malikarsya**
-- [ ] #2 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
+- [x] #2 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
 - [ ] Protect `main` (PR, 1 review, CI green). Needs admin: ask @adnankurniawann
 - [ ] #3 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
 
@@ -54,9 +60,9 @@ Contracts first, so everyone can work in parallel from H1.
 ## H1 Fri Nov 20
 
 **@malikarsya**
-- [ ] #7 Google and email sign-in, profile trigger, onboarding middleware (F-FND-02)
-- [ ] #8 `seed.sql`: skills, role templates, competitions; Storage buckets; RLS on competitions (F-FND-04)
-- [ ] #18 "Tertarik" button and `toggleInterest` (F-CMP-03)
+- [x] #7 Google and email sign-in, profile trigger, onboarding middleware (F-FND-02)
+- [x] #8 `seed.sql`: skills, role templates, competitions; Storage buckets; RLS on competitions (F-FND-04)
+- [x] #18 "Tertarik" button and `toggleInterest` (F-CMP-03)
 
 **@dhanesmd3**
 - [x] #10 Four-step onboarding wizard, UI and server actions (F-PRF-01)
@@ -76,8 +82,7 @@ Contracts first, so everyone can work in parallel from H1.
 ## H2 Sat Nov 21
 
 **@malikarsya**
-- [x] #24 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01)
-- [x] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02)
+- Nothing left: #24 and #25 moved to Adnan in the swap.
 
 **@dhanesmd3**
 - [x] #13 `/u/[username]` with `HistoryTimeline` and `PortfolioGrid` (F-PRF-06)
@@ -93,14 +98,15 @@ Contracts first, so everyone can work in parallel from H1.
 - [x] #21 Guidebook agent end to end: Gemini, Zod schema, one retry (F-GBA-01)
 - [x] #22 Skill mapping, cache per competition, manual fallback form (F-GBA-02..04)
 - [x] #23 Data for the guidebook summary tab (F-CMP-02)
+- [x] #24 `create_team` and the three-step `/tim/baru` wizard (F-TEM-01), from Malik
+- [x] #25 Role editor, `saveRoles`, `recompute_team_status` (F-TEM-02), from Malik
 
 ## H3 Sun Nov 22
 
 **@malikarsya**
 - [ ] Vercel: `main` to production, a preview URL for every PR
-- [x] #34 Contacts on the team dashboard (F-INV-04)
-- [x] #26 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04)
-- [x] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04)
+- [ ] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01), from Adnan
+- [ ] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05), from Adnan
 
 **@dhanesmd3**
 - [x] #31 Invite dialog and `sendInvite` (F-INV-01)
@@ -113,9 +119,10 @@ Contracts first, so everyone can work in parallel from H1.
 - [x] #23 Wire the guidebook summary tab
 
 **@adnankurniawann**
-- [ ] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01)
-- [ ] #30 Match panel in `ProfileSheet`, with Alek (F-RNK-03)
-- [ ] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05)
+- [x] #30 Match panel in `ProfileSheet`, with Alek (F-RNK-03)
+- [x] #34 Contacts on the team dashboard (F-INV-04), from Malik
+- [x] #26 Team dashboard on real data, gap summary, `assignMemberRole` (F-TEM-03..04), from Malik
+- [x] #19 Competition admin, guidebook upload, "Jalankan ekstraksi" (F-CMP-04), from Malik
 
 **Everyone, evening:** internal demo of the core flow. If it doesn't run end to end, H4's P1 work
 waits and everyone helps fix P0.
@@ -123,8 +130,8 @@ waits and everyone helps fix P0.
 ## H4 Mon Nov 23
 
 **@malikarsya**
-- [x] #43 `/mentor` with `MentorCard` and role filter (F-MNT-01)
-- [x] #45 Checkout, `create_booking`, `simulate_booking_payment` (F-MNT-03..04); mentor seed done in #43
+- [ ] #36 Recruiter agent: API and draft cards (F-RCR-01..03), from Adnan
+- [ ] #40 Case-study feedback API and `QuestionCase` (F-LRN-04), from Adnan
 
 **@dhanesmd3**
 - [x] #44 `/mentor/[id]` (F-MNT-02)
@@ -137,8 +144,8 @@ waits and everyone helps fix P0.
 - [ ] #38 `LessonShell`, lesson player, `QuestionMCQ`, points and progress (F-LRN-03)
 
 **@adnankurniawann**
-- [ ] #36 Recruiter agent: API and draft cards (F-RCR-01..03)
-- [ ] #40 Case-study feedback API and `QuestionCase` (F-LRN-04)
+- [x] #43 `/mentor` with `MentorCard` and role filter (F-MNT-01), from Malik
+- [x] #45 Checkout, `create_booking`, `simulate_booking_payment`, mentor seed (F-MNT-03..04), from Malik
 
 **Everyone:**
 - [ ] #42 Write two lessons each for "Persiapan Hackathon" (F-LRN-06)
@@ -148,6 +155,10 @@ waits and everyone helps fix P0.
 **@malikarsya**
 - [ ] Local backup with `DEMO_MODE=true`, screen recording of the core flow
 - [ ] **Tag `v0.1.0` on `main` at 21.00**
+- [ ] #51 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1), from Adnan
+- [ ] #47 Admin metrics page (F-ADM-01, PRD §17), from Adnan
+- [ ] #50 AI disclosure in the README, from Adnan
+- [ ] Ranking bug fixes, from Adnan
 
 **@dhanesmd3**
 - [ ] #48 Playwright core flow (PRD §16.3)
@@ -159,16 +170,13 @@ waits and everyone helps fix P0.
 - [ ] #50 README: setup, feature table, limitations
 
 **@adnankurniawann**
-- [ ] #51 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1)
-- [ ] #47 Admin metrics page (F-ADM-01, PRD §17)
-- [ ] #50 AI disclosure in the README
-- [ ] Ranking bug fixes
+- [ ] Bug fixes in teams, competition admin and mentor booking, from Malik
 
 ## M3 Semifinal, Nov 25–30
 
 - [ ] Recruit trial students (target 30) through student associations: @malikarsya
 - [ ] Run the trial: leaders create teams, rate recommendations, invite: everyone
-- [ ] Count the metrics with the real number of participants (PRD §17): @adnankurniawann
+- [ ] Count the metrics with the real number of participants (PRD §17): @malikarsya (from Adnan in the swap)
 - [ ] 2-minute video in English: @malikarsya (script) and @dhanesmd3 (recording and editing)
 - [ ] Proposal, at most 10 pages: @angseleong and @adnankurniawann, sections split as in PRD §20.6
 - [ ] Signed originality declaration: @malikarsya
