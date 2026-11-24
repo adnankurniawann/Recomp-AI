@@ -84,7 +84,10 @@ export function PublicNavbar({
               >
                 Masuk
               </Link>
-              <Link href="/masuk" className={buttonClasses("primary", "md", "h-11 px-3.5 md:h-[38px]")}>
+              <Link
+                href="/masuk"
+                className={buttonClasses("primary", "md", "h-11 px-3.5 md:h-[38px]")}
+              >
                 Mulai gratis
               </Link>
             </>

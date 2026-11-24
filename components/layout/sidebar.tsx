@@ -7,7 +7,7 @@ import { signOut } from "@/app/(auth)/masuk/actions";
 import { SectionLabel } from "@/components/ui/section-label";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
-import { APP_NAV, isActive } from "./nav";
+import { APP_NAV, activeHref } from "./nav";
 
 interface SidebarProps {
   /** Shows the Admin group. */
@@ -22,6 +22,10 @@ interface SidebarProps {
  */
 export function Sidebar({ isAdmin = false, counts = {} }: SidebarProps) {
   const pathname = usePathname();
+  const current = activeHref(
+    pathname,
+    APP_NAV.flatMap((g) => g.items.map((i) => i.href)),
+  );
 
   return (
     <div className="flex h-full flex-col px-3 py-2">
@@ -37,7 +41,7 @@ export function Sidebar({ isAdmin = false, counts = {} }: SidebarProps) {
             )}
             <ul className="flex flex-col gap-0.5">
               {group.items.map(({ href, label, icon: Icon }) => {
-                const active = isActive(pathname, href);
+                const active = href === current;
                 const count = counts[href];
                 return (
                   <li key={href}>
