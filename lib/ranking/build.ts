@@ -11,7 +11,7 @@ import type {
   RoleRequirement,
   TeamContext,
 } from "@/lib/matching/types";
-import type { RankingPage } from "./types";
+import type { RankingPage, RecommendationFeedback } from "./types";
 
 const level = z.literal([1, 2, 3, 4]);
 const goal = z.enum(["win", "learn"]);
@@ -85,6 +85,7 @@ export function toMatchingConfig(row: RankingSource["config"]): MatchingConfig {
 export function buildRankingPage(
   source: RankingSource,
   { limit, offset }: { limit: number; offset: number },
+  feedback: ReadonlyMap<string, RecommendationFeedback> = new Map(),
 ): RankingPage {
   const cfg = toMatchingConfig(source.config);
   const skillNames = new Map(source.skill_names.map((s) => [s.id, s.name]));
@@ -168,6 +169,7 @@ export function buildRankingPage(
         // Filter 5 drops anyone with a pending or declined invite from this team, so a listed
         // candidate never has one yet. The UI flips this to "pending" after "Undang".
         inviteStatus: null,
+        feedback: feedback.get(c.id) ?? null,
       };
     }),
   };

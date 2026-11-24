@@ -1,12 +1,14 @@
 "use client";
 
+import { ThumbsDown, ThumbsUp } from "lucide-react";
+import { useState } from "react";
 import { InviteButton } from "@/components/invite/invite-button";
 import { Avatar } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { SkillChip } from "@/components/ui/skill-chip";
 import { inviteTemplate } from "@/lib/invites/template";
-import type { RankingCandidate, RankingRole } from "@/lib/ranking/types";
+import type { RankingCandidate, RankingRole, RecommendationFeedback } from "@/lib/ranking/types";
 import { cn } from "@/lib/utils";
 
 /** What the invite message needs about the team (F-INV-01). */
@@ -24,6 +26,8 @@ export interface CandidateItemProps {
   invite: InviteContext;
   /** Opens the ProfileSheet (F-RNK-03). */
   onOpenProfile: () => void;
+  /** Saves "Cocok" / "Kurang cocok" (F-RNK-05). Resolves false when saving failed. */
+  onFeedback?: (value: RecommendationFeedback) => Promise<boolean>;
 }
 
 export function candidateOrigin(p: RankingCandidate["profile"]) {
@@ -131,6 +135,73 @@ export function CandidateActions({
         Profil
       </Button>
       <CandidateInvite {...props} />
+    </div>
+  );
+}
+
+const FEEDBACK_OPTIONS = [
+  {
+    value: "fit",
+    label: "Cocok",
+    Icon: ThumbsUp,
+    on: "border-success bg-success-50 text-success-ink",
+  },
+  {
+    value: "not_fit",
+    label: "Kurang cocok",
+    Icon: ThumbsDown,
+    on: "border-danger bg-danger-50 text-danger-ink",
+  },
+] as const;
+
+/**
+ * "Cocok" and "Kurang cocok" (F-RNK-05): the team's opinion of this recommendation, kept for the
+ * trial metrics (PRD §17). The choice shows at once and rolls back if saving fails.
+ */
+export function CandidateFeedback({
+  candidate: c,
+  onFeedback,
+  className,
+}: Pick<CandidateItemProps, "candidate" | "onFeedback"> & { className?: string }) {
+  const [value, setValue] = useState<RecommendationFeedback | null>(c.feedback);
+  const [pending, setPending] = useState(false);
+  if (!onFeedback) return null;
+
+  async function choose(next: RecommendationFeedback) {
+    if (pending || next === value || !onFeedback) return;
+    const before = value;
+    setValue(next);
+    setPending(true);
+    const saved = await onFeedback(next);
+    setPending(false);
+    if (!saved) setValue(before);
+  }
+
+  return (
+    <div
+      role="group"
+      aria-label={`Apakah ${c.profile.fullName} cocok untuk role ini?`}
+      className={cn("flex flex-wrap items-center gap-1.5", className)}
+      onClick={(e) => e.stopPropagation()}
+    >
+      {FEEDBACK_OPTIONS.map(({ value: v, label, Icon, on }) => (
+        <button
+          key={v}
+          type="button"
+          aria-pressed={value === v}
+          disabled={pending}
+          onClick={() => choose(v)}
+          className={cn(
+            "tap-target inline-flex h-7 items-center gap-1 rounded-full border px-2.5 text-xs font-medium transition-colors duration-150 ease-out focus-visible:ring-3 focus-visible:ring-primary-200 focus-visible:outline-none disabled:opacity-60",
+            value === v
+              ? on
+              : "border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink",
+          )}
+        >
+          <Icon aria-hidden size={14} strokeWidth={1.75} />
+          {label}
+        </button>
+      ))}
     </div>
   );
 }

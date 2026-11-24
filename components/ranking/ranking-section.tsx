@@ -9,6 +9,8 @@ import { ErrorState } from "@/components/ui/error-state";
 import { SegmentedTabs, segmentedPanelProps } from "@/components/ui/segmented-tabs";
 import { SimulatedBadge } from "@/components/ui/simulated-badge";
 import { ROLE_COLORS } from "@/lib/constants";
+import { submitFeedback as submitFeedbackAction } from "@/app/(app)/tim/actions";
+import type { ActionResult } from "@/lib/action-result";
 import { fetchRankingPage } from "@/lib/ranking/client";
 import {
   RANKING_SORTS,
@@ -16,7 +18,13 @@ import {
   sortCandidates,
   type RankingSort,
 } from "@/lib/ranking/sort";
-import type { RankingCandidate, RankingPage, RankingRole } from "@/lib/ranking/types";
+import type {
+  RankingCandidate,
+  RankingPage,
+  RankingRole,
+  RecommendationFeedback,
+} from "@/lib/ranking/types";
+import type { SubmitFeedbackInput } from "@/lib/validation/feedback";
 import { cn } from "@/lib/utils";
 import { CandidateCard } from "./candidate-card";
 import type { InviteContext } from "./candidate-parts";
@@ -49,6 +57,8 @@ interface RankingSectionProps {
   loadProfile?: ProfileLoader;
   /** The tab to open first, from "Lihat kandidat" on a role card. */
   initialRoleId?: string;
+  /** Defaults to the `submitFeedback` server action (F-RNK-05). */
+  submitFeedback?: (input: SubmitFeedbackInput) => Promise<ActionResult<Record<string, never>>>;
 }
 
 /**
@@ -62,6 +72,7 @@ export function RankingSection({
   fetchPage = fetchRankingPage,
   loadProfile,
   initialRoleId,
+  submitFeedback = submitFeedbackAction,
 }: RankingSectionProps) {
   const [activeId, setActiveId] = useState(
     roles.find((r) => r.id === initialRoleId)?.id ?? roles[0]?.id ?? "",
@@ -126,7 +137,7 @@ export function RankingSection({
     }
   }
 
-  function markInvited(profileId: string) {
+  function updateCandidate(profileId: string, patch: Partial<RankingCandidate>) {
     setByRole((s) => {
       const st = s[activeId];
       if (st?.status !== "ready") return s;
@@ -135,11 +146,32 @@ export function RankingSection({
         [activeId]: {
           ...st,
           candidates: st.candidates.map((c) =>
-            c.profile.id === profileId ? { ...c, inviteStatus: "pending" } : c,
+            c.profile.id === profileId ? { ...c, ...patch } : c,
           ),
         },
       };
     });
+  }
+
+  function markInvited(profileId: string) {
+    updateCandidate(profileId, { inviteStatus: "pending" });
+  }
+
+  async function rate(c: RankingCandidate, feedback: RecommendationFeedback) {
+    const res = await submitFeedback({
+      teamRoleId: activeId,
+      candidateId: c.profile.id,
+      feedback,
+      score: c.score,
+      factors: c.factors,
+    });
+    if (!res.ok) {
+      toast.error(res.error.message);
+      return false;
+    }
+    updateCandidate(c.profile.id, { feedback });
+    toast.success("Masukanmu tersimpan. Terima kasih!");
+    return true;
   }
 
   async function copyLink() {
@@ -257,6 +289,7 @@ export function RankingSection({
                     role,
                     invite: inviteCtx,
                     onOpenProfile: () => setOpenId(c.profile.id),
+                    onFeedback: (value: RecommendationFeedback) => rate(c, value),
                   };
                   return (
                     <li key={`${c.profile.id}-${c.inviteStatus ?? "none"}`}>

@@ -5,6 +5,7 @@ import { ReasonList } from "./reason-list";
 import { ScoreBadge } from "./score-badge";
 import {
   CandidateActions,
+  CandidateFeedback,
   CandidateIdentity,
   CandidateSkills,
   type CandidateItemProps,
@@ -24,6 +25,7 @@ export function CandidateCard(props: CandidateItemProps) {
       </div>
       <ReasonList reasons={c.reasons} limit={3} />
       <CandidateSkills candidate={c} />
+      <CandidateFeedback candidate={c} onFeedback={props.onFeedback} />
       <CandidateActions {...props} className="[&>*]:flex-1" />
     </Card>
   );
