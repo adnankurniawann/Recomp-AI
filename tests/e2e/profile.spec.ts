@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
+  addMember,
   admin,
   createCompetition,
   createStudent,
@@ -135,6 +136,13 @@ test("the leader sees the match panel on a candidate's public profile", async ({
     await expect(panel).toBeVisible();
     await expect(panel.getByText(/^\d{1,3}$/).first()).toBeVisible();
     await expect(panel.getByRole("button", { name: /^Undang/ })).toBeVisible();
+
+    // Once the role is full, a stale link no longer offers "Undang" (sendInvite would say ROLE_FULL).
+    const filler = await createStudent("isipanel");
+    await addMember(team.teamId, competitionId, filler.profileId, team.roleIds[0]!);
+    await page.reload();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByRole("button", { name: /^Undang/ })).toHaveCount(0);
 
     await context.clearCookies();
     await signIn(context, outsider, baseURL!);
