@@ -9,9 +9,10 @@ students who marked that competition as interesting, with a score an algorithm c
 AI) and the reasons behind it. The leader invites; contacts open only after both sides agree.
 Teams then prepare through short courses and paid mentor sessions (simulated).
 
-> **Status: planning.** Nothing below is built yet. The specification is
-> [docs/PRD.md](docs/PRD.md) and the work plan is [TODO.md](TODO.md). This README only claims a
-> feature is done once it works in the deployed app.
+> **Status: semifinal build.** The core flow runs end to end on `main` with seed data (local
+> Supabase, `tests/e2e/core-flow.spec.ts`). The app is not deployed yet (issue #3), so "Done" below
+> means "works on `main` locally" until the live link is up. The specification is
+> [docs/PRD.md](docs/PRD.md) and the work plan is [TODO.md](TODO.md).
 
 ## Demo
 
@@ -23,17 +24,17 @@ Teams then prepare through short courses and paid mentor sessions (simulated).
 
 | Feature | PRD | Status |
 | --- | --- | --- |
-| Google sign-in and profile onboarding | F-FND-02, F-PRF-01 | Done: `/masuk`, four-step onboarding, `/profil` with portfolio covers, public profile `/u/[username]` without contacts |
+| Google sign-in and profile onboarding | F-FND-02, F-PRF-01..07 | Done: `/masuk`, four-step onboarding, `/profil` with portfolio covers, public profile `/u/[username]` without contacts, with the match panel when opened from a team |
 | Competition list, detail and "Tertarik" | F-CMP-01..03 | Done: `/lomba`, `/lomba/[slug]` with the guidebook summary tab, "Tertarik" |
 | Competition admin and guidebook upload | F-CMP-04 | Done: `/admin/lomba` (add and edit competitions, guidebook PDF upload, "Jalankan ekstraksi", review and approve the extraction) |
-| Guidebook extraction and suggested roles | F-GBA-01..04 | In progress: agent, skill mapping and cache work; no screen yet |
+| Guidebook extraction and suggested roles | F-GBA-01..04 | Done: the guidebook agent with skill mapping and a cache per competition, "Jalankan ekstraksi" and the review in `/admin/lomba`, suggested roles with their page in the `/tim/baru` wizard, templates when there is no extraction |
 | Team creation, role editor and team dashboard | F-TEM-01..04 | Done: `/tim/baru` wizard, role editor, `/tim/[id]` dashboard with gap summary and member role moves |
 | Explainable candidate ranking per role | F-RNK-01..04 | Done: scoring, reasons, the ranking UI with the profile sheet on the team page, and `GET /api/ranking/[teamRoleId]` with the filters in SQL, "Cocok" / "Kurang cocok" feedback |
 | Invitations and contacts that open on accept | F-INV-01..04 | Done: invite dialog, `/undangan` (accept, decline, cancel), atomic accept, and teammates' WhatsApp and email on the team page |
 | Recruiter agent drafts (sent only on click) | F-RCR-01..03 | Done: `POST /api/ai/recruit`, editable draft cards with "Kirim" and "Lewati", template fallback, the decline hint and the log in `agent_actions` |
-| Course player, quizzes and case-study feedback | F-LRN-01..06 | In progress: catalog, course page, lesson player, quizzes with points and progress, promo code and simulated purchase, 4 lessons, and AI feedback on case studies (`POST /api/ai/case-feedback`, up to 3 tries) |
+| Course player, quizzes and case-study feedback | F-LRN-01..06 | Done: catalog, course page, lesson player, quizzes with points and progress, promo code and simulated purchase, all 9 lessons of "Persiapan Hackathon", and AI feedback on case studies (`POST /api/ai/case-feedback`, up to 3 tries) |
 | Mentors and simulated booking | F-MNT-01..04 | Done: `/mentor` grid with filters, `/mentor/[id]`, simulated booking and checkout, the "Sesi mentor" card with the mentor's contact after payment, and 10 simulated mentors in the seed |
-| Notifications and admin | F-NTF-01, F-ADM-01 | In progress: the bell with unread count is done; `/admin/metrik` with the PRD §17 trial metrics, real and simulated data apart |
+| Notifications and admin | F-NTF-01, F-ADM-01 | Done: the bell with unread count; `/admin/lomba`, `/admin/mentor` (mentors and their services) and `/admin/metrik` with the PRD §17 trial metrics, real and simulated data apart |
 
 ### Planned for Final Day
 
@@ -47,7 +48,7 @@ Left on purpose, as the STACK handbook asks ([ADR 0007](docs/adr/0007-three-task
 
 Next.js 15 (App Router), React 19, TypeScript strict, Tailwind CSS v4, shadcn/ui, Lucide,
 React Hook Form and Zod, TanStack Query, Supabase (Postgres, Auth, Storage, RLS), Gemini through
-`@google/genai`, `unpdf`, Vitest, Playwright, pnpm. Deployed on Vercel and Supabase cloud.
+`@google/genai`, `unpdf`, Vitest, Playwright, pnpm. To be deployed on Vercel and Supabase cloud.
 Why: [ADR 0001](docs/adr/0001-nextjs-supabase-gemini-stack.md).
 
 ## Setup
@@ -65,8 +66,6 @@ pnpm seed:profiles && pnpm seed:content
 pnpm dev                          # http://localhost:3000
 ```
 
-These commands work once the app is scaffolded (issue #2, H0).
-
 ## Environment variables
 
 See `.env.example`. Secrets never go in the repository. To call Gemini through OpenRouter instead
@@ -78,7 +77,7 @@ the `google/` prefix. Without either key, or with `DEMO_MODE=true`, the app stil
 
 ```sh
 pnpm lint && pnpm typecheck && pnpm test   # unit tests, also in CI
-pnpm test:e2e                              # Playwright, core flow on seed data
+pnpm test:e2e                              # Playwright on local Supabase: the core flow, 360 px pass
 ```
 
 ## Third-party resources
@@ -92,15 +91,22 @@ No illustrations or photos from other sites.
 | Tool | Role |
 | --- | --- |
 | Gemini API | Inside the product: guidebook extraction, invitation drafts, case-study feedback. Candidate scores never use it |
-| Claude Code (Anthropic) | During development: drafted the project docs (README, AGENTS, CONTEXT, CONTRIBUTING, TODO, ADRs, design system, PRD v1.2 edits) and the design mock. Drafted Dhanes's H0–H1 code: Zod schemas, `ActionResult`, phone formatting, `Avatar`, `Stepper`, `EmptyState`, `ProgressBar`, profile RLS and SQL functions, the onboarding wizard and `/profil`. Drafted Dhanes's H2–H3 code: the public profile `/u/[username]` (`ProfileSummary`, `HistoryTimeline`, `PortfolioGrid`, `SkillChip`), portfolio cover upload, the database integration tests in `tests/integration`, the invite SQL functions and team-table RLS in `0004_invites.sql`, the invite dialog and `/undangan`. Drafted Dhanes's H4–H5 code: the learning SQL functions in `0005_learning.sql` (`submit_mcq`, progress, promo and simulated purchase), `seed-content.ts` and two lessons of "Persiapan Hackathon", the course unlock card, mentor RLS in `0006_mentor_rls.sql` and `/mentor/[id]`, and the Playwright tests in `tests/e2e`. Drafted Adnan's H0 work: the matching score and reasons in `lib/matching` with their tests, the skill list and role templates in `seed.sql`, the UI fixtures in `lib/fixtures`, and the CI workflow. Drafted Adnan's H1 work: guidebook text extraction in `lib/pdf` and the simulated profile seed in `lib/seed` and `scripts/seed-profiles.ts`. Drafted Adnan's H2 work: the guidebook agent, skill mapping, extraction cache, role suggestions and guidebook summary data in `lib/ai` and `app/api/ai/guidebook`, and the role source labels in `lib/format/role-source.ts`. Drafted the team work Adnan took over from Malik: `create_team` in `0008_create_team.sql`, `createTeam` and the `/tim/baru` wizard, `save_roles` in `0009_save_roles.sql`, the role editor and `/tim/[id]/role`, the team dashboard `/tim/[id]` with the gap logic in `lib/team` and `assign_member_role` in `0010_assign_member_role.sql`, teammate contacts on the dashboard, the mentor grid `/mentor` (`MentorCard`, filters in `lib/mentors/list.ts`) and the simulated mentors in `seed.sql`, mentor booking and the simulated payment (`0011_bookings.sql`, checkout, "Sesi mentor"), the competition admin `/admin/lomba` (competition form, guidebook upload, extraction review), with their integration and Playwright tests. Drafted Alek's H0 work: the base UI components in `components/ui` and the page frames in `components/layout` (`PublicNavbar`, `Footer`, `AppShell`, `Sidebar`, `SearchInput`). Drafted Alek's M2 work: the notification bell, `markNotificationsRead` and `0007_notifications.sql`, the `/belajar` catalog and course page, the lesson player (`LessonShell`, `LessonTopBar`, `QuestionMCQ`, lesson Markdown), the lessons "Struktur pitch deck" and "Demo yang aman", and the responsive pass (44 px touch targets, `tap-target`, the 404 and global error pages). Drafted Malik's work after the Nov 23 swap: the `ranking_candidates` SQL function in `0012_ranking.sql`, `GET /api/ranking/[teamRoleId]`, `lib/ranking/build.ts` and their tests; the "Cocok" / "Kurang cocok" feedback (`0013_recommendation_feedback.sql`, `submitFeedback`, `CandidateFeedback`); case-study feedback (`lib/ai/case-feedback.ts`, `POST /api/ai/case-feedback`, `record_case_attempt` and RLS on `agent_actions` in `0014_case_feedback.sql`, the answer form and feedback panel in `QuestionCase`); the recruiter agent (`lib/ai/recruiter.ts`, `POST /api/ai/recruit`, `RecruitPanel`, `recordRecruitDecision`, `loadRecruitHint`); the trial metrics page (`trial_metrics()` and `events` in `0015_trial_metrics.sql`, `/admin/metrik`, `lib/admin/metrics.ts`); the guidebook evaluation (`pnpm eval:guidebook`, `lib/ai/eval.ts`, `eval/guidebooks.json` with the STACK 2026 criteria). Drafted the proposed logo in `docs/brand` (symbol, full logo, icons) and the brand intro. The team reviews them in the pull request before merge |
+| Claude Code (Anthropic) | During development: drafted the project docs (README, AGENTS, CONTEXT, CONTRIBUTING, TODO, ADRs, design system, PRD v1.2 edits) and the design mock. Drafted Dhanes's H0–H1 code: Zod schemas, `ActionResult`, phone formatting, `Avatar`, `Stepper`, `EmptyState`, `ProgressBar`, profile RLS and SQL functions, the onboarding wizard and `/profil`. Drafted Dhanes's H2–H3 code: the public profile `/u/[username]` (`ProfileSummary`, `HistoryTimeline`, `PortfolioGrid`, `SkillChip`), portfolio cover upload, the database integration tests in `tests/integration`, the invite SQL functions and team-table RLS in `0004_invites.sql`, the invite dialog and `/undangan`. Drafted Dhanes's H4–H5 code: the learning SQL functions in `0005_learning.sql` (`submit_mcq`, progress, promo and simulated purchase), `seed-content.ts` and two lessons of "Persiapan Hackathon", the course unlock card, mentor RLS in `0006_mentor_rls.sql` and `/mentor/[id]`, and the Playwright tests in `tests/e2e`. Drafted Adnan's H0 work: the matching score and reasons in `lib/matching` with their tests, the skill list and role templates in `seed.sql`, the UI fixtures in `lib/fixtures`, and the CI workflow. Drafted Adnan's H1 work: guidebook text extraction in `lib/pdf` and the simulated profile seed in `lib/seed` and `scripts/seed-profiles.ts`. Drafted Adnan's H2 work: the guidebook agent, skill mapping, extraction cache, role suggestions and guidebook summary data in `lib/ai` and `app/api/ai/guidebook`, and the role source labels in `lib/format/role-source.ts`. Drafted the team work Adnan took over from Malik: `create_team` in `0008_create_team.sql`, `createTeam` and the `/tim/baru` wizard, `save_roles` in `0009_save_roles.sql`, the role editor and `/tim/[id]/role`, the team dashboard `/tim/[id]` with the gap logic in `lib/team` and `assign_member_role` in `0010_assign_member_role.sql`, teammate contacts on the dashboard, the mentor grid `/mentor` (`MentorCard`, filters in `lib/mentors/list.ts`) and the simulated mentors in `seed.sql`, mentor booking and the simulated payment (`0011_bookings.sql`, checkout, "Sesi mentor"), the competition admin `/admin/lomba` (competition form, guidebook upload, extraction review), with their integration and Playwright tests. Drafted Alek's H0 work: the base UI components in `components/ui` and the page frames in `components/layout` (`PublicNavbar`, `Footer`, `AppShell`, `Sidebar`, `SearchInput`). Drafted Alek's M2 work: the notification bell, `markNotificationsRead` and `0007_notifications.sql`, the `/belajar` catalog and course page, the lesson player (`LessonShell`, `LessonTopBar`, `QuestionMCQ`, lesson Markdown), the lessons "Struktur pitch deck" and "Demo yang aman", and the responsive pass (44 px touch targets, `tap-target`, the 404 and global error pages). Drafted Alek's H5 work: the match panel on `/u/[username]` (`MatchPanel`, `lib/ranking/role-match.ts`), mentor management in `/admin/mentor` (`save_mentor` in `0016_save_mentor.sql`), the lessons "Menentukan role tim", "Menyusun timeline kerja", "Validasi pengguna", "Menentukan scope MVP" and "Menjawab pertanyaan juri", core-flow steps 3 to 7 in Playwright, the second responsive pass with `tests/e2e/responsive.spec.ts`, and this README update. Drafted Malik's work after the Nov 23 swap: the `ranking_candidates` SQL function in `0012_ranking.sql`, `GET /api/ranking/[teamRoleId]`, `lib/ranking/build.ts` and their tests; the "Cocok" / "Kurang cocok" feedback (`0013_recommendation_feedback.sql`, `submitFeedback`, `CandidateFeedback`); case-study feedback (`lib/ai/case-feedback.ts`, `POST /api/ai/case-feedback`, `record_case_attempt` and RLS on `agent_actions` in `0014_case_feedback.sql`, the answer form and feedback panel in `QuestionCase`); the recruiter agent (`lib/ai/recruiter.ts`, `POST /api/ai/recruit`, `RecruitPanel`, `recordRecruitDecision`, `loadRecruitHint`); the trial metrics page (`trial_metrics()` and `events` in `0015_trial_metrics.sql`, `/admin/metrik`, `lib/admin/metrics.ts`); the guidebook evaluation (`pnpm eval:guidebook`, `lib/ai/eval.ts`, `eval/guidebooks.json` with the STACK 2026 criteria). Drafted the proposed logo in `docs/brand` (symbol, full logo, icons) and the brand intro. The team reviews them in the pull request before merge |
 
 Every member adds a row or a line here when an AI tool materially helps with their work.
 
 ## Known limitations
 
+- Not deployed yet: Supabase cloud and Vercel are still to be set up (#3).
 - Light theme only, Indonesian UI only, one campus in the first version.
-- Payments and mentors are simulated.
+- Payments and mentors are simulated. Mentor photos, schedule slots and contacts come only from the
+  seed; the admin form edits the rest.
 - Guidebooks must be text PDFs; scanned PDFs fall back to manual role entry.
+- Guidebook accuracy is measured on one guidebook so far (STACK 2026, 17/17 criteria); PRD §8.1
+  asks for 5 to 10 (#51).
+- One course ("Persiapan Hackathon"). Lesson text has no tables.
+- On a local production build, mobile LCP was 2.8 to 3.2 s (target 2.5 s); to be measured again on
+  Vercel.
 
 ## Versions
 
@@ -112,12 +118,10 @@ Every member adds a row or a line here when an AI tool materially helps with the
 
 | Member | GitHub | Role | Main contributions |
 | --- | --- | --- | --- |
-| Malik Arsyafiandra Madani | [@malikarsya](https://github.com/malikarsya) | Leader, backend | Planned: repo and CI, Supabase and auth, deploy and releases. Since Nov 23 (swapped with Adnan): ranking API, recommendation feedback, recruiter agent, case-study feedback, admin metrics and guidebook evaluation |
-| Dhanesworo Muhammad Datiputro | [@dhanesmd3](https://github.com/dhanesmd3) | Backend | Planned: base components, profiles, contact privacy (RLS), invitations, quiz and course access, mentor detail, end-to-end tests |
-| Axeleon Justin Algianto | [@angseleong](https://github.com/angseleong) | Frontend | Planned: design system and components, landing, competitions, ranking UI and profile sheet, notifications, course player, responsive pass |
-| Muhammad Adnan Kurniawan | [@adnankurniawann](https://github.com/adnankurniawann) | AI and data | Planned: matching algorithm, guidebook agent, seed data. Since Nov 23 (swapped with Malik): teams, competition admin, mentor list and booking |
-
-"Planned" becomes a list of merged work as features land.
+| Malik Arsyafiandra Madani | [@malikarsya](https://github.com/malikarsya) | Leader, backend | Competition RLS, storage buckets and `seed.sql`, Google and email sign-in with the route middleware, "Tertarik", Gemini through OpenRouter. After the Nov 23 swap: `ranking_candidates` and `GET /api/ranking`, "Cocok" / "Kurang cocok", the recruiter agent, case-study feedback, `/admin/metrik`, `pnpm eval:guidebook`. Still to do: Supabase cloud, Vercel, release tags |
+| Dhanesworo Muhammad Datiputro | [@dhanesmd3](https://github.com/dhanesmd3) | Backend | Base components, onboarding and `/profil`, the public profile, contact privacy (RLS) with its integration tests, invitations and `/undangan` with the atomic accept, `submit_mcq`, course access and the simulated purchase, `/mentor/[id]`, the first Playwright tests |
+| Axeleon Justin Algianto | [@angseleong](https://github.com/angseleong) | Frontend | Design tokens and base components, `AppShell` and `PublicNavbar`, the landing page, `/lomba` and the competition page, the ranking UI and the profile sheet, notifications, `/belajar` and the lesson player, 7 of the 9 lessons, the match panel on public profiles, `/admin/mentor`, core-flow steps 3 to 7, both responsive passes, this README |
+| Muhammad Adnan Kurniawan | [@adnankurniawann](https://github.com/adnankurniawann) | AI and data | The matching score and reasons, guidebook text extraction and the guidebook agent, skill mapping and cache, the simulated profile seed and UI fixtures, CI. After the Nov 23 swap: `/tim/baru`, the role editor and the team dashboard, contacts on the team page, `/admin/lomba`, `/mentor` and the simulated booking |
 
 ## Docs
 

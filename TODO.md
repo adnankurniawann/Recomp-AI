@@ -166,8 +166,8 @@ waits and everyone helps fix P0.
 - [x] Bug fixes in profiles and invites
 
 **@angseleong**
-- [ ] #49 Every page at 360 px; loading, empty and error states; Lighthouse Accessibility ≥ 90
-- [ ] #50 README: setup, feature table, limitations
+- [x] #49 Every page at 360 px; loading, empty and error states; Lighthouse Accessibility ≥ 90
+- [x] #50 README: setup, feature table, limitations
 
 **@adnankurniawann**
 - [ ] Bug fixes in teams, competition admin and mentor booking, from Malik
