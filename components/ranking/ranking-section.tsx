@@ -12,6 +12,7 @@ import { ROLE_COLORS } from "@/lib/constants";
 import { submitFeedback as submitFeedbackAction } from "@/app/(app)/tim/actions";
 import type { ActionResult } from "@/lib/action-result";
 import { fetchRankingPage } from "@/lib/ranking/client";
+import { appendPage, hasMore, markInvited, nextOffset } from "@/lib/ranking/paging";
 import {
   RANKING_SORTS,
   RANKING_SORT_LABELS,
@@ -123,22 +124,13 @@ export function RankingSection({
     const roleId = activeId;
     setByRole((s) => ({ ...s, [roleId]: { ...current, loadingMore: true } }));
     try {
-      const page = await fetchPage(roleId, current.candidates.length);
+      const page = await fetchPage(roleId, nextOffset(current.candidates));
       setByRole((s) => {
         const prev = s[roleId];
         if (prev?.status !== "ready") return s;
-        const seen = new Set(prev.candidates.map((c) => c.profile.id));
         return {
           ...s,
-          [roleId]: {
-            status: "ready",
-            total: page.total,
-            candidates: [
-              ...prev.candidates,
-              ...page.candidates.filter((c) => !seen.has(c.profile.id)),
-            ],
-            loadingMore: false,
-          },
+          [roleId]: { status: "ready", ...appendPage(prev, page), loadingMore: false },
         };
       });
     } catch {
@@ -163,8 +155,14 @@ export function RankingSection({
     });
   }
 
-  function markInvited(profileId: string) {
-    updateCandidate(profileId, { inviteStatus: "pending" });
+  // Bound to the role the invite was sent from, so a dialog that finishes after a tab switch
+  // still updates the right list.
+  function onInvited(roleId: string, profileId: string) {
+    setByRole((s) => {
+      const st = s[roleId];
+      if (st?.status !== "ready") return s;
+      return { ...s, [roleId]: { ...st, ...markInvited(st, profileId) } };
+    });
   }
 
   async function rate(c: RankingCandidate, feedback: RecommendationFeedback) {
@@ -198,7 +196,8 @@ export function RankingSection({
 
   const role = roles.find((r) => r.id === activeId) ?? roles[0]!;
   const state = byRole[role.id];
-  const inviteCtx: InviteContext = { ...invite, onInvited: markInvited };
+  const markRoleInvited = (profileId: string) => onInvited(role.id, profileId);
+  const inviteCtx: InviteContext = { ...invite, onInvited: markRoleInvited };
   const open =
     state?.status === "ready"
       ? (state.candidates.find((c) => c.profile.id === openId) ?? null)
@@ -286,7 +285,7 @@ export function RankingSection({
                 key={role.id}
                 teamRoleId={role.id}
                 roleName={role.name}
-                onInvited={markInvited}
+                onInvited={markRoleInvited}
                 api={recruitApi}
               />
             )}
@@ -330,7 +329,7 @@ export function RankingSection({
                 )}{" "}
                 {ALGORITHM_NOTE}
               </p>
-              {state.candidates.length < state.total && (
+              {hasMore(state) && (
                 <Button onClick={loadMore} disabled={state.loadingMore}>
                   {state.loadingMore ? "Memuat..." : "Muat lagi"}
                 </Button>
