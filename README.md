@@ -9,15 +9,18 @@ students who marked that competition as interesting, with a score an algorithm c
 AI) and the reasons behind it. The leader invites; contacts open only after both sides agree.
 Teams then prepare through short courses and paid mentor sessions (simulated).
 
-> **Status: semifinal build.** The core flow runs end to end on `main` with seed data (local
-> Supabase, `tests/e2e/core-flow.spec.ts`). The app is not deployed yet (issue #3), so "Done" below
-> means "works on `main` locally" until the live link is up. The specification is
+> **Status: semifinal build.** The core flow runs end to end on `main` with seed data
+> (`tests/e2e/core-flow.spec.ts`). Recomp AI runs on a local setup, not a public deployment: the
+> STACK handbook accepts "a reachable deployment or reliable local setup", and [Setup](#setup)
+> below is ours. "Done" means it works on that setup. The specification is
 > [docs/PRD.md](docs/PRD.md) and the work plan is [TODO.md](TODO.md).
 
 ## Demo
 
-- Live: not deployed yet
-- Demo accounts: in the submission notes, never in this repository
+- Live: no public deployment. Run it locally with [Setup](#setup), about 10 minutes the first time
+- Demo accounts: sign up with any email and password on `/masuk`. Local Supabase skips email
+  confirmation, so the account works at once. To open `/admin`, see
+  [Make yourself an admin](#make-yourself-an-admin)
 - Simulated data: profiles, mentors and payments marked "Simulasi" are fictional
 
 ## Features
@@ -48,23 +51,82 @@ Left on purpose, as the STACK handbook asks ([ADR 0007](docs/adr/0007-three-task
 
 Next.js 15 (App Router), React 19, TypeScript strict, Tailwind CSS v4, shadcn/ui, Lucide,
 React Hook Form and Zod, TanStack Query, Supabase (Postgres, Auth, Storage, RLS), Gemini through
-`@google/genai`, `unpdf`, Vitest, Playwright, pnpm. To be deployed on Vercel and Supabase cloud.
+`@google/genai`, `unpdf`, Vitest, Playwright, pnpm. Supabase runs locally in Docker.
 Why: [ADR 0001](docs/adr/0001-nextjs-supabase-gemini-stack.md).
 
 ## Setup
 
-You need Node.js 20+, pnpm, Docker (for local Supabase) and the Supabase CLI.
+### What you need
+
+- Node.js 20 or newer
+- pnpm 10 (`corepack enable` installs the version in `package.json`)
+- Docker Desktop, running. The first `pnpm supabase start` downloads the Supabase Docker images
+  (several GB), so the first run takes a while on a slow connection
+- Free ports: 3000 (app) and 54321 to 54327 (Supabase)
+
+The Supabase CLI comes with `pnpm install`; you don't install it separately.
+
+### Steps
 
 ```sh
 git clone https://github.com/adnankurniawann/Recomp-AI.git
 cd Recomp-AI
 pnpm install
-cp .env.example .env.local        # fill in values from `pnpm supabase start`
-pnpm supabase start
-pnpm db:reset
-pnpm seed:profiles && pnpm seed:content
+pnpm supabase start               # starts Postgres, Auth and Storage in Docker
+cp .env.example .env.local
+pnpm supabase status -o env       # copy three values into .env.local, see below
+pnpm db:reset                     # migrations, seed.sql and the STACK 2026 guidebook
+pnpm seed:profiles                # 50 simulated students
+pnpm seed:content                 # the "Persiapan Hackathon" course
 pnpm dev                          # http://localhost:3000
 ```
+
+From `pnpm supabase status -o env`, set these in `.env.local`:
+
+| `.env.local` | From `supabase status -o env` |
+| --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | `API_URL` (`http://127.0.0.1:54321`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `ANON_KEY` |
+| `SUPABASE_SERVICE_ROLE_KEY` | `SERVICE_ROLE_KEY` |
+
+Leave the AI keys empty to run without AI: the guidebook agent, the recruiter and case-study
+feedback fall back to saved results and templates. See [Environment variables](#environment-variables).
+
+### Try it
+
+1. Open http://localhost:3000/masuk and sign up with any email and password.
+2. Finish the four-step onboarding, then open `/lomba` and pick STACK 2026.
+3. Create a team in `/tim/baru`; the ranking tab lists the simulated students for each role.
+
+Other local pages: Supabase Studio at http://127.0.0.1:54323 and the test mailbox at
+http://127.0.0.1:54324.
+
+### Make yourself an admin
+
+`/admin/lomba`, `/admin/mentor` and `/admin/metrik` need an admin account. After you sign up, open
+Supabase Studio, go to the SQL editor and run this with your email:
+
+```sql
+update profiles set app_role = 'admin'
+where user_id = (select id from auth.users where email = 'you@example.com');
+```
+
+### Stop and reset
+
+```sh
+pnpm supabase stop                # stops the containers and keeps the data
+pnpm db:reset                     # wipes the database back to the seed, then run both seed scripts again
+```
+
+### If something fails
+
+- `Cannot connect to the Docker daemon`: start Docker Desktop and wait until it says it is running.
+- `port is already allocated`: another Supabase project is running. Run `pnpm supabase stop
+  --all`, or stop whatever holds the port.
+- `Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY` from a seed script: `.env.local` is
+  missing those values; copy them from `pnpm supabase status -o env`.
+- "Lanjutkan dengan Google" fails locally: Google sign-in needs your own OAuth client. Use
+  email and password.
 
 ## Environment variables
 
@@ -97,7 +159,8 @@ Every member adds a row or a line here when an AI tool materially helps with the
 
 ## Known limitations
 
-- Not deployed yet: Supabase cloud and Vercel are still to be set up (#3).
+- No public deployment: the app runs only on the local setup. Google sign-in needs your own Google
+  OAuth client, so locally use email and password.
 - Light theme only, Indonesian UI only, one campus in the first version.
 - Payments and mentors are simulated. Mentor photos, schedule slots and contacts come only from the
   seed; the admin form edits the rest.
@@ -106,8 +169,8 @@ Every member adds a row or a line here when an AI tool materially helps with the
   guidebooks (`pnpm eval:guidebook`, [eval/README.md](eval/README.md)). The agent can miss later
   rounds when a guidebook has several branches.
 - One course ("Persiapan Hackathon"). Lesson text has no tables.
-- On a local production build, mobile LCP was 2.8 to 3.2 s (target 2.5 s); to be measured again on
-  Vercel.
+- On a local production build, the measured LCP on `/` is 0.52 s, but Lighthouse's simulated
+  mobile LCP is 2.4 to 2.7 s (target 2.5 s) because it also counts the early Next.js JavaScript.
 
 ## Versions
 
@@ -119,7 +182,7 @@ Every member adds a row or a line here when an AI tool materially helps with the
 
 | Member | GitHub | Role | Main contributions |
 | --- | --- | --- | --- |
-| Malik Arsyafiandra Madani | [@malikarsya](https://github.com/malikarsya) | Leader, backend | Competition RLS, storage buckets and `seed.sql`, Google and email sign-in with the route middleware, "Tertarik", Gemini through OpenRouter. After the Nov 23 swap: `ranking_candidates` and `GET /api/ranking`, "Cocok" / "Kurang cocok", the recruiter agent, case-study feedback, `/admin/metrik`, `pnpm eval:guidebook`. Still to do: Supabase cloud, Vercel, release tags |
+| Malik Arsyafiandra Madani | [@malikarsya](https://github.com/malikarsya) | Leader, backend | Competition RLS, storage buckets and `seed.sql`, Google and email sign-in with the route middleware, "Tertarik", Gemini through OpenRouter. After the Nov 23 swap: `ranking_candidates` and `GET /api/ranking`, "Cocok" / "Kurang cocok", the recruiter agent, case-study feedback, `/admin/metrik`, `pnpm eval:guidebook`. Still to do: release tags |
 | Dhanesworo Muhammad Datiputro | [@dhanesmd3](https://github.com/dhanesmd3) | Backend | Base components, onboarding and `/profil`, the public profile, contact privacy (RLS) with its integration tests, invitations and `/undangan` with the atomic accept, `submit_mcq`, course access and the simulated purchase, `/mentor/[id]`, the first Playwright tests |
 | Axeleon Justin Algianto | [@angseleong](https://github.com/angseleong) | Frontend | Design tokens and base components, `AppShell` and `PublicNavbar`, the landing page, `/lomba` and the competition page, the ranking UI and the profile sheet, notifications, `/belajar` and the lesson player, 7 of the 9 lessons, the match panel on public profiles, `/admin/mentor`, core-flow steps 3 to 7, both responsive passes, this README |
 | Muhammad Adnan Kurniawan | [@adnankurniawann](https://github.com/adnankurniawann) | AI and data | The matching score and reasons, guidebook text extraction and the guidebook agent, skill mapping and cache, the simulated profile seed and UI fixtures, CI. After the Nov 23 swap: `/tim/baru`, the role editor and the team dashboard, contacts on the team page, `/admin/lomba`, `/mentor` and the simulated booking |

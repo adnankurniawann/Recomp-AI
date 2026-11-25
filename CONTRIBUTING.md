@@ -14,19 +14,21 @@ You need Node.js 20+, pnpm, Docker and the Supabase CLI.
 ```sh
 pnpm install
 cp .env.example .env.local
-pnpm supabase start              # prints the local URL and keys for .env.local
+pnpm supabase start
+pnpm supabase status -o env      # API_URL, ANON_KEY and SERVICE_ROLE_KEY go in .env.local
 pnpm db:reset                    # migrations + seed.sql
 pnpm seed:profiles && pnpm seed:content
 pnpm dev
 ```
 
-Ask Malik for the cloud Supabase and Vercel access. Never paste keys into chat groups, issues or
-commits; share them through the password manager the team agreed on.
+There is no cloud deployment: the app runs on the local setup in the README. Never paste keys (the
+team's Gemini or OpenRouter key) into chat groups, issues or commits; share them through the
+password manager the team agreed on.
 
 ## Branches
 
-There is one long-lived branch, `main`. It is protected (PR, 1 review, CI green), deployed to
-production by Vercel, and must always work. Every pull request gets a Vercel preview URL to test on.
+There is one long-lived branch, `main`. It is protected (PR, 1 review, CI green) and must always
+work on the local setup.
 
 - Branch from `main` for one issue, open a PR back into `main`, delete the branch after merge.
 - Never merge a half-done PR. Split a big feature into small PRs that each still work.

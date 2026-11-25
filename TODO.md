@@ -40,7 +40,7 @@ Contracts first, so everyone can work in parallel from H1.
 **@malikarsya**
 - [x] #2 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
 - [ ] Protect `main` (PR, 1 review, CI green). Needs admin: ask @adnankurniawann
-- [ ] #3 Supabase local and cloud, `0001_init.sql` from PRD §12, generated types (F-FND-01)
+- [x] #3 Supabase local, `0001_init.sql` from PRD §12, generated types (F-FND-01). Cloud dropped: local setup only
 
 **@dhanesmd3**
 - [x] #5 `Avatar`, `Stepper`, `EmptyState`, `ProgressBar` (F-FND-03)
@@ -104,7 +104,7 @@ Contracts first, so everyone can work in parallel from H1.
 ## H3 Sun Nov 22
 
 **@malikarsya**
-- [ ] Vercel: `main` to production, a preview URL for every PR
+- [x] ~~Vercel: `main` to production, a preview URL for every PR~~ dropped, the handbook accepts a reliable local setup
 - [x] #28 `ranking_candidates` SQL and `GET /api/ranking/[teamRoleId]` (F-RNK-01), from Adnan
 - [x] #35 "Cocok" and "Kurang cocok" feedback (F-RNK-05), from Adnan
 
