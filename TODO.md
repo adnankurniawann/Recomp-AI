@@ -39,7 +39,7 @@ Contracts first, so everyone can work in parallel from H1.
 
 **@malikarsya**
 - [x] #2 Next.js App Router, TypeScript strict, pnpm, ESLint, Prettier, Vitest, CI (F-FND-01)
-- [ ] Protect `main` (PR, 1 review, CI green). Needs admin: ask @adnankurniawann
+- [x] Protect `main` (PR, 1 review, CI green). Needs admin: ask @adnankurniawann
 - [x] #3 Supabase local, `0001_init.sql` from PRD §12, generated types (F-FND-01). Cloud dropped: local setup only
 
 **@dhanesmd3**
@@ -155,9 +155,9 @@ waits and everyone helps fix P0.
 **@malikarsya**
 - [ ] Local backup with `DEMO_MODE=true`, screen recording of the core flow
 - [ ] **Tag `v0.1.0` on `main` at 21.00**
-- [ ] #51 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1), from Adnan
+- [x] #51 `pnpm eval:guidebook` on 5–10 guidebooks (PRD §8.1), from Adnan
 - [x] #47 Admin metrics page and mentor management (F-ADM-01, PRD §17), from Adnan
-- [ ] #50 AI disclosure in the README, from Adnan
+- [x] #50 AI disclosure in the README, from Adnan
 - [ ] Ranking bug fixes, from Adnan
 
 **@dhanesmd3**
