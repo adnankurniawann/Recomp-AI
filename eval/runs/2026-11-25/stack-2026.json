@@ -1,0 +1,241 @@
+{
+  "summary": "STACK 2026 adalah kompetisi hackathon mahasiswa berskala nasional oleh GDGoC ITB dengan tema 'Agent of the Ocean: Vibing Beyond the Code'. Kompetisi ini terdiri dari babak Preliminary, Semifinal, dan Final Day untuk membangun prototipe solusi digital.",
+  "team_size": {
+    "min": 3,
+    "max": 4,
+    "page": 8
+  },
+  "deadlines": [
+    {
+      "name": "Free registration",
+      "date": "2026-11-07",
+      "page": 7
+    },
+    {
+      "name": "Preliminary submission",
+      "date": "2026-11-10",
+      "page": 7
+    },
+    {
+      "name": "Semifinal announcement",
+      "date": "2026-11-18",
+      "page": 7
+    },
+    {
+      "name": "Semifinal submission",
+      "date": "2026-11-30",
+      "page": 7
+    },
+    {
+      "name": "Top 10 announcement",
+      "date": "2026-12-07",
+      "page": 7
+    },
+    {
+      "name": "Product improvement",
+      "date": "2026-12-16",
+      "page": 7
+    },
+    {
+      "name": "Final Day",
+      "date": "2026-12-16",
+      "page": 7
+    }
+  ],
+  "judging_criteria": [
+    {
+      "name": "Problem Clarity (Preliminary Phase)",
+      "weight_percent": 30,
+      "description": "Specific users, a real need, and relevant supporting evidence.",
+      "page": 17
+    },
+    {
+      "name": "Fit to the Selected Case (Preliminary Phase)",
+      "weight_percent": 20,
+      "description": "Clear connection between the problem, solution, and chosen case.",
+      "page": 17
+    },
+    {
+      "name": "Value and Originality (Preliminary Phase)",
+      "weight_percent": 25,
+      "description": "Usefulness and distinction from existing alternatives.",
+      "page": 17
+    },
+    {
+      "name": "Feasibility (Preliminary Phase)",
+      "weight_percent": 15,
+      "description": "Realistic scope, technology, and development plan.",
+      "page": 17
+    },
+    {
+      "name": "Abstract Clarity (Preliminary Phase)",
+      "weight_percent": 10,
+      "description": "Coherent explanation and compliance with the required format.",
+      "page": 17
+    },
+    {
+      "name": "Problem Understanding (Semifinal Phase)",
+      "weight_percent": 25,
+      "description": "Supporting evidence, user needs, and analysis of alternatives.",
+      "page": 17
+    },
+    {
+      "name": "Solution Design (Semifinal Phase)",
+      "weight_percent": 25,
+      "description": "Core workflow, value, originality, and case alignment.",
+      "page": 17
+    },
+    {
+      "name": "Technical Feasibility (Semifinal Phase)",
+      "weight_percent": 20,
+      "description": "Architecture, technology choices, data, and achievable scope.",
+      "page": 17
+    },
+    {
+      "name": "Execution and Validation (Semifinal Phase)",
+      "weight_percent": 20,
+      "description": "Milestones, roles, testing, risks, and Final Day plan.",
+      "page": 17
+    },
+    {
+      "name": "Communication (Semifinal Phase)",
+      "weight_percent": 10,
+      "description": "Clear and consistent proposal and video that accurately describe progress.",
+      "page": 17
+    },
+    {
+      "name": "Functionality and Reliability (Final Phase)",
+      "weight_percent": 30,
+      "description": "The core flow works consistently in the main usage scenario.",
+      "page": 18
+    },
+    {
+      "name": "Problem Fit and Usefulness (Final Phase)",
+      "weight_percent": 20,
+      "description": "The product addresses a demonstrated need within the chosen case.",
+      "page": 18
+    },
+    {
+      "name": "Technical Quality (Final Phase)",
+      "weight_percent": 15,
+      "description": "Appropriate architecture, maintainability, data handling, and implementation choices.",
+      "page": 18
+    },
+    {
+      "name": "Usability and Accessibility (Final Phase)",
+      "weight_percent": 10,
+      "description": "Understandable interactions, clear feedback, and consideration of intended users.",
+      "page": 18
+    },
+    {
+      "name": "Validation and Impact (Final Phase)",
+      "weight_percent": 10,
+      "description": "Credible tests, honest limitations, and measurable or testable benefits.",
+      "page": 18
+    },
+    {
+      "name": "Final Day Execution (Final Phase)",
+      "weight_percent": 10,
+      "description": "Substantive, traceable progress against the declared plan.",
+      "page": 18
+    },
+    {
+      "name": "Pitch and Technical Understanding (Final Phase)",
+      "weight_percent": 5,
+      "description": "Clear demonstration and convincing team answers.",
+      "page": 18
+    }
+  ],
+  "suggested_roles": [
+    {
+      "name": "Backend Developer",
+      "reason": "Dibutuhkan untuk memenuhi kriteria Technical Quality serta Functionality and Reliability dalam mengimplementasikan arsitektur sistem dan data.",
+      "source": "criteria",
+      "source_criterion": "Technical Quality (Final Phase)",
+      "page": 18,
+      "required_skills": [
+        {
+          "skill": "Backend Development",
+          "min_level": 2
+        },
+        {
+          "skill": "System Architecture",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Database Management",
+        "API Integration"
+      ],
+      "hours_per_week": 15,
+      "slots": 1
+    },
+    {
+      "name": "Frontend Developer",
+      "reason": "Dibutuhkan untuk membangun alur kerja prototipe inti yang fungsional dan reliabel sesuai kriteria Functionality and Reliability.",
+      "source": "criteria",
+      "source_criterion": "Functionality and Reliability (Final Phase)",
+      "page": 18,
+      "required_skills": [
+        {
+          "skill": "Frontend Development",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Web Development",
+        "Mobile Development"
+      ],
+      "hours_per_week": 15,
+      "slots": 1
+    },
+    {
+      "name": "UI/UX Designer",
+      "reason": "Dibutuhkan untuk memenuhi kriteria Usability and Accessibility dalam merancang interaksi yang jelas dan ramah pengguna.",
+      "source": "criteria",
+      "source_criterion": "Usability and Accessibility (Final Phase)",
+      "page": 18,
+      "required_skills": [
+        {
+          "skill": "UI/UX Design",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "User Research",
+        "Usability Testing"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    },
+    {
+      "name": "Product and Pitching",
+      "reason": "Dibutuhkan untuk menyampaikan presentasi dan validasi solusi sesuai kriteria Pitch and Technical Understanding serta Problem Fit and Usefulness.",
+      "source": "criteria",
+      "source_criterion": "Pitch and Technical Understanding (Final Phase)",
+      "page": 18,
+      "required_skills": [
+        {
+          "skill": "Pitching",
+          "min_level": 2
+        },
+        {
+          "skill": "Product Management",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Public Speaking",
+        "Market Validation"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    }
+  ],
+  "warnings": [
+    "Peserta yang lolos ke tahap semifinal diwajibkan membayar biaya registrasi per tim.",
+    "Babak Final Day direncanakan secara luring di Bandung, dan biaya akomodasi serta transportasi ditanggung oleh peserta.",
+    "Seluruh pengumpulan berkas, video, dan sesi pitching wajib menggunakan bahasa Inggris.",
+    "Setiap anggota tim wajib menyelesaikan persyaratan promosi (twibbon, poster, broadcast group chat, follow IG) secara individu."
+  ]
+}

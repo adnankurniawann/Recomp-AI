@@ -1,0 +1,153 @@
+{
+  "summary": "Kompetisi Generative AI Hackathon diselenggarakan oleh Kominfo, Alibaba Cloud, dan Jabar Digital Services untuk menghadirkan solusi inovatif berbasis AI Model Studio dan Open Data Jabar. Peserta dapat berkompetisi secara individu maupun tim hingga maksimal 4 orang.",
+  "team_size": {
+    "min": 1,
+    "max": 4,
+    "page": 2
+  },
+  "deadlines": [
+    {
+      "name": "Registrasi",
+      "date": null,
+      "page": 4
+    },
+    {
+      "name": "Briefing",
+      "date": null,
+      "page": 4
+    },
+    {
+      "name": "Pre-Hackathon",
+      "date": null,
+      "page": 4
+    },
+    {
+      "name": "Hari Pertama: Pembentukan tim dan fase pengembangan",
+      "date": null,
+      "page": 4
+    },
+    {
+      "name": "Hari Kedua: Mentorship, final project submission, dan pengumuman pemenang",
+      "date": null,
+      "page": 4
+    }
+  ],
+  "judging_criteria": [
+    {
+      "name": "Inovasi dan Kreativitas",
+      "weight_percent": null,
+      "description": "Seberapa unik dan inovatif solusi yang diusulkan serta kehadiran ide-ide baru atau pendekatan kreatif.",
+      "page": 3
+    },
+    {
+      "name": "Kegunaan dan Dampak",
+      "weight_percent": null,
+      "description": "Seberapa bermanfaat solusi terhadap problem set dan potensi dampak positif yang signifikan bagi masyarakat.",
+      "page": 3
+    },
+    {
+      "name": "Teknologi dan Implementasi",
+      "weight_percent": null,
+      "description": "Kualitas penerapan teknologi AI Model Studio Alibaba Cloud dan implementasi teknis yang solid.",
+      "page": 3
+    },
+    {
+      "name": "Presentasi dan Pitching",
+      "weight_percent": null,
+      "description": "Kualitas penyampaian ide dan solusi tim dalam sesi presentasi berdurasi 3 hingga 5 menit.",
+      "page": 3
+    }
+  ],
+  "suggested_roles": [
+    {
+      "name": "Data/AI Engineer",
+      "reason": "Dibutuhkan untuk mengolah dataset Open Data Jabar dan mengintegrasikannya dengan AI Model Studio Alibaba Cloud.",
+      "source": "criteria",
+      "source_criterion": "Teknologi dan Implementasi",
+      "page": 3,
+      "required_skills": [
+        {
+          "skill": "Generative AI",
+          "min_level": 2
+        },
+        {
+          "skill": "Cloud Computing",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Data Analysis",
+        "Python"
+      ],
+      "hours_per_week": 15,
+      "slots": 1
+    },
+    {
+      "name": "Backend Developer",
+      "reason": "Bertanggung jawab membangun prototype fungsional dan arsitektur teknis solusi secara solid.",
+      "source": "criteria",
+      "source_criterion": "Teknologi dan Implementasi",
+      "page": 3,
+      "required_skills": [
+        {
+          "skill": "API Development",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "System Architecture",
+        "Database Management"
+      ],
+      "hours_per_week": 15,
+      "slots": 1
+    },
+    {
+      "name": "UI/UX Designer",
+      "reason": "Dibutuhkan untuk merancang interaksi prototipe dan memastikan kejelasan pengalaman pengguna.",
+      "source": "criteria",
+      "source_criterion": "Kegunaan dan Dampak",
+      "page": 3,
+      "required_skills": [
+        {
+          "skill": "UI/UX Design",
+          "min_level": 2
+        },
+        {
+          "skill": "Prototyping",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Wireframing"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    },
+    {
+      "name": "Product and Pitching",
+      "reason": "Bertugas menyusun rumusan masalah, rencana roadmap, serta membawakan materi pitching secara efektif.",
+      "source": "criteria",
+      "source_criterion": "Presentasi dan Pitching",
+      "page": 3,
+      "required_skills": [
+        {
+          "skill": "Public Speaking",
+          "min_level": 2
+        },
+        {
+          "skill": "Pitching",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Business Modeling"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    }
+  ],
+  "warnings": [
+    "Bobot persentase penilaian tidak dicantumkan dalam guidebook.",
+    "Tahun pada linimasa tidak dicantumkan sehingga format tanggal YYYY-MM-DD tidak dapat dipastikan."
+  ]
+}

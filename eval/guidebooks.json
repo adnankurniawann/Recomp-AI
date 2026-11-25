@@ -92,5 +92,300 @@
         "weight_percent": 5
       }
     ]
+  },
+  {
+    "id": "komdigi-genai-hackathon-2024",
+    "name": "Generative AI Hackathon (BPSDM Kominfo) 2024",
+    "pdf": "eval/pdfs/komdigi-genai-hackathon-2024.pdf",
+    "url": "https://bpsdm.komdigi.go.id/satker/psdppi/downloads/5/20240802193645-GUIDEBOOK-KOMPETISI-GENERATIVE-AI-HACKATON.pdf",
+    "sha256": "f6623e62b1102ccebfe5d6b1d275143b39a3ae90d4a53f4dafa4f0abc9839459",
+    "category": "hackathon",
+    "source": "Guidebook Lomba Generative AI Hackathon, section V. Kriteria Penilaian (PDF page 3). The guidebook gives no weights. Section VI (pitch content) is not a list of judging criteria.",
+    "criteria": [
+      {
+        "name": "Inovasi dan Kreativitas",
+        "pages": [3],
+        "weight_percent": null
+      },
+      {
+        "name": "Kegunaan dan Dampak",
+        "pages": [3],
+        "weight_percent": null
+      },
+      {
+        "name": "Teknologi dan Implementasi",
+        "pages": [3],
+        "weight_percent": null
+      },
+      {
+        "name": "Presentasi dan Pitching",
+        "pages": [3],
+        "weight_percent": null
+      }
+    ]
+  },
+  {
+    "id": "epsilon-ndac-2025",
+    "name": "National Data Analysis Competition (EPSILON 2025, Universitas Negeri Padang)",
+    "pdf": "eval/pdfs/epsilon-ndac-2025.pdf",
+    "url": "https://epsilon.himasta.statistika.fmipa.unp.ac.id/assets/NDAC.pdf",
+    "sha256": "1ce069986d77859da21954704d8c695a33e5b271942006b8dd9b9fc28d573c98",
+    "category": "data",
+    "source": "Guidebook NDAC EPSILON 2025, Lampiran 2 Kriteria Penilaian: Penyisihan (PDF page 11) and Final (PDF page 12).",
+    "criteria": [
+      {
+        "name": "Orisinalitas",
+        "pages": [11],
+        "weight_percent": 20
+      },
+      {
+        "name": "Penulisan",
+        "pages": [11],
+        "weight_percent": 20
+      },
+      {
+        "name": "Kemampuan Analisis",
+        "pages": [11],
+        "weight_percent": 40
+      },
+      {
+        "name": "Penarikan Kesimpulan",
+        "pages": [11],
+        "weight_percent": 20
+      },
+      {
+        "name": "Skor babak penyisihan",
+        "pages": [12],
+        "weight_percent": 20
+      },
+      {
+        "name": "Pemaparan/Presentasi",
+        "pages": [12],
+        "weight_percent": 25
+      },
+      {
+        "name": "Kreativitas",
+        "pages": [12],
+        "weight_percent": 10
+      },
+      {
+        "name": "Kedalaman Analisis",
+        "pages": [12],
+        "weight_percent": 20
+      },
+      {
+        "name": "Diskusi dan Tanya Jawab",
+        "pages": [12],
+        "weight_percent": 25
+      }
+    ]
+  },
+  {
+    "id": "unsika-nic-2026",
+    "name": "National IT Competition, Pekan IT 2026 (Universitas Singaperbangsa Karawang)",
+    "pdf": "eval/pdfs/unsika-nic-2026.pdf",
+    "url": "https://himtika.cs.unsika.ac.id/pekan-it/files/Guidebook%20NIC.pdf",
+    "sha256": "9715874f3c4ce69fd99f0d212b0c17d49c880e495472b16533bc74ffd0ed9a7b",
+    "category": "it_competition",
+    "source": "Guidebook NIC Pekan IT 2026, F. Kriteria Penilaian: UI/UX Design penyisihan (PDF pages 12-13) and final (PDF page 14); Software Development penyisihan (PDF pages 26-27) and final (PDF pages 27-28). The UI/UX penyisihan weights add up to 95% as printed.",
+    "criteria": [
+      {
+        "name": "User Experience & Usability",
+        "pages": [12],
+        "weight_percent": 30
+      },
+      {
+        "name": "Visual Design",
+        "pages": [13],
+        "weight_percent": 25
+      },
+      {
+        "name": "Innovation & Problem Solving",
+        "pages": [13],
+        "weight_percent": 20
+      },
+      {
+        "name": "Prototype & Function Flow",
+        "pages": [13],
+        "weight_percent": 20
+      },
+      {
+        "name": "Presentasi",
+        "pages": [14],
+        "weight_percent": 20
+      },
+      {
+        "name": "Tanya Jawab",
+        "pages": [14],
+        "weight_percent": 20
+      },
+      {
+        "name": "User Experience & Usability",
+        "pages": [14],
+        "weight_percent": 25
+      },
+      {
+        "name": "Visual Design",
+        "pages": [14],
+        "weight_percent": 15
+      },
+      {
+        "name": "Innovation & Problem Solving",
+        "pages": [14],
+        "weight_percent": 10
+      },
+      {
+        "name": "Prototype & Function Flow",
+        "pages": [14],
+        "weight_percent": 10
+      },
+      {
+        "name": "Orisinalitas & Urgensi Masalah",
+        "pages": [26],
+        "weight_percent": 20
+      },
+      {
+        "name": "Inovasi & Dampak Solusi",
+        "pages": [26],
+        "weight_percent": 20
+      },
+      {
+        "name": "Kelengkapan Teknis Proposal",
+        "pages": [26],
+        "weight_percent": 15
+      },
+      {
+        "name": "Kualitas UI/UX Prototype",
+        "pages": [27],
+        "weight_percent": 20
+      },
+      {
+        "name": "Fungsionalitas & Implementasi Kode",
+        "pages": [27],
+        "weight_percent": 25
+      },
+      {
+        "name": "Sikap & Penyampaian Presentasi",
+        "pages": [27],
+        "weight_percent": 20
+      },
+      {
+        "name": "Kualitas & Responsivitas",
+        "pages": [28],
+        "weight_percent": 25
+      },
+      {
+        "name": "Penguasaan Materi & Arsitektur",
+        "pages": [28],
+        "weight_percent": 25
+      },
+      {
+        "name": "Ketepatan Menjawab Pertanyaan (Q&A)",
+        "pages": [28],
+        "weight_percent": 30
+      }
+    ]
+  },
+  {
+    "id": "uksw-itc-2021",
+    "name": "Innovation Technology Competition 2021 (HMP Teknik Informatika UKSW)",
+    "pdf": "eval/pdfs/uksw-itc-2021.pdf",
+    "url": "https://informatika.ciputra.ac.id/wp-content/uploads/2021/09/Guidebook_ITC2021.pdf",
+    "sha256": "efd3a6d8ecfa5e665f4af26276fadac1d72d3e8fc330d52075b12f5ce1649439",
+    "category": "it_competition",
+    "source": "Guidebook ITC 2021, Sistem Penilaian Proposal (PDF page 11, printed page 10) and Sistem Penilaian Presentasi (PDF page 12, printed page 11). Each weight sits above its criterion in a grid, so the extracted text puts the weights on their own line; they were matched by position and checked against the rendered pages. The proposal weights add up to 95% as printed, and 'Pengimplemetasi produk' is spelled as printed.",
+    "criteria": [
+      {
+        "name": "Masalah yang dipaparkan",
+        "pages": [11],
+        "weight_percent": 10
+      },
+      {
+        "name": "Solusi yang diberikan",
+        "pages": [11],
+        "weight_percent": 15
+      },
+      {
+        "name": "Penjelasan model bisnis",
+        "pages": [11],
+        "weight_percent": 15
+      },
+      {
+        "name": "Penjelasan strategi keuangan",
+        "pages": [11],
+        "weight_percent": 15
+      },
+      {
+        "name": "Penjelasan tentang metode yang digunakan",
+        "pages": [11],
+        "weight_percent": 10
+      },
+      {
+        "name": "Menjelaskan tentang aplikasi yang diberikan",
+        "pages": [11],
+        "weight_percent": 20
+      },
+      {
+        "name": "Kemenarikan/keunikan produk",
+        "pages": [11],
+        "weight_percent": 10
+      },
+      {
+        "name": "Kejelasan penyampaian dan konsisten sesuai proposal",
+        "pages": [12],
+        "weight_percent": 15
+      },
+      {
+        "name": "Semangat, percaya diri, antusiasme, dan sifat persuasif yang tinggi",
+        "pages": [12],
+        "weight_percent": 15
+      },
+      {
+        "name": "Penguasaan materi",
+        "pages": [12],
+        "weight_percent": 30
+      },
+      {
+        "name": "Keunikan",
+        "pages": [12],
+        "weight_percent": 20
+      },
+      {
+        "name": "Pengimplemetasi produk",
+        "pages": [12],
+        "weight_percent": 20
+      }
+    ]
+  },
+  {
+    "id": "almaata-ibtsc-bpc-2025",
+    "name": "IBTSC Business Plan Competition 2025 (Universitas Alma Ata)",
+    "pdf": "eval/pdfs/almaata-ibtsc-bpc-2025.pdf",
+    "url": "https://kemahasiswaan.almaata.ac.id/wp-content/uploads/2025/01/GUIDEBOOK-BPC.pdf",
+    "sha256": "de8c6313a36b3874563ab43d2334c89a926064e160a7db7ff5e8f8d9cec5f878",
+    "category": "business_case",
+    "source": "Guidebook IBTSC Business Plan Competition 2025, Assessment Criteria (PDF page 7, printed page 06). The guidebook gives no weights, and 'Implementation Feasbility' is spelled as printed.",
+    "criteria": [
+      {
+        "name": "Innovation and Creativity",
+        "pages": [7],
+        "weight_percent": null
+      },
+      {
+        "name": "Sustainability and Social Impact",
+        "pages": [7],
+        "weight_percent": null
+      },
+      {
+        "name": "Market and Financial Potential",
+        "pages": [7],
+        "weight_percent": null
+      },
+      {
+        "name": "Implementation Feasbility",
+        "pages": [7],
+        "weight_percent": null
+      }
+    ]
   }
 ]

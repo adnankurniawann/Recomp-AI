@@ -1,0 +1,179 @@
+{
+  "summary": "Innovation Technology Competition (ITC) 2021 adalah kompetisi ide kreatif dan inovatif di bidang Teknik Informatika berupa aplikasi mobile atau website yang bernilai bisnis. Lomba mencakup tahap seleksi proposal hingga tahap final presentasi bagi 10 tim terpilih.",
+  "team_size": {
+    "min": 2,
+    "max": 3,
+    "page": 4
+  },
+  "deadlines": [
+    {
+      "name": "Batas Akhir Pendaftaran",
+      "date": "2021-08-23",
+      "page": 6
+    },
+    {
+      "name": "Batas Akhir Pengumpulan Proposal",
+      "date": "2021-08-23",
+      "page": 6
+    },
+    {
+      "name": "Pengumuman 10 Proposal",
+      "date": "2021-08-26",
+      "page": 6
+    },
+    {
+      "name": "Open Ceremony, TM, dan Presentasi",
+      "date": "2021-08-30",
+      "page": 6
+    },
+    {
+      "name": "Close Ceremony dan Pengumuman Pemenang",
+      "date": "2021-09-01",
+      "page": 6
+    }
+  ],
+  "judging_criteria": [
+    {
+      "name": "Penjelasan tentang metode yang digunakan (Proposal)",
+      "weight_percent": 10,
+      "description": "Penilaian metode pengembangan pada produk mobile atau web.",
+      "page": 11
+    },
+    {
+      "name": "Menjelaskan tentang aplikasi yang diberikan (Proposal)",
+      "weight_percent": 20,
+      "description": "Rincian dan gambaran fungsionalitas aplikasi.",
+      "page": 11
+    },
+    {
+      "name": "Kemenarikan/keunikan produk (Proposal)",
+      "weight_percent": 10,
+      "description": "Tingkat daya tarik dan keunikan produk yang diajukan.",
+      "page": 11
+    },
+    {
+      "name": "Masalah yang dipaparkan (Proposal)",
+      "weight_percent": 10,
+      "description": "Kejelasan dan relevansi permasalahan yang ingin diselesaikan.",
+      "page": 11
+    },
+    {
+      "name": "Solusi yang diberikan (Proposal)",
+      "weight_percent": 15,
+      "description": "Ketepatan solusi bisnis dan teknologi terhadap masalah.",
+      "page": 11
+    },
+    {
+      "name": "Penjelasan model bisnis (Proposal)",
+      "weight_percent": 15,
+      "description": "Struktur dan rencana model bisnis produk.",
+      "page": 11
+    },
+    {
+      "name": "Penjelasan strategi keuangan (Proposal)",
+      "weight_percent": 15,
+      "description": "Perencanaan kebutuhan dana dan proyeksi pendapatan.",
+      "page": 11
+    },
+    {
+      "name": "Kejelasan penyampaian dan konsisten sesuai proposal (Presentasi)",
+      "weight_percent": 15,
+      "description": "Kesesuaian dan keteraturan penyampaian materi presentasi.",
+      "page": 12
+    },
+    {
+      "name": "Semangat, percaya diri, antusiasme, dan sifat persuasif yang tinggi (Presentasi)",
+      "weight_percent": 15,
+      "description": "Sikap dan daya persuasi saat memaparkan ide produk.",
+      "page": 12
+    },
+    {
+      "name": "Penguasaan materi (Presentasi)",
+      "weight_percent": 30,
+      "description": "Pemahaman menyeluruh peserta atas materi dan produk.",
+      "page": 12
+    },
+    {
+      "name": "Keunikan (Presentasi)",
+      "weight_percent": 20,
+      "description": "Keunikan karya dan solusi saat dipresentasikan.",
+      "page": 12
+    },
+    {
+      "name": "Pengimplemetasian produk (Presentasi)",
+      "weight_percent": 20,
+      "description": "Realisasi atau implementasi produk aplikasi mobile atau website.",
+      "page": 12
+    }
+  ],
+  "suggested_roles": [
+    {
+      "name": "Software Engineer",
+      "reason": "Dibutuhkan untuk merancang aplikasi mobile atau website serta menjelaskan arsitektur teknis dan database.",
+      "source": "criteria",
+      "source_criterion": "Menjelaskan tentang aplikasi yang diberikan (Proposal)",
+      "page": 11,
+      "required_skills": [
+        {
+          "skill": "Software Development",
+          "min_level": 3
+        },
+        {
+          "skill": "Database Management",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Web Development",
+        "Mobile Development"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    },
+    {
+      "name": "Business Strategist",
+      "reason": "Dibutuhkan untuk menyusun rencana model bisnis, analisis pasar, dan proyeksi strategi keuangan.",
+      "source": "criteria",
+      "source_criterion": "Penjelasan model bisnis (Proposal)",
+      "page": 11,
+      "required_skills": [
+        {
+          "skill": "Business Modeling",
+          "min_level": 3
+        },
+        {
+          "skill": "Financial Projections",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Market Research"
+      ],
+      "hours_per_week": 8,
+      "slots": 1
+    },
+    {
+      "name": "Product and Pitching",
+      "reason": "Berperan dalam menyusun nilai keunikan produk serta membawakan presentasi secara persuasif di depan juri.",
+      "source": "criteria",
+      "source_criterion": "Kejelasan penyampaian dan konsisten sesuai proposal (Presentasi)",
+      "page": 12,
+      "required_skills": [
+        {
+          "skill": "Public Speaking",
+          "min_level": 3
+        },
+        {
+          "skill": "Pitch Deck Design",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Product Management"
+      ],
+      "hours_per_week": 8,
+      "slots": 1
+    }
+  ],
+  "warnings": []
+}
