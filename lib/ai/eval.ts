@@ -1,29 +1,52 @@
+import { createHash } from "node:crypto";
 import { z } from "zod";
 
 // Scoring for `pnpm eval:guidebook` (PRD §8.1 "Evaluasi akurasi", §17): how many judging criteria
 // the agent found with the right name and the right page, against answers written by hand.
 
-export const ManualGuidebook = z.object({
-  id: z.string().regex(/^[a-z0-9-]+$/),
-  name: z.string(),
-  /** Path to the PDF, relative to the repo root. */
-  pdf: z.string(),
-  category: z.enum(["hackathon", "it_competition", "ui_ux", "data", "business_case", "paper"]),
-  /** Where the answers come from, so anyone can check them. */
-  source: z.string(),
-  criteria: z
-    .array(
-      z.object({
-        name: z.string(),
-        /** PDF page index as the agent sees it ("=== PAGE n ==="). Several when a row spans pages. */
-        pages: z.array(z.number().int().positive()).min(1),
-        weight_percent: z.number().nullable(),
-      }),
-    )
-    .min(1),
-});
+/** Where downloaded guidebooks are kept. Gitignored: third-party PDFs never go in the repo. */
+export const PDF_CACHE_DIR = "eval/pdfs";
+
+export const ManualGuidebook = z
+  .object({
+    id: z.string().regex(/^[a-z0-9-]+$/),
+    name: z.string(),
+    /** Path to the PDF, relative to the repo root. */
+    pdf: z.string(),
+    /**
+     * The organiser's own link, for guidebooks not stored in the repo. `pnpm eval:guidebook`
+     * downloads it to `pdf` (under eval/pdfs/) and refuses a file whose hash changed, because the
+     * answers below were written for that exact file.
+     */
+    url: z.url().optional(),
+    sha256: z
+      .string()
+      .regex(/^[a-f0-9]{64}$/)
+      .optional(),
+    category: z.enum(["hackathon", "it_competition", "ui_ux", "data", "business_case", "paper"]),
+    /** Where the answers come from, so anyone can check them. */
+    source: z.string(),
+    criteria: z
+      .array(
+        z.object({
+          name: z.string(),
+          /** PDF page index as the agent sees it ("=== PAGE n ==="). Several when a row spans pages. */
+          pages: z.array(z.number().int().positive()).min(1),
+          weight_percent: z.number().nullable(),
+        }),
+      )
+      .min(1),
+  })
+  .refine((b) => !b.url || (b.sha256 && b.pdf.startsWith(`${PDF_CACHE_DIR}/`)), {
+    message: `A guidebook with a url needs a sha256 and a pdf path under ${PDF_CACHE_DIR}/`,
+  });
 export const ManualGuidebooks = z.array(ManualGuidebook);
 export type ManualGuidebook = z.infer<typeof ManualGuidebook>;
+
+/** Hex SHA-256 of a file, to check a downloaded guidebook is the one the answers describe. */
+export function sha256Hex(bytes: Uint8Array): string {
+  return createHash("sha256").update(bytes).digest("hex");
+}
 
 export interface ExtractedCriterion {
   name: string;
@@ -79,7 +102,9 @@ export function sameCriterion(a: string, b: string): boolean {
 
 /**
  * Matches each manual criterion to at most one extracted criterion: exact names first, then loose
- * ones, so "Feasibility" never takes "Technical Feasibility" while its own row exists.
+ * ones, so "Feasibility" never takes "Technical Feasibility" while its own row exists. Within each,
+ * a row on the right page goes first, so when two rounds share a name ("Presentasi" in the
+ * preliminary and the final) each extracted row pairs with the round it came from.
  */
 export function scoreGuidebook(
   manual: ManualGuidebook,
@@ -87,11 +112,21 @@ export function scoreGuidebook(
 ): GuidebookScore {
   const used = new Set<number>();
   const match = new Map<number, number>(); // manual index -> extracted index
-  const passes = [(a: string, b: string) => normalizeName(a) === normalizeName(b), sameCriterion];
-  for (const same of passes) {
+  const exact = (a: string, b: string) => normalizeName(a) === normalizeName(b);
+  const onPage = (m: ManualGuidebook["criteria"][number], e: ExtractedCriterion) =>
+    e.page !== null && m.pages.includes(e.page);
+  const passes = [
+    { same: exact, page: true },
+    { same: exact, page: false },
+    { same: sameCriterion, page: true },
+    { same: sameCriterion, page: false },
+  ];
+  for (const { same, page } of passes) {
     manual.criteria.forEach((m, mi) => {
       if (match.has(mi)) return;
-      const i = extracted.findIndex((e, idx) => !used.has(idx) && same(m.name, e.name));
+      const i = extracted.findIndex(
+        (e, idx) => !used.has(idx) && same(m.name, e.name) && (!page || onPage(m, e)),
+      );
       if (i >= 0) {
         used.add(i);
         match.set(mi, i);

@@ -1,0 +1,197 @@
+{
+  "summary": "National Data Analysis Competition (NDAC) EPSILON 2025 adalah lomba analisis data mahasiswa tingkat nasional yang diselenggarakan secara daring oleh Universitas Negeri Padang dengan tema Educational Insights for a Smarter Future. Kompetisi ini terdiri dari babak penyisihan analisis dataset beserta penulisan laporan ilmiah dan babak final presentasi.",
+  "team_size": {
+    "min": 2,
+    "max": 3,
+    "page": 3
+  },
+  "deadlines": [
+    {
+      "name": "Pendaftaran Gelombang I",
+      "date": "2025-08-10",
+      "page": 7
+    },
+    {
+      "name": "Pendaftaran Gelombang II",
+      "date": "2025-08-17",
+      "page": 7
+    },
+    {
+      "name": "Pembagian dataset Gelombang 1",
+      "date": "2025-08-10",
+      "page": 7
+    },
+    {
+      "name": "Pembagian dataset Gelombang 2",
+      "date": "2025-08-17",
+      "page": 7
+    },
+    {
+      "name": "Batas akhir pengumpulan karya penyisihan",
+      "date": "2025-08-24",
+      "page": 7
+    },
+    {
+      "name": "Penilaian oleh dewan juri",
+      "date": "2025-09-03",
+      "page": 7
+    },
+    {
+      "name": "Pembukaan Acara dan Pengumuman Finalis",
+      "date": "2025-09-05",
+      "page": 7
+    },
+    {
+      "name": "Technical Meeting Babak Final",
+      "date": "2025-09-05",
+      "page": 7
+    },
+    {
+      "name": "Batas Akhir Pengumpulan PPT Final",
+      "date": "2025-09-12",
+      "page": 7
+    },
+    {
+      "name": "Babak Final (Presentasi)",
+      "date": "2025-09-13",
+      "page": 7
+    },
+    {
+      "name": "Penutupan dan Awarding",
+      "date": "2025-09-13",
+      "page": 7
+    }
+  ],
+  "judging_criteria": [
+    {
+      "name": "Orisinalitas (Penyisihan)",
+      "weight_percent": 20,
+      "description": "Belum pernah dipublikasikan dan diikutsertakan dalam perlombaan apapun. Tidak ada unsur plagiarisme (uji turnitin tidak lebih dari 25% dan deteksi duplikasi AI dalam batas wajar).",
+      "page": 11
+    },
+    {
+      "name": "Penulisan (Penyisihan)",
+      "weight_percent": 20,
+      "description": "Kesesuaian judul dengan isi makalah, penggunaan PUEBI yang tepat termasuk formula/persamaan, serta penggunaan kalimat yang bersifat akademik-saintifik.",
+      "page": 11
+    },
+    {
+      "name": "Kemampuan Analisis (Penyisihan)",
+      "weight_percent": 40,
+      "description": "Kesesuaian metode analisis dengan tujuan, penjelasan urutan metode step-by-step, penyajian data relevan dan komprehensif (analisis deskriptif, uji asumsi, dst.), serta inovatif dan aplikatif.",
+      "page": 11
+    },
+    {
+      "name": "Penarikan Kesimpulan (Penyisihan)",
+      "weight_percent": 20,
+      "description": "Kesimpulan sesuai dengan substansi dan analisis data, serta rekomendasi bersifat reliabel dan aplikatif.",
+      "page": 11
+    },
+    {
+      "name": "Skor babak penyisihan (Final)",
+      "weight_percent": 20,
+      "description": "Nilai akumulasi dari babak penyisihan yang dibawa ke babak final.",
+      "page": 12
+    },
+    {
+      "name": "Pemaparan/Presentasi (Final)",
+      "weight_percent": 25,
+      "description": "Menggunakan bahasa Indonesia yang baku, disajikan secara sistematis, menarik, dan tepat waktu.",
+      "page": 12
+    },
+    {
+      "name": "Kreativitas (Final)",
+      "weight_percent": 10,
+      "description": "Bahan yang dipresentasikan disusun dengan menarik, kreatif, runut serta sesuai dengan tema maupun data yang diangkat.",
+      "page": 12
+    },
+    {
+      "name": "Kedalaman Analisis (Final)",
+      "weight_percent": 20,
+      "description": "Kesesuaian metode analisis dengan kondisi data, algoritma ditunjukkan jelas step-by-step, serta analisis data relevan dan komprehensif.",
+      "page": 12
+    },
+    {
+      "name": "Diskusi dan Tanya Jawab (Final)",
+      "weight_percent": 25,
+      "description": "Tingkat pengetahuan dan pemahaman, keluasan wawasan terkait tema, kemampuan berkomunikasi dan berargumentasi, serta kerjasama tim.",
+      "page": 12
+    }
+  ],
+  "suggested_roles": [
+    {
+      "name": "Data Analyst",
+      "reason": "Dibutuhkan untuk melakukan pengolahan data, pengujian asumsi statistik, serta penerapan metode analisis yang sesuai dengan bobot penilaian analisis sebesar 40%.",
+      "source": "criteria",
+      "source_criterion": "Kemampuan Analisis (Penyisihan)",
+      "page": 11,
+      "required_skills": [
+        {
+          "skill": "Statistical Analysis",
+          "min_level": 3
+        },
+        {
+          "skill": "Data Cleaning",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "R",
+        "Python",
+        "SPSS"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    },
+    {
+      "name": "Scientific Writer",
+      "reason": "Bertanggung jawab menyusun naskah laporan ilmiah sesuai kaidah PUEBI, mengurus sitasi dan daftar pustaka, serta memastikan batas similaritas Turnitin di bawah 25%.",
+      "source": "criteria",
+      "source_criterion": "Penulisan (Penyisihan)",
+      "page": 11,
+      "required_skills": [
+        {
+          "skill": "Academic Writing",
+          "min_level": 3
+        },
+        {
+          "skill": "Reference Management (Mendeley/Zotero)",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Turnitin Checking"
+      ],
+      "hours_per_week": 8,
+      "slots": 1
+    },
+    {
+      "name": "Product and Pitching",
+      "reason": "Dibutuhkan untuk merancang bahan tayang presentasi yang kreatif serta memimpin pemaparan dan sesi tanya jawab di babak final.",
+      "source": "criteria",
+      "source_criterion": "Pemaparan/Presentasi (Final)",
+      "page": 12,
+      "required_skills": [
+        {
+          "skill": "Public Speaking",
+          "min_level": 3
+        },
+        {
+          "skill": "Presentation Design",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Canva",
+        "Microsoft PowerPoint"
+      ],
+      "hours_per_week": 6,
+      "slots": 1
+    }
+  ],
+  "warnings": [
+    "Skor uji similaritas (Turnitin) maksimal 25%; jika melebihi batas tersebut karya akan langsung didiskualifikasi.",
+    "Panjang naskah karya tulis maksimal 5000 kata (tidak termasuk halaman judul dan lampiran).",
+    "Seluruh anggota tim wajib berasal dari perguruan tinggi yang sama."
+  ]
+}

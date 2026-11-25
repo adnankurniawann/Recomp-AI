@@ -1,0 +1,123 @@
+{
+  "summary": "International Business and Technology Student Competition (IBTSC) adalah kompetisi rencana bisnis internasional bertema penggabungan teknologi dan kearifan lokal untuk ekonomi berkelanjutan. Mahasiswa D3 hingga S1 berkompetisi dalam tim beranggotakan 2 hingga 3 orang dengan mengumpulkan proposal rencana bisnis.",
+  "team_size": {
+    "min": 2,
+    "max": 3,
+    "page": 3
+  },
+  "deadlines": [
+    {
+      "name": "Registration and BPC Submission",
+      "date": "2025-02-17",
+      "page": 3
+    },
+    {
+      "name": "Preliminary Stage",
+      "date": "2025-02-20",
+      "page": 3
+    },
+    {
+      "name": "Presentation and Winner Announcement",
+      "date": "2025-02-21",
+      "page": 3
+    }
+  ],
+  "judging_criteria": [
+    {
+      "name": "Innovation and Creativity",
+      "weight_percent": null,
+      "description": "Penilaian terhadap tingkat inovasi dan kreativitas dari ide bisnis yang diajukan.",
+      "page": 7
+    },
+    {
+      "name": "Sustainability and Social Impact",
+      "weight_percent": null,
+      "description": "Penilaian terhadap keberlanjutan bisnis serta dampak sosial dan lingkungan yang dihasilkan.",
+      "page": 7
+    },
+    {
+      "name": "Market and Financial Potential",
+      "weight_percent": null,
+      "description": "Penilaian terkait analisis potensi pasar, rencana pemasaran, dan kelayakan finansial atau anggaran biaya (RAB).",
+      "page": 7
+    },
+    {
+      "name": "Implementation Feasbility",
+      "weight_percent": null,
+      "description": "Penilaian mengenai kelayakan metode implementasi dan eksekusi operasional rencana bisnis.",
+      "page": 7
+    }
+  ],
+  "suggested_roles": [
+    {
+      "name": "Financial Analyst",
+      "reason": "Dibutuhkan untuk menyusun rencana anggaran biaya (RAB) serta menganalisis potensi pasar dan kelayakan keuangan bisnis.",
+      "source": "criteria",
+      "source_criterion": "Market and Financial Potential",
+      "page": 7,
+      "required_skills": [
+        {
+          "skill": "Financial Modeling",
+          "min_level": 2
+        },
+        {
+          "skill": "Market Research",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Business Strategy"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    },
+    {
+      "name": "Product and Pitching",
+      "reason": "Bertanggung jawab merancang metode implementasi bisnis, menyiapkan prototipe, serta memimpin presentasi di hadapan dewan juri.",
+      "source": "criteria",
+      "source_criterion": "Implementation Feasbility",
+      "page": 7,
+      "required_skills": [
+        {
+          "skill": "Public Speaking",
+          "min_level": 3
+        },
+        {
+          "skill": "Project Management",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "UI/UX Design",
+        "Pitch Deck"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    },
+    {
+      "name": "Business Strategist",
+      "reason": "Fokus pada perumusan konsep inovasi produk serta memastikan keselarasan ide bisnis dengan prinsip keberlanjutan dan dampak sosial.",
+      "source": "criteria",
+      "source_criterion": "Sustainability and Social Impact",
+      "page": 7,
+      "required_skills": [
+        {
+          "skill": "Business Model Canvas",
+          "min_level": 2
+        },
+        {
+          "skill": "Creative Thinking",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Sustainability Analysis"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    }
+  ],
+  "warnings": [
+    "Guidebook tidak mencantumkan persentase bobot penilaian untuk masing-masing kriteria evaluasi."
+  ]
+}

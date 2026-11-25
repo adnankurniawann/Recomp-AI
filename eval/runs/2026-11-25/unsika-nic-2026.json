@@ -1,0 +1,194 @@
+{
+  "summary": "Pekan IT 2026 merupakan kompetisi IT nasional oleh UNSIKA yang mencakup cabang lomba UI/UX Design dan Software Development. Peserta merancang solusi digital inovatif berbasis website atau aplikasi mobile sesuai subtema yang disediakan.",
+  "team_size": {
+    "min": 2,
+    "max": 5,
+    "page": 7
+  },
+  "deadlines": [
+    {
+      "name": "Pendaftaran dan Pembayaran",
+      "date": "2026-06-30",
+      "page": 15
+    },
+    {
+      "name": "Batas Akhir Pengumpulan Karya",
+      "date": "2026-06-30",
+      "page": 16
+    },
+    {
+      "name": "Pengumuman Finalis",
+      "date": "2026-07-12",
+      "page": 16
+    },
+    {
+      "name": "Technical Meeting Finalis",
+      "date": "2026-07-15",
+      "page": 16
+    },
+    {
+      "name": "Presentasi Finalis",
+      "date": "2026-07-18",
+      "page": 16
+    },
+    {
+      "name": "Pengumuman Pemenang",
+      "date": "2026-07-20",
+      "page": 16
+    }
+  ],
+  "judging_criteria": [
+    {
+      "name": "User Experience & Usability (Penyisihan UI/UX)",
+      "weight_percent": 30,
+      "description": "Kemudahan penggunaan, alur aplikasi, dan kenyamanan pengguna",
+      "page": 12
+    },
+    {
+      "name": "Visual Design (Penyisihan UI/UX)",
+      "weight_percent": 25,
+      "description": "Konsistensi visual, warna, tipografi, dan estetika desain",
+      "page": 13
+    },
+    {
+      "name": "Innovation & Problem Solving (Penyisihan UI/UX)",
+      "weight_percent": 20,
+      "description": "Keunikan ide dan kemampuan solusi dalam menyelesaikan masalah",
+      "page": 13
+    },
+    {
+      "name": "Prototype & Function Flow (Penyisihan UI/UX)",
+      "weight_percent": 20,
+      "description": "Kejelasan prototype dan alur fitur aplikasi",
+      "page": 13
+    },
+    {
+      "name": "Orisinalitas & Urgensi Masalah (Penyisihan Software Dev)",
+      "weight_percent": 20,
+      "description": "Menilai keunikan ide, kesesuaian dengan tema, dan seberapa penting masalah yang ingin diselesaikan",
+      "page": 26
+    },
+    {
+      "name": "Inovasi & Dampak Solusi (Penyisihan Software Dev)",
+      "weight_percent": 20,
+      "description": "Menilai kelebihan aplikasi dibanding solusi yang sudah ada serta potensi dampak positifnya bagi pengguna",
+      "page": 26
+    },
+    {
+      "name": "Kelengkapan Teknis Proposal (Penyisihan Software Dev)",
+      "weight_percent": 15,
+      "description": "Kejelasan metodologi pengembangan, arsitektur teknologi yang dipilih, dan kelengkapan dokumen sesuai format",
+      "page": 26
+    },
+    {
+      "name": "Kualitas UI/UX Prototype (Penyisihan Software Dev)",
+      "weight_percent": 20,
+      "description": "Menilai estetika, alur interaksi (user flow), dan kemudahan navigasi pada rancangan mockup/Figma",
+      "page": 27
+    },
+    {
+      "name": "Fungsionalitas & Implementasi Kode (Penyisihan Software Dev)",
+      "weight_percent": 25,
+      "description": "Menilai apakah fitur utama aplikasi berjalan dengan baik (clean code), kesesuaian dengan arsitektur teknologi, serta keberhasilan deployment",
+      "page": 27
+    }
+  ],
+  "suggested_roles": [
+    {
+      "name": "UI/UX Designer",
+      "reason": "Dibutuhkan untuk merancang antarmuka visual yang konsisten dan menyusun user flow prototipe interaktif.",
+      "source": "criteria",
+      "source_criterion": "Visual Design",
+      "page": 13,
+      "required_skills": [
+        {
+          "skill": "Figma",
+          "min_level": 3
+        },
+        {
+          "skill": "UI/UX Design",
+          "min_level": 3
+        }
+      ],
+      "optional_skills": [
+        "Design System",
+        "Prototyping"
+      ],
+      "hours_per_week": 12,
+      "slots": 1
+    },
+    {
+      "name": "Frontend Developer",
+      "reason": "Bertanggung jawab membangun antarmuka web atau aplikasi mobile serta mengintegrasikannya dengan kode fungsional.",
+      "source": "criteria",
+      "source_criterion": "Fungsionalitas & Implementasi Kode",
+      "page": 27,
+      "required_skills": [
+        {
+          "skill": "Frontend Development",
+          "min_level": 3
+        },
+        {
+          "skill": "React",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Tailwind CSS",
+        "Next.js"
+      ],
+      "hours_per_week": 15,
+      "slots": 1
+    },
+    {
+      "name": "Backend Developer",
+      "reason": "Dibutuhkan untuk membangun logika arsitektur software, integrasi API, serta deployment aplikasi ke cloud.",
+      "source": "criteria",
+      "source_criterion": "Fungsionalitas & Implementasi Kode",
+      "page": 27,
+      "required_skills": [
+        {
+          "skill": "Backend Development",
+          "min_level": 3
+        },
+        {
+          "skill": "REST API",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Database Management",
+        "Cloud Deployment"
+      ],
+      "hours_per_week": 15,
+      "slots": 1
+    },
+    {
+      "name": "Product and Pitching",
+      "reason": "Dibutuhkan untuk menyusun dokumen proposal, validasi urgensi masalah, serta mempersiapkan materi presentasi babak final.",
+      "source": "criteria",
+      "source_criterion": "Orisinalitas & Urgensi Masalah",
+      "page": 26,
+      "required_skills": [
+        {
+          "skill": "Public Speaking",
+          "min_level": 3
+        },
+        {
+          "skill": "Product Management",
+          "min_level": 2
+        }
+      ],
+      "optional_skills": [
+        "Technical Writing",
+        "Presentation Design"
+      ],
+      "hours_per_week": 10,
+      "slots": 1
+    }
+  ],
+  "warnings": [
+    "Buku panduan memuat dua cabang perlombaan yang memiliki batas ukuran tim berbeda: UI/UX Design (2-3 orang) dan Software Development (3-5 orang).",
+    "Ketentuan asal institusi berbeda untuk kedua cabang lomba: UI/UX memperbolehkan anggota berasal dari universitas berbeda, sedangkan Software Development mewajibkan anggota berasal dari universitas yang sama."
+  ]
+}

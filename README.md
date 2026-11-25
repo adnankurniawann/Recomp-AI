@@ -102,8 +102,9 @@ Every member adds a row or a line here when an AI tool materially helps with the
 - Payments and mentors are simulated. Mentor photos, schedule slots and contacts come only from the
   seed; the admin form edits the rest.
 - Guidebooks must be text PDFs; scanned PDFs fall back to manual role entry.
-- Guidebook accuracy is measured on one guidebook so far (STACK 2026, 17/17 criteria); PRD §8.1
-  asks for 5 to 10 (#51).
+- Guidebook accuracy: 54/65 judging criteria (83.1%) with the right name and page on 6 real
+  guidebooks (`pnpm eval:guidebook`, [eval/README.md](eval/README.md)). The agent can miss later
+  rounds when a guidebook has several branches.
 - One course ("Persiapan Hackathon"). Lesson text has no tables.
 - On a local production build, mobile LCP was 2.8 to 3.2 s (target 2.5 s); to be measured again on
   Vercel.

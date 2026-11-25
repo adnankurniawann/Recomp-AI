@@ -9,17 +9,21 @@
  *   pnpm eval:guidebook --saved eval/runs/2026-11-23  # score saved extractions, no LLM
  *
  * Reads GEMINI_API_KEY or OPENROUTER_API_KEY, and GEMINI_MODEL, from the environment or .env.local.
+ * Guidebooks with a `url` are downloaded once to eval/pdfs/ (gitignored) and checked against their
+ * sha256, so the hand-written answers always describe the file the agent reads.
  * The prompt gets no skill list or templates: they only shape suggested roles, not the criteria
  * scored here.
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { parseArgs } from "node:util";
 import {
   ManualGuidebooks,
   overallAccuracy,
   scoreGuidebook,
+  sha256Hex,
   type GuidebookScore,
+  type ManualGuidebook,
 } from "@/lib/ai/eval";
 import { getGemini } from "@/lib/ai/gemini";
 import { runGuidebookAgent } from "@/lib/ai/guidebook";
@@ -52,6 +56,35 @@ if (!values.saved && !gemini) {
 }
 if (values.save) mkdirSync(values.save, { recursive: true });
 
+/** The guidebook's bytes: from the repo, from eval/pdfs/, or downloaded from its url once. */
+async function loadPdf(book: ManualGuidebook): Promise<Uint8Array> {
+  if (existsSync(book.pdf)) {
+    const bytes = new Uint8Array(readFileSync(book.pdf));
+    if (book.sha256 && sha256Hex(bytes) !== book.sha256) {
+      throw new Error(`${book.pdf} doesn't match its sha256; delete it to download it again`);
+    }
+    return bytes;
+  }
+  if (!book.url) throw new Error(`${book.pdf} not found`);
+  console.log(`- ${book.id}: downloading ${book.url}`);
+  // Some campus servers drop requests without a browser-like User-Agent.
+  const res = await fetch(book.url, {
+    redirect: "follow",
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; recomp-eval)" },
+  });
+  if (!res.ok) throw new Error(`${book.id}: download failed with HTTP ${res.status}`);
+  const bytes = new Uint8Array(await res.arrayBuffer());
+  const hash = sha256Hex(bytes);
+  if (hash !== book.sha256) {
+    throw new Error(
+      `${book.id}: the file at ${book.url} changed (sha256 ${hash}). Check the criteria against the new file, then update sha256.`,
+    );
+  }
+  mkdirSync(dirname(book.pdf), { recursive: true });
+  writeFileSync(book.pdf, bytes);
+  return bytes;
+}
+
 async function main() {
   const scores: GuidebookScore[] = [];
   for (const book of books) {
@@ -64,9 +97,17 @@ async function main() {
       }
       extraction = GuidebookExtraction.parse(JSON.parse(readFileSync(file, "utf8")));
     } else {
+      let pdf: Uint8Array;
+      try {
+        pdf = await loadPdf(book);
+      } catch (err) {
+        // A guidebook we can't read is left out of the total, not counted as wrong.
+        console.log(`- ${book.id}: skipped, ${err instanceof Error ? err.message : String(err)}`);
+        continue;
+      }
       const started = Date.now();
       const result = await runGuidebookAgent({
-        pdf: new Uint8Array(readFileSync(book.pdf)),
+        pdf,
         category: book.category,
         skillNames: [],
         templates: [],
