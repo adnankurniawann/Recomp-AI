@@ -179,6 +179,13 @@ values
 -- The file is uploaded from supabase/seed/guidebooks (config.toml, [storage.buckets.guidebooks]).
 update competitions set guidebook_path = 'stack-2026/guidebook.pdf' where slug = 'stack-2026';
 
+-- Generated posters for the simulated competitions, uploaded from supabase/seed/posters
+-- (config.toml, [storage.buckets.posters]). STACK 2026 is real, so it keeps the placeholder.
+update competitions set poster_path = slug || '/poster.webp'
+where is_simulated and slug in ('build-for-health', 'hackathon-desa-digital',
+  'kompetisi-aplikasi-mahasiswa', 'ui-ux-design-sprint', 'data-science-challenge',
+  'business-case-ekonomi-kreatif', 'lkti-teknologi-terapan');
+
 -- MENTORS (PRD §15: 10 fictional mentors, 2 to 3 services, 6 slots next week) -------------------
 -- All are made up, so they carry is_simulated and initials instead of photos (PRD F-MNT, ADR 0005).
 -- Slots are relative to `pnpm db:reset`: next Monday to Saturday at 19.00 Jakarta time.
