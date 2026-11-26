@@ -8,6 +8,8 @@ import {
 import { CASE_FEEDBACK_JSON_SCHEMA, CaseFeedback, describeIssues } from "./schemas";
 
 export const CASE_FEEDBACK_TIMEOUT_MS = 45_000;
+/** A graded answer takes a few seconds; past this the model is stuck, so try another. */
+const ATTEMPT_TIMEOUT_MS = 15_000;
 
 export const CASE_FEEDBACK_ERRORS = {
   invalid: "Feedback AI belum bisa dibuat untuk jawaban ini. Coba kirim lagi sebentar lagi.",
@@ -66,6 +68,7 @@ export async function runCaseFeedbackAgent(input: {
         turns,
         jsonSchema: CASE_FEEDBACK_JSON_SCHEMA,
         signal,
+        attemptTimeoutMs: ATTEMPT_TIMEOUT_MS,
       });
     } catch (err) {
       console.error("case feedback: LLM call failed", err);
