@@ -70,7 +70,8 @@ The PRD is long. Find your area here and read that section, plus §0 and §1 onc
 - Every data page has loading (skeleton), empty, error and success (toast) states.
 - **Words on screen are Indonesian**, casual but polite. Code, table names, commits and docs are
   English. Use the terms and UI labels in `CONTEXT.md`.
-- Never use logos, photos or copy from GDGoC ITB, Google, Skilvul or any reference product.
+- Never use logos, photos or copy from GDGoC ITB, Google, Skilvul or any reference product. One
+  exception the team agreed: STACK 2026's official poster as its competition cover.
 - Judge a screen change with `docs/agents/ui-review.md`.
 
 ## Code rules

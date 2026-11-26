@@ -12,7 +12,7 @@ export async function loadCompetitions(): Promise<CompetitionSummary[]> {
   const { data, error } = await supabase
     .from("competitions")
     .select(
-      "id, slug, name, organizer, category, registration_deadline, team_min, team_max, poster_path, guidebook_path, is_simulated, competition_interests(count)",
+      "id, slug, name, organizer, category, registration_deadline, team_min, team_max, poster_path, guidebook_path, is_simulated, is_featured, competition_interests(count)",
     )
     .eq("is_published", true);
   if (error) throw new Error(`competitions: ${error.message}`);
@@ -32,6 +32,7 @@ export async function loadCompetitions(): Promise<CompetitionSummary[]> {
     hasGuidebook: c.guidebook_path !== null,
     interestCount: c.competition_interests[0]?.count ?? 0,
     isSimulated: c.is_simulated,
+    isFeatured: c.is_featured,
   }));
 }
 
@@ -96,6 +97,7 @@ export const loadCompetition = cache(async function loadCompetition(
     hasGuidebook: c.guidebook_path !== null,
     interestCount: c.competition_interests[0]?.count ?? 0,
     isSimulated: c.is_simulated,
+    isFeatured: c.is_featured,
     description: c.description,
     eventDate: c.event_date,
     officialUrl: c.official_url,

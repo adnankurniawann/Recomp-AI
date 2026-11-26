@@ -14,6 +14,7 @@ export interface CompetitionSummary {
   hasGuidebook: boolean;
   interestCount: number;
   isSimulated: boolean;
+  isFeatured: boolean;
 }
 
 export const DEADLINE_FILTERS = ["open", "closing", "closed"] as const;
@@ -61,7 +62,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
 }
 
 /**
- * Filters, then sorts: open competitions by nearest deadline, then those without a deadline,
+ * Filters, then sorts: featured competitions first (F-CMP-05), then open competitions by nearest deadline, then those without a deadline,
  * then closed ones, most recently closed first.
  */
 export function filterCompetitions(
@@ -91,6 +92,6 @@ export function filterCompetitions(
   return result.sort((a, b) => {
     const [ga, da] = rank(a);
     const [gb, db] = rank(b);
-    return ga - gb || da - db;
+    return Number(b.isFeatured) - Number(a.isFeatured) || ga - gb || da - db;
   });
 }

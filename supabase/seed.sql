@@ -179,10 +179,11 @@ values
 -- The file is uploaded from supabase/seed/guidebooks (config.toml, [storage.buckets.guidebooks]).
 update competitions set guidebook_path = 'stack-2026/guidebook.pdf' where slug = 'stack-2026';
 
--- Generated posters for the simulated competitions, uploaded from supabase/seed/posters
--- (config.toml, [storage.buckets.posters]). STACK 2026 is real, so it keeps the placeholder.
+-- Posters, uploaded from supabase/seed/posters (config.toml, [storage.buckets.posters]). STACK 2026
+-- uses its official poster from GDGoC ITB, the organizer; the team agreed to show it on Nov 26,
+-- 2026. The simulated competitions use generated covers.
 update competitions set poster_path = slug || '/poster.webp'
-where is_simulated and slug in ('build-for-health', 'hackathon-desa-digital',
+where slug in ('stack-2026', 'build-for-health', 'hackathon-desa-digital',
   'kompetisi-aplikasi-mahasiswa', 'ui-ux-design-sprint', 'data-science-challenge',
   'business-case-ekonomi-kreatif', 'lkti-teknologi-terapan');
 
