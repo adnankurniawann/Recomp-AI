@@ -144,6 +144,13 @@ file_size_limit = "2MiB"
 allowed_mime_types = ["image/png", "image/jpeg", "image/webp"]
 objects_path = "./seed/posters"
 
+# Mentor photos: only real mentors who gave their photo; simulated mentors use initials.
+[storage.buckets.mentors]
+public = true
+file_size_limit = "2MiB"
+allowed_mime_types = ["image/png", "image/jpeg", "image/webp"]
+objects_path = "./seed/mentors"
+
 # Allow connections via S3 compatible clients
 [storage.s3_protocol]
 enabled = true

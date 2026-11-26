@@ -54,6 +54,8 @@ export const courseManifestSchema = z.object({
   category: z.enum(COMP_CATEGORIES),
   level: z.string().default("Pemula"),
   price: z.number().int().min(0),
+  /** Path in the `posters` bucket, uploaded from supabase/seed/posters. */
+  cover: z.string().optional(),
   chapters: z
     .array(
       z.object({
@@ -109,6 +111,7 @@ export interface CourseRows {
     level: string;
     est_minutes: number;
     price: number;
+    cover_path: string | null;
     is_published: boolean;
   };
   chapters: { id: string; course_id: string; title: string; sort: number }[];
@@ -155,6 +158,7 @@ export function buildCourseRows(
       level: manifest.level,
       est_minutes: 0,
       price: manifest.price,
+      cover_path: manifest.cover ?? null,
       is_published: true,
     },
     chapters: [],
