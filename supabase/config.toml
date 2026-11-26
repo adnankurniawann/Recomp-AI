@@ -137,7 +137,7 @@ file_size_limit = "20MiB"
 allowed_mime_types = ["application/pdf"]
 objects_path = "./seed/guidebooks"
 
-# Posters for the simulated competitions (generated covers, not real event posters).
+# Competition posters: STACK 2026's official poster and generated covers for the simulated ones.
 [storage.buckets.posters]
 public = true
 file_size_limit = "2MiB"

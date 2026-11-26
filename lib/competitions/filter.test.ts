@@ -20,6 +20,7 @@ const base: CompetitionSummary = {
   hasGuidebook: false,
   interestCount: 0,
   isSimulated: false,
+  isFeatured: false,
 };
 const comp = (over: Partial<CompetitionSummary>) => ({ ...base, ...over });
 
@@ -45,6 +46,20 @@ describe("filterCompetitions", () => {
 
   it("sorts nearest open deadline first, then no deadline, then closed", () => {
     expect(ids({})).toEqual(["soon", "far", "none", "closed"]);
+  });
+
+  it("puts featured competitions first, even when closed", () => {
+    const withFeatured = [
+      ...list,
+      comp({ id: "stack", registrationDeadline: "2026-11-07", isFeatured: true }),
+    ];
+    expect(filterCompetitions(withFeatured, {}, today).map((c) => c.id)).toEqual([
+      "stack",
+      "soon",
+      "far",
+      "none",
+      "closed",
+    ]);
   });
 
   it("filters by category, deadline, team size and keyword", () => {
