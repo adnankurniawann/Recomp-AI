@@ -245,17 +245,19 @@ values
     '{paper,data}', true);
 
 -- One real mentor: Muhammad Adnan Kurniawan of Team Cumlaude, with the photo Adnan supplied
--- (supabase/seed/mentors). Not simulated, so no "Simulasi" badge; no achievements are listed
--- because none were given. Booking him is free; the payment step stays simulated (ADR 0005).
+-- (supabase/seed/mentors). Not simulated, so no "Simulasi" badge; verified by the team, so
+-- "Rekomendasi" lists this profile first. Achievements as Adnan gave them (no year given).
+-- Booking is free; the payment step stays simulated (ADR 0005).
 insert into mentors
   (id, display_name, photo_path, roles, headline, bio, achievements, competition_categories,
-   is_simulated)
+   verified, is_simulated)
 values
   ('00000000-0000-4000-8000-000000000201', 'Muhammad Adnan Kurniawan',
     'adnan-kurniawan/photo.webp', '{data}',
     'AI & Data Lead Tim Cumlaude, peserta STACK 2026',
     'Membangun bagian AI dan data di Recomp AI: pencocokan kandidat, agen pembaca guidebook, dan evaluasinya. Siap bantu tim merancang fitur AI yang tetap jalan walau tanpa API key.',
-    '[]', '{hackathon,data}', false);
+    '[{"year":null,"title":"Pemenang Garuda Hacks"},{"year":null,"title":"Pemenang lomba BRIN"}]',
+    '{hackathon,data}', true, false);
 
 insert into mentor_services (mentor_id, name, description, duration_min, price) values
   ('00000000-0000-4000-8000-000000000201', 'Konsultasi fitur AI untuk lomba',
