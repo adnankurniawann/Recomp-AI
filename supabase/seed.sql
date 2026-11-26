@@ -244,6 +244,29 @@ values
     '[{"year":2023,"title":"Juara 1 karya tulis ilmiah teknologi"}]',
     '{paper,data}', true);
 
+-- One real mentor: Muhammad Adnan Kurniawan of Team Cumlaude, with the photo Adnan supplied
+-- (supabase/seed/mentors). Not simulated, so no "Simulasi" badge; no achievements are listed
+-- because none were given. Booking him is free; the payment step stays simulated (ADR 0005).
+insert into mentors
+  (id, display_name, photo_path, roles, headline, bio, achievements, competition_categories,
+   is_simulated)
+values
+  ('00000000-0000-4000-8000-000000000201', 'Muhammad Adnan Kurniawan',
+    'adnan-kurniawan/photo.webp', '{data}',
+    'AI & Data Lead Tim Cumlaude, peserta STACK 2026',
+    'Membangun bagian AI dan data di Recomp AI: pencocokan kandidat, agen pembaca guidebook, dan evaluasinya. Siap bantu tim merancang fitur AI yang tetap jalan walau tanpa API key.',
+    '[]', '{hackathon,data}', false);
+
+insert into mentor_services (mentor_id, name, description, duration_min, price) values
+  ('00000000-0000-4000-8000-000000000201', 'Konsultasi fitur AI untuk lomba',
+    'Ngobrol 30 menit soal ide fitur AI timmu: data apa yang dibutuhkan, prompt, dan rencana cadangan saat demo.',
+    30, 0);
+
+insert into mentor_slots (mentor_id, starts_at)
+select '00000000-0000-4000-8000-000000000201', (date_trunc('week', now() at time zone 'Asia/Jakarta')
+  + interval '7 days' + d * interval '1 day' + interval '20 hours') at time zone 'Asia/Jakarta'
+from generate_series(0, 4, 2) d;
+
 insert into mentor_services (mentor_id, name, description, duration_min, price)
 select m.id, s.name, s.description, s.duration_min, s.price
 from mentors m

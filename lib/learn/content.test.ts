@@ -95,6 +95,12 @@ describe("buildCourseRows", () => {
     expect(rows.course.est_minutes).toBe(24);
   });
 
+  it("stores the cover path, or null without one", () => {
+    expect(buildCourseRows(manifest, files).course.cover_path).toBeNull();
+    const withCover = { ...manifest, cover: "courses/x/cover.webp" };
+    expect(buildCourseRows(withCover, files).course.cover_path).toBe("courses/x/cover.webp");
+  });
+
   it("stores options as a list and the answer key apart", () => {
     const [q1, q2] = buildCourseRows(manifest, files).questions;
     expect(q1).toMatchObject({
