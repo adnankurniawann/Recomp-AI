@@ -6,6 +6,7 @@
   "category": "hackathon",
   "level": "Pemula",
   "price": 49000,
+  "cover": "courses/persiapan-hackathon/cover.webp",
   "chapters": [
     {
       "title": "Memahami lomba",
