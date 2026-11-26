@@ -24,6 +24,8 @@ export type GenerateJson = (req: {
   turns: ChatTurn[];
   jsonSchema: unknown;
   signal: AbortSignal;
+  /** Gives up on one model after this long and tries the next (`withFallback`). */
+  attemptTimeoutMs?: number;
 }) => Promise<string>;
 
 export const GUIDEBOOK_TIMEOUT_MS = 55_000;
