@@ -254,7 +254,7 @@ insert into mentors
 values
   ('00000000-0000-4000-8000-000000000201', 'Muhammad Adnan Kurniawan',
     'adnan-kurniawan/photo.webp', '{data}',
-    'AI & Data Lead Tim Cumlaude, peserta STACK 2026',
+    'Pemenang Garuda Hacks dan lomba BRIN',
     'Membangun bagian AI dan data di Recomp AI: pencocokan kandidat, agen pembaca guidebook, dan evaluasinya. Siap bantu tim merancang fitur AI yang tetap jalan walau tanpa API key.',
     '[{"year":null,"title":"Pemenang Garuda Hacks"},{"year":null,"title":"Pemenang lomba BRIN"}]',
     '{hackathon,data}', true, false);
